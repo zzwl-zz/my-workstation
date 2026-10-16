@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>向阳工作台 · 个人成长</title>
+
+<!-- iOS PWA -->
+<meta name="apple-mobile-web-app-title" content="向阳" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="theme-color" content="#6b9e3f" />
+<meta name="format-detection" content="telephone=no" />
+
+<!-- 图标：草坪绿底 + 向日葵 -->
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><defs><linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%237db84a'/><stop offset='1' stop-color='%235a8f35'/></linearGradient></defs><rect width='180' height='180' fill='url(%23g)'/><circle cx='90' cy='78' r='42' fill='%23ffd23f'/><circle cx='90' cy='78' r='22' fill='%238a5a2b'/><rect x='84' y='112' width='12' height='46' rx='6' fill='%234d7a2a'/><ellipse cx='62' cy='132' rx='18' ry='9' fill='%2363a83c' transform='rotate(-25 62 132)'/><ellipse cx='118' cy='138' rx='18' ry='9' fill='%2363a83c' transform='rotate(25 118 138)'/></svg>" />
+
+<link rel="manifest" href='data:application/manifest+json,{"name":"向阳工作台","short_name":"向阳","start_url":".","display":"standalone","background_color":"%23f4f8e8","theme_color":"%236b9e3f","orientation":"portrait"}' />
+
+<style>
+  :root{
+    --grass:#7db84a; --grass-deep:#5a8f35; --grass-dark:#4d7a2a;
+    --sun:#ffd23f; --sun-deep:#f5a623;
+    --zombie:#8b7d9e; --zombie-deep:#5d4d70;
+    --bg:#f4f8e8; --bg2:#e8f0d8; --panel:#ffffff;
+    --line:#d5e4bd; --line2:#b8d094;
+    --text:#2d3d1e; --text2:#4a5c33; --muted:#7d9160;
+    /* 六大模块主题色 */
+    --fit:#e8746b;         /* 体态减脂：暖红 */
+    --fit-deep:#c2453a;
+    --media:#e0993c;       /* 自媒体：橙金 */
+    --media-deep:#b5731a;
+    --eng:#5ba9d6;         /* 英语：天空蓝 */
+    --eng-deep:#3a7ca5;
+    --invest:#c9a227;      /* 理财：金黄 */
+    --invest-deep:#9a7a10;
+    --read:#8a6fd6;        /* 阅读：紫 */
+    --read-deep:#6347ad;
+    --good:#6b9e3f;
+    --danger:#d9534f;
+    --nav-w:120px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;overscroll-behavior:none;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;display:flex;background:var(--grass-deep)}
+  .app{width:100%;max-width:900px;margin:0 auto;min-height:100vh;background:var(--bg);display:flex;box-shadow:0 0 50px rgba(45,61,30,.3);position:relative}
+
+  /* 左侧导航 */
+  .nav{width:var(--nav-w);flex-shrink:0;background:linear-gradient(180deg,var(--grass-dark),var(--grass-deep));display:flex;flex-direction:column;padding:calc(12px + env(safe-area-inset-top)) 7px calc(12px + env(safe-area-inset-bottom));gap:4px;position:sticky;top:0;height:100vh;overflow-y:auto}
+  .nav::-webkit-scrollbar{display:none}
+  .nav-logo{display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0 12px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:6px}
+  .nav-logo .sun{width:44px;height:44px;border-radius:50%;background:var(--sun);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 0 5px rgba(255,210,63,.25),0 3px 8px rgba(0,0,0,.2)}
+  .nav-logo .t{color:#fff;font-size:12px;font-weight:700;letter-spacing:.5px;text-align:center;line-height:1.3}
+  .nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;border-radius:12px;cursor:pointer;color:rgba(255,255,255,.78);font-size:11px;font-weight:600;text-align:center;transition:all .2s;line-height:1.25}
+  .nav-item .ic{font-size:21px;line-height:1}
+  .nav-item:active{transform:scale(.95)}
+  .nav-item.active{background:rgba(255,255,255,.94);color:var(--grass-dark);box-shadow:0 2px 8px rgba(0,0,0,.18)}
+  .nav-item .badge{margin-top:2px;background:var(--sun);color:var(--grass-dark);font-size:9px;min-width:18px;height:16px;border-radius:99px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px;font-weight:800}
+
+  /* 右侧内容 */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative}
+  .topbar{position:sticky;top:0;z-index:8;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;background:rgba(244,248,232,.94);backdrop-filter:saturate(180%) blur(12px);border-bottom:2px solid var(--line)}
+  .topbar .title{font-size:17px;font-weight:800;color:var(--grass-dark);display:flex;align-items:center;gap:6px}
+  .topbar .sub{font-size:11px;color:var(--muted);font-weight:600;margin-top:1px}
+  .sun-meter{display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--sun),var(--sun-deep));padding:6px 11px;border-radius:99px;box-shadow:0 2px 8px rgba(245,166,35,.35);color:#5a3d00;font-weight:800;font-size:14px}
+  .sun-meter .c{font-size:16px}
+
+  .pages{flex:1;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+  .page{display:none;animation:fade .25s}
+  .page.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .wrap{padding:14px 14px 4px}
+
+  .overview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+  .ov{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:10px 4px;text-align:center}
+  .ov .v{font-size:19px;font-weight:800;color:var(--grass-deep);font-family:Georgia,serif}
+  .ov .l{font-size:10px;color:var(--muted);margin-top:1px;font-weight:600}
+
+  .section-title{display:flex;align-items:center;justify-content:space-between;margin:16px 2px 9px}
+  .section-title h3{margin:0;font-size:15px;font-weight:800;display:flex;align-items:center;gap:7px;color:var(--text)}
+  .section-title h3 .dot{width:9px;height:9px;border-radius:3px;background:var(--grass)}
+  .section-title .hint{font-size:11px;color:var(--muted);font-weight:600}
+
+  .card{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:13px;margin-bottom:11px;box-shadow:0 2px 0 rgba(90,143,53,.08)}
+  .card.fit{border-top:4px solid var(--fit)}
+  .card.media{border-top:4px solid var(--media)}
+  .card.eng{border-top:4px solid var(--eng)}
+  .card.invest{border-top:4px solid var(--invest)}
+  .card.read{border-top:4px solid var(--read)}
+
+  .task{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}
+  .task:last-child{border-bottom:none;padding-bottom:3px}
+  .task:first-child{padding-top:3px}
+  .checkbox{width:26px;height:26px;border-radius:9px;border:2.5px solid var(--line2);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;background:var(--bg2);transition:all .2s;margin-top:1px}
+  .checkbox.done{background:var(--sun);border-color:var(--sun-deep);box-shadow:0 0 0 3px rgba(255,210,63,.3)}
+  .checkbox svg{width:15px;height:15px;opacity:0;transition:opacity .15s;color:#5a3d00}
+  .checkbox.done svg{opacity:1}
+  .task-body{flex:1;min-width:0}
+  .task-title{font-weight:700;font-size:13.5px;color:var(--text);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .task-desc{color:var(--muted);font-size:11.5px;margin-top:2px;font-weight:500}
+  .task-meta{color:var(--muted);font-size:10.5px;margin-top:4px;display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+  .tag{border-radius:6px;padding:2px 7px;font-size:10.5px;font-weight:700;background:var(--bg2);color:var(--text2)}
+  .tag.sun{background:#fff4cc;color:#8a5a00}
+  .tag.done{background:#e0f0d0;color:var(--grass-dark)}
+  .icon-btn{background:var(--bg2);border:1.5px solid var(--line);color:var(--muted);width:27px;height:27px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;line-height:1;flex-shrink:0}
+  .icon-btn:active{background:#f8e0dc;color:var(--danger);border-color:var(--danger)}
+  .task.done .task-title{color:var(--muted);text-decoration:line-through}
+
+  .add-row{display:flex;gap:7px;margin-top:10px}
+  .add-row input{flex:1;background:var(--bg2);border:2px solid var(--line);color:var(--text);border-radius:11px;padding:10px 12px;font-size:13px;outline:none;font-family:inherit}
+  .add-row input::placeholder{color:var(--muted)}
+  .add-row input:focus{border-color:var(--grass)}
+  .btn{background:linear-gradient(135deg,var(--grass),var(--grass-deep));color:#fff;border:none;border-radius:11px;padding:0 15px;font-weight:800;cursor:pointer;font-size:13px;box-shadow:0 2px 0 rgba(77,122,42,.4);font-family:inherit}
+  .btn:active{transform:translateY(1px);box-shadow:none}
+  .btn.ghost{background:var(--bg2);border:2px solid var(--line2);color:var(--text2);box-shadow:none}
+  .btn.sun{background:linear-gradient(135deg,var(--sun),var(--sun-deep));color:#5a3d00;box-shadow:0 2px 0 rgba(196,124,26,.4)}
+  .empty{text-align:center;color:var(--muted);padding:22px 12px;font-size:12.5px;font-weight:600}
+
+  /* 内容块 */
+  .info-box{background:var(--bg2);border-radius:11px;padding:11px;font-size:12.5px;color:var(--text2);line-height:1.75}
+  .info-box b{color:var(--text)}
+  .pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .pill{background:var(--bg2);border:2px solid var(--line);border-radius:99px;padding:6px 12px;font-size:11.5px;font-weight:700;color:var(--text2);cursor:pointer}
+  .pill.on{background:var(--grass);border-color:var(--grass-deep);color:#fff}
+
+  /* 训练动作 */
+  .move,.fmove{display:block;padding:10px;background:var(--bg2);border-radius:11px;margin-bottom:8px;border:1.5px solid var(--line)}
+  .move .mhead,.fmove .mhead{display:flex;gap:8px;align-items:center}
+  .move .n{flex-shrink:0;width:24px;height:24px;border-radius:8px;background:var(--fit);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:12px}
+  .move .fig{flex-shrink:0;display:flex;align-items:center;background:#fff;border-radius:10px;padding:3px 5px;border:1.5px solid var(--line)}
+  .gifbox{position:relative;width:64px;height:74px;flex-shrink:0}
+  .gifbox::after{content:'动图';position:absolute;right:-2px;bottom:-2px;font-size:8px;font-weight:800;color:#fff;background:var(--fit);padding:1px 4px;border-radius:6px}
+  .move .b,.fmove .b{flex:1;min-width:0}
+  .move .b h5{margin:0;font-size:13px;color:var(--fit-deep)}
+  .mdesc{margin:7px 0 0;font-size:11.5px;color:var(--text2);line-height:1.6}
+  .move .time,.fmove .time{font-size:10.5px;font-weight:800;color:#fff;background:var(--fit-deep);padding:2px 7px;border-radius:99px;flex-shrink:0}
+  /* 面部锻炼 */
+  .fmove .fig{flex-shrink:0;width:44px;height:44px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--fit)}
+  .fmove .b h5{margin:0;font-size:13px;color:var(--fit-deep)}
+  /* 动作双帧标注 */
+  .fig-label{font-size:9px;color:var(--muted);font-weight:700;text-align:center}
+  /* 晨起称重 */
+  .wt-today{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+  .wt-today .big{font-size:34px;font-weight:800;color:var(--fit-deep);font-family:Georgia,serif;line-height:1}
+  .wt-today .unit{font-size:13px;font-weight:700;color:var(--muted)}
+  .wt-today .delta{font-size:12px;font-weight:800;margin-left:auto;padding:3px 9px;border-radius:99px}
+  .wt-today .delta.down{background:#e6f5e6;color:#2e7d32}
+  .wt-today .delta.up{background:#fdeceb;color:#c2453a}
+  .wt-today .delta.flat{background:var(--bg2);color:var(--muted)}
+  .wt-inputrow{display:flex;gap:8px}
+  .wt-inputrow input{flex:1;min-width:0;border:1.5px solid var(--line2);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;font-weight:700;color:var(--text);background:#fff}
+  .wt-chart{margin-top:14px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 4px 4px}
+  .wt-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+  .wt-stats .st{background:var(--bg2);border-radius:10px;padding:8px 6px;text-align:center}
+  .wt-stats .st .v{font-size:16px;font-weight:800;color:var(--fit-deep);font-family:Georgia,serif}
+  .wt-stats .st .l{font-size:9.5px;color:var(--muted);font-weight:700;margin-top:1px}
+  .wt-analysis{margin-top:10px;background:linear-gradient(135deg,#fff5f4,#fdeceb);border:1.5px solid #f6d3cf;border-radius:11px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.75}
+  .wt-analysis b{color:var(--fit-deep)}
+  .wt-history{display:flex;flex-wrap:wrap;gap:6px}
+  .wt-chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--line2);border-radius:99px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer}
+  .wt-chip:active{transform:scale(.95)}
+  .wt-chip .x{color:var(--muted);font-size:12px}
+  /* 视频参考按钮 */
+  .link-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+  .link-btn{display:inline-flex;align-items:center;gap:3px;font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:99px;text-decoration:none;border:1.5px solid var(--line2);color:var(--text2);background:#fff}
+  .link-btn:active{transform:scale(.96)}
+  .link-btn.dy{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+  .link-btn.xhs{background:#ff2e4d;color:#fff;border-color:#ff2e4d}
+  .link-btn.wx{background:#07c160;color:#fff;border-color:#07c160}
+  .link-btn.bili{background:#00a1d6;color:#fff;border-color:#00a1d6}
+  .link-btn.free{background:#fff;color:var(--text2);border-color:var(--line2)}
+  .link-row{display:flex;flex-wrap:wrap;gap:6px}
+  /* 金价卡 */
+  .gold-card{background:linear-gradient(135deg,#fff8e0,#ffe9b0);border:2px solid var(--invest);border-radius:14px;padding:14px;margin-bottom:11px;text-align:center}
+  .gold-card .price{font-size:30px;font-weight:800;color:var(--invest-deep);font-family:Georgia,serif;line-height:1.1}
+  .gold-card .price small{font-size:13px;font-weight:700}
+  .gold-card .chg{font-size:12.5px;font-weight:700;margin-top:4px}
+  .gold-card .up{color:#d9534f}
+  .gold-card .down{color:#3a9d5d}
+  .gold-card .meta{font-size:10.5px;color:var(--muted);margin-top:6px;font-weight:600}
+  /* 阅读内容 */
+  .read-body{font-size:12.8px;color:var(--text);line-height:1.85}
+  .read-body b{color:var(--read-deep)}
+  .read-quote{background:#f3eefc;border-left:4px solid var(--read);border-radius:0 10px 10px 0;padding:10px 12px;margin:10px 0;font-size:12.5px;color:var(--read-deep);font-weight:600;font-style:italic;line-height:1.7}
+  .read-key{background:#efeaf9;border-radius:10px;padding:10px;margin-bottom:10px;font-size:12.5px;color:var(--read-deep);font-weight:700;line-height:1.7}
+
+  /* 单词/内容卡 */
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chip3{background:linear-gradient(160deg,#fff,#f6faf0);border:2px solid var(--line);border-radius:10px;padding:8px 11px;font-size:12.5px;font-weight:700;color:var(--text);cursor:pointer}
+  .chip3 small{display:block;font-size:10px;color:var(--muted);font-weight:600;margin-top:1px}
+  .chip3:active{background:#eef6e2}
+
+  /* 选题卡 */
+  .topic{background:var(--bg2);border-radius:12px;padding:11px;margin-bottom:9px;border:1.5px solid var(--line);border-left:4px solid var(--media)}
+  .topic h5{margin:0 0 4px;font-size:13px;color:var(--media-deep)}
+  .topic .hook{font-size:11.5px;color:var(--danger);font-weight:700;margin-bottom:3px}
+  .topic p{margin:0;font-size:11.5px;color:var(--text2);line-height:1.6}
+  .topic .tags{margin-top:6px;display:flex;gap:5px;flex-wrap:wrap}
+  .script-btn{margin-top:7px;width:100%;background:var(--media);color:#fff;border:none;border-radius:9px;padding:8px;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer}
+  .script-btn:active{transform:scale(.98)}
+  .script-box{margin-top:7px;background:#fff;border:1.5px dashed var(--line2);border-radius:10px;padding:10px;font-size:12px;color:var(--text);line-height:1.85;white-space:normal}
+  .kpt{margin-top:6px;font-size:11px;color:var(--fit-deep);background:#fdeceb;border-radius:8px;padding:6px 8px;line-height:1.6}
+
+  /* 资讯卡 */
+  .news{border-left:4px solid var(--invest);background:var(--bg2);border-radius:11px;padding:10px;margin-bottom:8px}
+  .news h5{margin:0 0 3px;font-size:12.5px;color:var(--invest-deep);display:flex;align-items:center;gap:5px}
+  .news .tag2{font-size:9.5px;background:var(--invest);color:#fff;padding:1px 6px;border-radius:99px;font-weight:800}
+  .news p{margin:0;font-size:11.5px;color:var(--text2);line-height:1.6}
+
+  /* 阅读进度 */
+  .read-day{display:flex;gap:10px;align-items:flex-start;padding:10px;background:var(--bg2);border-radius:11px;margin-bottom:8px;border:1.5px solid var(--line)}
+  .read-day.today{border-color:var(--read);background:#efeaf9}
+  .read-day .d{flex-shrink:0;width:44px;text-align:center}
+  .read-day .d .dn{font-size:15px;font-weight:800;color:var(--read-deep)}
+  .read-day .d .dd{font-size:9.5px;color:var(--muted);font-weight:600}
+  .read-day .c{flex:1}
+  .read-day .c h5{margin:0 0 3px;font-size:12.5px;color:var(--text)}
+  .read-day .c p{margin:0;font-size:11px;color:var(--muted);line-height:1.55}
+  .read-day .c .q{margin-top:5px;font-size:11px;color:var(--read-deep);font-weight:600;background:#fff;border-radius:7px;padding:5px 8px}
+
+  /* 花园 */
+  .garden{background:linear-gradient(180deg,#bfe08a,var(--grass));border:3px solid var(--grass-dark);border-radius:16px;padding:14px;min-height:180px;position:relative;overflow:hidden;margin-bottom:12px}
+  .garden::after{content:'';position:absolute;left:0;right:0;bottom:0;height:26px;background:repeating-linear-gradient(90deg,rgba(77,122,42,.18) 0 12px,transparent 12px 24px)}
+  .garden-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:8px;position:relative;z-index:2}
+  .slot{aspect-ratio:1;background:rgba(255,255,255,.28);border:2px dashed rgba(77,122,42,.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;position:relative;transition:all .3s}
+  .slot.grown{background:rgba(255,255,255,.6);border-style:solid;border-color:var(--grass-dark);font-size:34px}
+  .slot .lv{position:absolute;bottom:2px;right:4px;font-size:9px;font-weight:800;color:#fff;background:var(--grass-deep);padding:0 4px;border-radius:99px}
+  .zombie-walk{position:absolute;bottom:8px;font-size:34px;z-index:3;animation:walk 8s linear infinite}
+  @keyframes walk{0%{left:-12%}100%{left:104%}}
+  .garden-bar{height:14px;background:rgba(255,255,255,.5);border-radius:99px;overflow:hidden;margin:10px 0;border:2px solid var(--grass-dark)}
+  .garden-bar > span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--sun),var(--sun-deep));transition:width .5s}
+
+  .modal-mask{position:fixed;inset:0;background:rgba(45,61,30,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .modal-mask.show{display:flex}
+  .modal{background:var(--panel);border-radius:18px;padding:20px;max-width:320px;width:100%;text-align:center;border:3px solid var(--grass);animation:pop .25s}
+  @keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal .em{font-size:48px}
+  .modal h3{margin:8px 0 6px;font-size:17px;color:var(--grass-dark)}
+  .modal p{margin:0 0 14px;color:var(--text2);font-size:13px;font-weight:500;line-height:1.6}
+
+  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--grass-dark);color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;font-weight:700;opacity:0;transition:all .25s;z-index:200;pointer-events:none;box-shadow:0 5px 16px rgba(45,61,30,.35)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .kbd{background:var(--bg2);border:1.5px solid var(--line);border-radius:5px;padding:1px 5px;font-size:10.5px;color:var(--muted);font-family:ui-monospace,monospace}
+
+  @media (max-width:600px){
+    :root{--nav-w:66px}
+    .nav-item{font-size:9.5px;padding:8px 2px}
+    .nav-item .ic{font-size:19px}
+    .nav-logo .t{font-size:10px}
+    .nav-logo .sun{width:38px;height:38px;font-size:22px}
+    .overview-grid{grid-template-columns:repeat(2,1fr)}
+    .wrap{padding:12px 10px 4px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 左侧竖向导航 -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="sun">🌻</div>
+      <div class="t">向阳<br>工作台</div>
+    </div>
+    <div class="nav-item active" data-go="home"><span class="ic">🏠</span>首页</div>
+    <div class="nav-item" data-go="fit"><span class="ic">💪</span>体态减脂</div>
+    <div class="nav-item" data-go="media"><span class="ic">🎬</span>自媒体</div>
+    <div class="nav-item" data-go="eng"><span class="ic">🔤</span>英语学习</div>
+    <div class="nav-item" data-go="invest"><span class="ic">📈</span>理财投资</div>
+    <div class="nav-item" data-go="read"><span class="ic">📚</span>阅读计划</div>
+    <div class="nav-item" data-go="garden"><span class="ic">🌻</span>我的花园<span class="badge" id="navSun">0</span></div>
+  </nav>
+
+  <!-- 右侧内容 -->
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="title" id="pageTitle">🏠 今日总览</div>
+        <div class="sub" id="pageSub"></div>
+      </div>
+      <div class="sun-meter"><span class="c">☀️</span><span id="sunCount">0</span></div>
+    </div>
+
+    <div class="pages">
+      <!-- 首页 -->
+      <div class="page active" id="page-home">
+        <div class="wrap">
+          <div class="overview-grid">
+            <div class="ov"><div class="v" id="ovTotal">0</div><div class="l">今日任务</div></div>
+            <div class="ov"><div class="v" id="ovDone">0</div><div class="l">已完成</div></div>
+            <div class="ov"><div class="v" id="ovSun">0</div><div class="l">今日阳光</div></div>
+            <div class="ov"><div class="v" id="ovPlant">0</div><div class="l">花园植物</div></div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot"></span>今日成长清单</h3><span class="hint">点圆圈打卡</span></div>
+          <div class="card" id="homeTasks"></div>
+
+          <div class="section-title"><h3><span class="dot"></span>目标进度</h3><span class="hint">减脂目标 105→98斤</span></div>
+          <div class="card">
+            <div class="info-box">
+              <b>💪 体态减脂目标</b><br>
+              当前：105 斤 ｜ 目标：98 斤 ｜ 需减：7 斤<br>
+              <div style="height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:8px">
+                <div style="height:100%;width:0%;background:linear-gradient(90deg,var(--fit),var(--fit-deep));border-radius:99px"></div>
+              </div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">配合每日 10-20 分钟低强度训练 + 饮食管理，健康减脂不伤腰</div>
+            </div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot"></span>快捷新增</h3><span class="hint">自定义任务</span></div>
+          <div class="card">
+            <div class="add-row">
+              <input id="newHomeTask" placeholder="例如：睡前拉伸10分钟 / 复盘今日内容" />
+              <button class="btn" onclick="addHomeTask()">添加</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 体态减脂 -->
+      <div class="page" id="page-fit">
+        <div class="wrap">
+          <div class="section-title"><h3><span class="dot" style="background:var(--fit)"></span>晨起称重记录</h3><span class="hint" id="wtHint">目标 105→98 斤</span></div>
+          <div class="card fit">
+            <div id="wtToday" class="wt-today"></div>
+            <div class="wt-inputrow">
+              <input id="wtInput" type="number" inputmode="decimal" step="0.1" placeholder="今日体重（斤）如 52.5" />
+              <button class="btn" onclick="saveWeight()">记录</button>
+            </div>
+            <div id="wtChart" class="wt-chart"></div>
+            <div id="wtStats" class="wt-stats"></div>
+            <div id="wtAnalysis" class="wt-analysis"></div>
+            <div class="wt-hist-wrap">
+              <div style="font-size:11.5px;font-weight:800;color:var(--fit-deep);margin:10px 0 6px">📋 历史记录（点击可删除）</div>
+              <div id="wtHistory" class="wt-history"></div>
+            </div>
+          </div>
+          <div class="section-title"><h3><span class="dot" style="background:var(--fit)"></span>体态减脂 · 今日任务</h3><span class="hint">每天更新</span></div>
+          <div class="card fit"><div id="fitTasks"></div></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--fit)"></span>今日训练计划</h3><span class="hint" id="fitDur">10分钟</span></div>
+          <div class="card fit">
+            <div class="info-box" style="margin-bottom:10px">🎯 今日重点：<b id="fitFocus"></b>（低强度·护腰·改善体态）</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:8px">👇 每个动作都有示意图（起始→发力两帧），跟着做</div>
+            <div id="fitMoves"></div>
+            <button class="btn" style="width:100%;margin-top:6px" onclick="newFitPlan()">换一套动作 🔄</button>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--fit)"></span>面部锻炼 · 瘦脸提拉</h3><span class="hint">每天5分钟</span></div>
+          <div class="card fit">
+            <div class="info-box" style="margin-bottom:10px">💆 今日面部训练重点：<b id="faceFocus"></b></div>
+            <div id="faceMoves"></div>
+            <button class="btn" style="width:100%;margin-top:6px" onclick="newFacePlan()">换一组面部动作 🔄</button>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--fit)"></span>瘦脸紧致小知识</h3></div>
+          <div class="card fit">
+            <div class="info-box">
+              ✨ <b>瘦脸提拉原理：</b>通过锻炼面部肌肉群，促进循环、紧致轮廓、减轻水肿<br>
+              ⏰ <b>最佳时间：</b>早晨起床后（消水肿）和睡前（放松紧致）<br>
+              💧 <b>关键提醒：</b>动作要轻柔，配合面霜/精油避免拉扯皮肤<br>
+              🥗 <b>辅助：</b>少盐少糖（防水肿）、多喝水、睡姿仰卧、减少咀嚼硬物<br>
+              ⚠️ <b>注意：</b>坚持2-4周见效，配合体态和减脂整体更好
+            </div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--fit)"></span>护腰提醒</h3></div>
+          <div class="card fit">
+            <div class="info-box">
+              🚫 久坐腰疼注意：避免卷腹、仰卧起坐等伤腰动作<br>
+              ✅ 优先练：骨盆稳定、臀桥、死虫式、猫牛式、侧卧抬腿<br>
+              ⏰ 每小时起身活动 3 分钟，别久坐<br>
+              🧘 动作要慢，找到腹部/臀部发力感，不憋气
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 自媒体 -->
+      <div class="page" id="page-media">
+        <div class="wrap">
+          <div class="section-title"><h3><span class="dot" style="background:var(--media)"></span>自媒体 · 今日任务</h3><span class="hint">每天更新</span></div>
+          <div class="card media"><div id="mediaTasks"></div></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--media)"></span>9点爆款选题</h3><span class="hint" id="mediaDate"></span></div>
+          <div class="card media">
+            <div id="topicList"></div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--media)"></span>新增选题</h3><span class="hint">自定义</span></div>
+          <div class="card media">
+            <div class="add-row">
+              <input id="newTopic" placeholder="输入选题标题…" />
+              <button class="btn" onclick="addTopic()">添加</button>
+            </div>
+            <div class="add-row">
+              <input id="newHook" placeholder="钩子（可留空）" />
+            </div>
+            <div class="add-row">
+              <textarea id="newScript" rows="3" placeholder="口播逐字稿（可留空，稍后补充）" style="width:100%;resize:vertical;font-family:inherit;font-size:12.5px;padding:8px;border:1.5px solid var(--line2);border-radius:9px"></textarea>
+            </div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--media)"></span>账号定位</h3></div>
+          <div class="card media">
+            <div class="info-box">
+              <b>👩 人设：</b>邻家姐姐 · 执业中药师 · 医药质量管理8年 · 宝妈<br>
+              <b>📌 内容方向：</b>养生 / 变美 / 理财 干货<br>
+              <b>🎬 形式：</b>公园口播 · 1分钟短视频 · 自带钩子+实操<br>
+              <b>💡 记忆点：</b>专业可信 + 接地气 + 姐妹聊天感
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 英语学习 -->
+      <div class="page" id="page-eng">
+        <div class="wrap">
+          <div class="section-title"><h3><span class="dot" style="background:var(--eng)"></span>英语学习 · 今日任务</h3><span class="hint">每天更新</span></div>
+          <div class="card eng"><div id="engTasks"></div></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--eng)"></span>短文阅读</h3><span class="hint">点喇叭朗读</span></div>
+          <div class="card eng">
+            <div class="info-box" id="engPassage"></div>
+            <button class="btn ghost" style="width:100%;margin-top:8px" onclick="speakPassage()">🔊 听全文</button>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--eng)"></span>单词积累</h3><span class="hint">成人+启蒙两用</span></div>
+          <div class="card eng"><div class="chips" id="engWords"></div></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--eng)"></span>口语跟读</h3><span class="hint">可辅导孩子</span></div>
+          <div class="card eng" id="engOral"></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--eng)"></span>亲子启蒙素材</h3><span class="hint">直接拿来讲</span></div>
+          <div class="card eng">
+            <div class="info-box" id="engKid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 理财投资 -->
+      <div class="page" id="page-invest">
+        <div class="wrap">
+          <div class="section-title"><h3><span class="dot" style="background:var(--invest)"></span>实时国际金价</h3><span class="hint" id="goldRefresh">刷新</span></div>
+          <div class="gold-card" id="goldCard" onclick="loadGold()">
+            <div style="font-size:11.5px;font-weight:700;color:var(--invest-deep);margin-bottom:2px">🥇 国际现货黄金 XAU/USD</div>
+            <div class="price" id="goldPrice">加载中…</div>
+            <div class="chg" id="goldChg">—</div>
+            <div class="meta" id="goldMeta">点击卡片刷新 · 数据来源 gold-api.com</div>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:4px">
+            <a class="link-btn" href="https://finance.sina.com.cn/money/globalindex/hf_XAU.shtml" target="_blank" rel="noopener" style="flex:1;justify-content:center">📈 新浪看详情</a>
+            <a class="link-btn" href="https://www.jijinhao.com/" target="_blank" rel="noopener" style="flex:1;justify-content:center">💰 金饰金价</a>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--invest)"></span>理财投资 · 今日任务</h3><span class="hint">每天更新</span></div>
+          <div class="card invest"><div id="investTasks"></div></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--invest)"></span>9点时政热点</h3><span class="hint" id="investDate"></span></div>
+          <div class="card invest">
+            <div id="newsList"></div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--invest)"></span>关注方向</h3></div>
+          <div class="card invest">
+            <div class="pill-row">
+              <span class="pill on">📰 国内要闻</span>
+              <span class="pill on">🏛 政策动向</span>
+              <span class="pill on">🌍 国际形势</span>
+              <span class="pill on">🥇 黄金避险</span>
+            </div>
+            <div class="info-box" style="margin-top:10px;font-size:11.5px">
+              💡 提示：以上为每日时政要点归纳模板，所有内容请以官方权威发布为准；金价数据为实时抓取，理性看待、理性投资。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阅读计划 -->
+      <div class="page" id="page-read">
+        <div class="wrap">
+          <div class="section-title"><h3><span class="dot" style="background:var(--read)"></span>阅读计划 · 今日任务</h3><span class="hint">一周一本书</span></div>
+          <div class="card read"><div id="readTasks"></div></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--read)"></span>《人生财富靠康波》7天精读导读</h3><span class="hint" id="readProgress"></span></div>
+          <div class="card read" style="padding:11px 9px">
+            <div class="info-box" style="margin-bottom:10px;font-size:11.5px">
+              📖 说明：这是本书的<b>7天精读导读与读书笔记</b>（作者核心观点归纳＋解读＋金句＋思考题），<b>点任意一天展开</b>。<br>
+              ⚠️ 受版权限制，无法在此附带全书原文；想读<b>完整全书</b>请用下方正规渠道（微信读书/购书/图书馆）。
+            </div>
+            <div id="readDays"></div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--read)"></span>获取完整全书</h3><span class="hint">正版渠道</span></div>
+          <div class="card read">
+            <div class="chips" id="bookLinks" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--read)"></span>我的阅读感悟</h3><span class="hint">自动保存</span></div>
+          <div class="card read">
+            <textarea class="review-box" id="readNote" placeholder="读完今天的内容，写下1-2句感悟吧～" style="width:100%;min-height:110px;background:var(--bg2);border:2px solid var(--line);border-radius:11px;color:var(--text);padding:11px;font-size:13px;outline:none;resize:vertical;font-family:inherit;line-height:1.6"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 花园 -->
+      <div class="page" id="page-garden">
+        <div class="wrap">
+          <div class="section-title"><h3><span class="dot"></span>我的阳光花园</h3><span class="hint">完成打卡培育植物</span></div>
+          <div class="garden">
+            <div class="garden-slots" id="gardenSlots"></div>
+            <div class="zombie-walk" id="zombieWalk" style="display:none">🧟</div>
+          </div>
+          <div class="garden-bar"><span id="gardenFill"></span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;color:var(--text2);margin-bottom:14px">
+            <span id="gardenStatus">阳光值 0 / 10</span>
+            <span id="gardenPlants">植物 0 棵</span>
+          </div>
+
+          <div class="section-title"><h3><span class="dot"></span>阳光值规则</h3></div>
+          <div class="card">
+            <div class="info-box">
+              ☀️ 完成 1 个任务 = <b>+2 阳光值</b><br>
+              🌱 每攒够 <b>10 阳光值</b> 培育出 1 棵新植物<br>
+              🧟 当天有任务没完成，僵尸会吃掉园中 1 棵植物<br>
+              🌻 攒满 8 棵植物，花园大丰收！
+            </div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot"></span>我的成就</h3></div>
+          <div class="card">
+            <div class="overview-grid" style="margin:0">
+              <div class="ov"><div class="v" id="achTotalSun">0</div><div class="l">累计阳光</div></div>
+              <div class="ov"><div class="v" id="achPlants">0</div><div class="l">养成植物</div></div>
+              <div class="ov"><div class="v" id="achEaten">0</div><div class="l">被吃掉</div></div>
+              <div class="ov"><div class="v" id="achDays">0</div><div class="l">坚持天数</div></div>
+            </div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot"></span>数据备份与恢复</h3><span class="hint">建议每周备份</span></div>
+          <div class="card">
+            <div class="info-box" style="margin-bottom:10px">
+              🔒 你的打卡、体重、选题等数据都保存在<b>本机浏览器</b>里。<br>
+              ⚠️ 如果清理浏览器数据、换设备、或从不同网址打开，数据不会自动带过来。<br>
+              ✅ <b>建议定期导出备份</b>，换手机时导入即可恢复。
+            </div>
+            <div id="storeWarn"></div>
+            <button class="btn" style="width:100%;margin-bottom:8px" onclick="exportData()">⬇️ 导出备份文件（保存到手机）</button>
+            <button class="btn ghost" style="width:100%;margin-bottom:8px" onclick="document.getElementById('importFile').click()">⬆️ 导入备份文件（恢复数据）</button>
+            <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importData(event)" />
+            <div style="font-size:11px;color:var(--muted);font-weight:600;margin-top:4px" id="lastSaveTip"></div>
+          </div>
+
+          <div class="section-title"><h3><span class="dot"></span>重新开始</h3></div>
+          <div class="card">
+            <button class="btn ghost" style="width:100%" onclick="resetGarden()">重置花园与打卡数据</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-mask" id="modalMask">
+  <div class="modal">
+    <div class="em" id="modalEm">🌻</div>
+    <h3 id="modalTitle">太棒啦！</h3>
+    <p id="modalText"></p>
+    <button class="btn" style="width:100%" onclick="closeModal()">知道啦</button>
+  </div>
+</div>
+<div class="toast" id="toast">已保存</div>
+
+<script>
+/* ============ 数据层 ============ */
+const KEY='growth_school_v1';
+const todayStr=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const daySeed=()=>{const d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()};
+
+let S=load();
+function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return def()}
+function def(){
+  return {
+    tasks:{
+      fit:[
+        {id:uid(),t:'完成今日 10-20 分钟体态训练',d:'跟练下方动作，重点骨盆+腰腹+臀腿'},
+        {id:uid(),t:'晨起/睡前称重并记录',d:'目标 105→98 斤，关注趋势不看单日'},
+        {id:uid(),t:'久坐每小时起身活动3分钟',d:'保护腰椎，缓解腰疼'},
+      ],
+      media:[
+        {id:uid(),t:'9点查看今日爆款选题',d:'挑1-2个拍成公园口播短视频'},
+        {id:uid(),t:'写1条60秒口播文案',d:'钩子+干货+互动，贴合邻家姐姐人设'},
+        {id:uid(),t:'发布1条短视频',d:'养生/变美/理财方向'},
+      ],
+      eng:[
+        {id:uid(),t:'精读1篇短文',d:'见下方短文，跟读3遍'},
+        {id:uid(),t:'积累5个单词',d:'成人能用+可教孩子，见单词卡'},
+        {id:uid(),t:'口语跟读3句',d:'大声朗读，训练语感'},
+        {id:uid(),t:'给娃准备1个启蒙素材',d:'见亲子启蒙素材，直接拿来讲'},
+      ],
+      invest:[
+        {id:uid(),t:'9点查看市场资讯',d:'科创板/黄金/恒生科技/纳指要点'},
+        {id:uid(),t:'记录1条投资思考',d:'关注趋势和逻辑，不频繁操作'},
+      ],
+      read:[
+        {id:uid(),t:'完成今日阅读任务',d:'《人生财务靠康波》按天拆分'},
+        {id:uid(),t:'回答今日复盘思考题',d:'见阅读计划里的思考题'},
+      ]
+    },
+    custom:[],
+    mediaTopics:[],        // 自定义选题
+    done:{},
+    bonusSun:0,
+    gardenPlants:0,
+    totalSun:0,
+    totalPlants:0,
+    totalEaten:0,
+    days:0,
+    lastChecked:'',
+    readNote:'',
+    weights:[],            // 晨起称重记录 [{d:'2026-10-14',w:52.5}]
+    goalWeight:49          // 目标体重（斤）
+  };
+}
+function uid(){return 'g_'+Math.random().toString(36).slice(2,9)}
+// 本地存储：主存储 + 备份存储（双写，防止单点丢失）
+const BACKUP_KEY=KEY+'_backup';
+function save(){
+  try{
+    const json=JSON.stringify(S);
+    localStorage.setItem(KEY,json);
+    localStorage.setItem(BACKUP_KEY,json);           // 双写备份
+    localStorage.setItem(KEY+'_ts',String(Date.now()));
+  }catch(e){}
+}
+// 载入时合并默认值，确保新增字段不会因旧数据缺失而丢失/报错
+function mergeDefaults(loaded){
+  const d=def();
+  if(!loaded||typeof loaded!=='object')return d;
+  const out=Object.assign({},d,loaded);
+  // tasks 分科合并，防止某一科缺失
+  out.tasks=Object.assign({},d.tasks,loaded.tasks||{});
+  ['fit','media','eng','invest','read'].forEach(c=>{
+    if(!Array.isArray(out.tasks[c]))out.tasks[c]=d.tasks[c];
+  });
+  ['custom','mediaTopics','weights'].forEach(k=>{if(!Array.isArray(out[k]))out[k]=d[k]});
+  ['done'].forEach(k=>{if(!out[k]||typeof out[k]!=='object')out[k]=d[k]});
+  return out;
+}
+function load(){
+  try{
+    let r=localStorage.getItem(KEY);
+    if(!r){ r=localStorage.getItem(BACKUP_KEY); }     // 主存丢失则用备份
+    if(r){ const o=JSON.parse(r); if(o&&typeof o==='object')return mergeDefaults(o); }
+  }catch(e){}
+  return def();
+}
+function todayDone(){const k=todayStr();if(!S.done[k])S.done[k]={};return S.done[k]}
+
+/* ============ 数据备份 / 恢复 / 存储自检 ============ */
+function exportData(){
+  try{
+    const payload={app:'向阳工作台',ver:1,exportedAt:new Date().toISOString(),data:S};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const d=new Date();
+    const name=`向阳工作台备份_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}.json`;
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);a.download=name;
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    toast('已导出备份：'+name);
+  }catch(e){toast('导出失败，请截图保存')}
+}
+function importData(ev){
+  const f=ev.target.files&&ev.target.files[0];
+  if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const o=JSON.parse(rd.result);
+      const data=o&&o.data?o.data:o;
+      if(!data||typeof data!=='object')throw 0;
+      if(!confirm('导入后将覆盖当前数据，确定恢复吗？'))return;
+      S=mergeDefaults(data);save();renderAll();toast('数据已恢复 ✅');
+    }catch(e){toast('文件格式不对，导入失败')}
+    ev.target.value='';
+  };
+  rd.readAsText(f);
+}
+function checkStorageSafety(){
+  const el=document.getElementById('storeWarn');
+  if(!el)return;
+  const tip=document.getElementById('lastSaveTip');
+  const isFile=location.protocol==='file:';
+  let html='';
+  if(isFile){
+    html=`<div class="info-box" style="background:#fff4e0;border:1.5px solid #f0c674;color:#8a5a00;margin-bottom:10px">
+      🚨 <b>当前是本地文件方式打开（file://），数据可能无法长期保存！</b><br>
+      请把网页部署到网址（GitHub Pages 等）或从「添加到主屏幕」的图标打开，数据才能稳定保留。建议立即导出备份。</div>`;
+  }
+  try{
+    const ts=localStorage.getItem(KEY+'_ts');
+    if(tip&&ts){const d=new Date(Number(ts));tip.textContent=`上次保存：${d.toLocaleString('zh-CN')}`;}
+  }catch(e){}
+  el.innerHTML=html;
+}
+function todaySun(){return Object.keys(todayDone()).length*2+ (S.todayBonus&&S.todayBonus[todayStr()]?S.todayBonus[todayStr()]:0)}
+function allToday(){
+  const t=[];
+  ['fit','media','eng','invest','read'].forEach(c=>S.tasks[c].forEach(x=>t.push({...x,cat:c})));
+  S.custom.forEach(x=>t.push({...x,cat:'home'}));
+  return t;
+}
+function totalTaskCount(){return allToday().length}
+function catName(c){return {fit:'体态',media:'自媒体',eng:'英语',invest:'理财',read:'阅读',home:'自定义'}[c]||'任务'}
+
+/* ============ 内容库（按日期轮换） ============ */
+// 体态训练：每天一套（骨盆/腰腹/臀腿/腰背）——每个动作带 kw 用于搜索真人教学
+const FIT_PLANS=[
+  {focus:'骨盆稳定+腰腹激活',dur:'12分钟',moves:[
+    {n:'臀桥',d:'仰卧屈膝，臀部发力抬起，缓慢下落，15次×2组',t:'4min',tip:'脚跟踩实，臀部先夹紧再顶起，顶点停1秒，用臀不用腰。'},
+    {n:'死虫式',d:'仰卧手脚交替伸展，腰部贴地，每侧10次×2组',t:'4min',tip:'全程腰部压紧地面，手脚放低但不贴地，慢吸慢呼。'},
+    {n:'猫牛式',d:'四足跪姿，配合呼吸拱背塌腰，10次',t:'2min',tip:'四足跪姿，吸气塌腰抬头，呼气拱背低头，脊柱一节气一节动。'},
+    {n:'侧卧抬腿',d:'侧躺，上侧腿抬起放下，每侧15次',t:'2min',tip:'身体成直线不前后晃，腿抬起时臀外侧发力，慢起慢落。'}
+  ]},
+  {focus:'臀腿塑形（梨形改善）',dur:'15分钟',moves:[
+    {n:'蚌式开合',d:'侧躺屈膝，膝盖打开合上，每侧15次×2组',t:'4min',tip:'骨盆稳定不后倒，用臀中小肌发力打开膝盖，停1秒再合。'},
+    {n:'后踢腿',d:'四足跪姿，单腿向后上方抬起，每侧15次',t:'4min',tip:'核心收紧不塌腰，脚跟向上顶，感受臀部收缩，别用腰甩。'},
+    {n:'站姿侧抬腿',d:'扶墙站稳，单腿向侧抬起，每侧15次',t:'3min',tip:'扶墙站稳，支撑腿微屈，抬腿时骨盆不外翻，慢慢放下。'},
+    {n:'靠墙静蹲',d:'背贴墙下蹲，膝盖不超脚尖，30秒×3组',t:'4min',tip:'背贴墙下滑，膝盖不超脚尖、与脚尖同向，大腿发力别憋气。'}
+  ]},
+  {focus:'腰腹核心+护腰',dur:'12分钟',moves:[
+    {n:'平板支撑',d:'手肘撑地，身体成直线，腰别塌，20秒×3组',t:'3min',tip:'肘在肩下方，身体一条直线，收腹夹臀，别塌腰别撅臀。'},
+    {n:'鸟狗式',d:'四足跪姿，对侧手脚伸展，保持稳定，每侧10次',t:'4min',tip:'对侧手脚伸展，骨盆不旋转，腰背保持水平，稳住再换边。'},
+    {n:'腹式呼吸',d:'仰卧，手放腹部，深吸慢吐，感受核心收紧，20次',t:'3min',tip:'吸气肚子鼓起，呼气肚子内收到底，肩膀放松不耸肩。'},
+    {n:'仰卧抱膝',d:'仰卧抱双膝贴近腹部，放松腰部，30秒×3组',t:'2min',tip:'双手抱膝贴近胸腹，腰背贴地，呼气时再抱紧一点。'}
+  ]},
+  {focus:'臀腿+下肢循环',dur:'15分钟',moves:[
+    {n:'深蹲',d:'双脚与肩宽，臀部向后下蹲，膝盖方向一致，15次×2组',t:'4min',tip:'脚与肩同宽，臀部向后坐，膝盖对齐脚尖，重心在脚跟。'},
+    {n:'原地弓箭步',d:'前后脚交替下蹲，重心稳，每侧12次',t:'4min',tip:'前后脚分开，下蹲时膝盖朝前不过脚尖，起身用臀腿发力。'},
+    {n:'提踵',d:'站立踮脚尖再放下，练小腿，20次×2组',t:'3min',tip:'踮到最高停1秒再慢落，重心在前脚掌，扶墙保持平衡。'},
+    {n:'拉伸大腿前后侧',d:'每个动作保持20秒，放松腿部',t:'4min',tip:'拉到有轻微牵拉感即可，不弹振，保持均匀呼吸。'}
+  ]},
+  {focus:'腰背放松+体态矫正',dur:'10分钟',moves:[
+    {n:'猫牛式',d:'灵活脊柱，缓解久坐僵硬，15次',t:'3min',tip:'四足跪姿，吸气塌腰抬头，呼气拱背低头，脊柱一节气一节动。'},
+    {n:'婴儿式',d:'跪坐前趴，手臂前伸，放松腰背，60秒',t:'2min',tip:'跪坐臀部贴脚跟，手臂前伸贴地，放松腰背，深呼吸。'},
+    {n:'站姿开肩',d:'双手背后相扣打开胸腔，改善圆肩，30秒×3',t:'3min',tip:'双手背后相扣，肩胛骨向后向下收，胸口打开，不弓腰。'},
+    {n:'颈部放松',d:'缓慢左右转头、侧倾，每个方向保持15秒',t:'2min',tip:'动作缓慢，只在无痛范围活动，不猛甩，感受颈侧拉伸。'}
+  ]},
+  {focus:'骨盆矫正+臀桥强化',dur:'14分钟',moves:[
+    {n:'单腿臀桥',d:'仰卧单腿屈膝，臀部抬起，每侧12次×2组',t:'4min',tip:'支撑腿屈膝踩实，抬起的腿伸直，骨盆保持水平不倾斜。'},
+    {n:'臀桥保持',d:'双腿臀桥顶住不动，感受臀部发力，30秒×3',t:'3min',tip:'顶到最高保持，臀部持续收紧，腰不发力，呼吸别停。'},
+    {n:'骨盆卷动',d:'仰卧，逐节卷起卷下脊柱，10次',t:'4min',tip:'从尾骨开始一节节卷起，像珠子滚动，慢上慢下。'},
+    {n:'仰卧抬腿',d:'仰卧双腿并拢抬起放下，腰部贴地，12次×2组',t:'3min',tip:'腰部全程贴地，腿放下不落地，感觉下腹发力。'}
+  ]}
+];
+
+// 自媒体选题（执业中药师+宝妈+邻家姐姐）
+const TOPIC_POOL=[
+  {t:'中药师说：这3种"网红养生茶"别乱喝',hook:'"我喝了半年，结果…"',c:'养生',x:'金银花、胖大海、决明子不是人人适合，讲清体质禁忌，给"什么体质喝什么"的表。',
+   script:'姐妹们，我是执业中药师，也是带娃宝妈。今天必须劝退三种网红养生茶。\n\n第一种，金银花茶。很多人一上火就喝，但它性寒，脾胃虚寒的人越喝越拉肚子、手脚更凉。你要真上火，先看看是不是熬夜了。\n\n第二种，胖大海。嗓子哑了就泡，但它只对"风热"引起的有效，而且长期喝伤脾胃、可能过敏，一周别超过三次。\n\n第三种，决明子。都说能通便减肥，但它性寒，孕妇、经期、脾胃弱的姐妹千万别碰，喝多了伤阳气。\n\n那到底怎么喝？记住一句话：看体质。手脚凉、怕冷的，喝点陈皮红枣；爱长痘、口苦的，可以少量菊花；平时没啥问题的，白开水最好。\n\n养生别跟风，适合别人的不一定适合你。觉得有用，点赞收藏，转发给你那个天天泡养生茶的姐妹。'},
+  {t:'30+气血不足的5个信号，你中了几个？',hook:'"早上起不来不是懒，是气血虚"',c:'养生',x:'脱发、手脚凉、月经量少、脸色黄、易累，对应食补方（红枣桂圆+作息）。',
+   script:'姐妹们，30岁以后，早上起不来真不是你懒，可能是气血虚了。\n\n给大家自查5个信号：\n第一，头发一抓一把，掉得吓人；\n第二，手脚常年冰凉，冬天更明显；\n第三，月经量变少，颜色淡；\n第四，脸色发黄、没光泽，化妆也遮不住；\n第五，明明没干啥，就是累，睡再多也不解乏。\n\n中了三个以上，就要开始养了。\n\n怎么养？三件事。第一，睡眠，11点前睡，这是补气血最便宜的方子。第二，吃，红枣桂圆枸杞煮水，一周喝三四次，脾胃虚的加点陈皮。第三，动，每天10分钟拍打操，重点拍打八髎穴和血海穴。\n\n养气血是个慢功夫，别指望三天见效。坚持一个月，你会回来谢我。点赞收藏，跟着我一起养起来。'},
+  {t:'药店不会告诉你的省钱好物',hook:'"这几样几块钱，比大牌好用"',c:'养生',x:'维C、炉甘石、医用凡士林等，中药师视角讲清楚用法。',
+   script:'姐妹们，我在药店干了8年质量管理的，今天悄悄告诉你几样便宜又好用的东西。\n\n第一，维生素C片，几块钱一瓶，一百片。别买那些几十块泡腾片，成分一样，泡腾片还加了糖。日常补充选药店的，实惠。\n\n第二，炉甘石洗剂。夏天蚊虫叮咬、痱子、湿疹止痒，涂它，安全又便宜，老人小孩都能用。\n\n第三，医用凡士林。几十块钱一大罐，当唇膜、护手、甚至宝宝红屁股都能用，比很多花里胡哨的护肤品实在。\n\n第四，生理海盐水。鼻子干、鼻炎、洗鼻都用它，比自己兑盐水干净卫生。\n\n这些都是我平时自用的。记住，好用的不一定贵，别被包装和广告骗了。点赞收藏，下次去药店照着买。'},
+  {t:'宝妈熬夜晚睡，怎么把气血补回来',hook:'"带娃熬夜的姐妹看过来"',c:'养生',x:'作息+饮食+10分钟拍打操，简单可执行。',
+   script:'姐妹们，带娃熬夜是不是家常便饭？黑眼圈、脸蜡黄、掉头发，全来了。今天教你把气血补回来。\n\n首先说清楚，补气血，睡是第一位的。能补觉就补觉，午休20分钟也行，别硬扛。\n\n第二，吃。早上喝点小米红枣粥，下午泡一杯黄芪枸杞水，别喝冰的。\n\n第三，动。教你一套10分钟拍打操：先拍打腋下「极泉穴」，再拍肘窝、膝窝，最后拍八髎穴，每个地方拍30下，拍完浑身舒畅。\n\n第四，情绪。带娃烦是正常的，但别老生闷气，气滞了气血更不畅，找个方式发泄出来。\n\n姐妹们，当妈不容易，先把自己养好了，才有精力带娃。认同的点个赞。'},
+  {t:'30岁后抗老：中药师的内调清单',hook:'"外用再贵，不如先把气血养好"',c:'变美',x:'内调（气血/睡眠）+外养（防晒/精简护肤），讲成分不踩坑。',
+   script:'姐妹们，30岁以后抗老，光靠护肤品是不够的，得内外一起调。\n\n先说内调，三样：第一，睡，熬夜是老得最快的方式，能早睡就早睡；第二，吃，多吃抗氧化食物，蓝莓、西红柿、深色蔬菜；第三，气血，气血足脸色才亮，红枣枸杞安排上。\n\n再说外养，就两件事：第一，防晒。紫外线是衰老头号杀手，一年四季都要防，阴天室内也要。第二，精简护肤。别堆十层，洁面+保湿+防晒，三样够了，皮肤屏障好了才抗老。\n\n最后提醒：少喝奶茶、少吃糖，糖化会让皮肤变黄松弛。\n\n抗老不是花钱越多越好，是把对的事情坚持做。点赞收藏，一起变美。'},
+  {t:'梨形身材怎么穿显腿长？',hook:'"腿粗别只会穿黑色"',c:'变美',x:'穿搭廓形+颜色搭配，遮胯显瘦的3个技巧。',
+   script:'姐妹们，梨形身材——胯宽、腿粗、屁股大，是不是特难穿？今天三个技巧，专治这个。\n\n第一，上半身做加法。选有垫肩、泡泡袖、亮色的上衣，把视觉重心挪到上半身，别老穿紧身T恤。\n\n第二，下半身做减法。裤子选直筒、微喇、阔腿，别穿紧身裤和小脚裤，那是在暴露缺点。颜色选深色系，但不用全黑，藏青、深灰、棕色都显瘦。\n\n第三，腰线要高。把上衣塞进裤子，或者选高腰款，腰线提上去，腿自然就长了。\n\n再送一个：鞋选尖头或裸色，视觉延伸腿长。\n\n记住，没有丑身材，只有不会穿。点赞收藏，下次逛街照着买。'},
+  {t:'宝妈碎片时间变美：10分钟变美routine',hook:'"没时间也要美"',c:'变美',x:'早上10分钟护肤+体态，简单有效。',
+   script:'姐妹们，当妈以后是不是觉得化妆护肤都是奢侈？今天给你一套10分钟变美法，谁都能做到。\n\n前3分钟，洗脸护肤：洁面、爽肤水、精华、面霜，动作快点，别磨蹭。\n\n第4-5分钟，防晒。这是最重要的，出门前一定涂，不只是夏天。\n\n第6-8分钟，化个淡妆：眉毛、一个气色口红，两样就能让你精神十倍。\n\n最后2分钟，体态：站直、收下巴、抬头挺胸。体态好，比化多浓的妆都显气质。\n\n姐妹们，变美不是取悦别人，是让自己开心、有底气。每天10分钟，坚持一个月你照镜子都会笑。点赞收藏。'},
+  {t:'月薪5000也能理财：宝妈的家庭账本',hook:'"钱不是省出来的，是理出来的"',c:'理财',x:'记账+基金定投+应急金，讲可落地的第一步。',
+   script:'姐妹们，月薪5000，是不是觉得理财跟自己没关系？我告诉你，越是这样越要理。\n\n第一步，记账。用手机软件，记一个月，你就会发现钱都花哪了。很多人以为自己很省，一记账吓一跳。\n\n第二步，先存应急金。存够3到6个月的家庭开支，放货币基金里，随用随取。\n\n第三步，定投。每月发工资，先拿10%出来定投指数基金，别想着抄底，越跌越买，用时间摊平成本。\n\n第四步，别碰的：高息理财、以贷养贷、朋友推荐的高回报项目，记住天上不会掉馅饼。\n\n姐妹们，理财不是有钱人的事，是普通人的必修课。从记账开始，第一步先迈出去。点赞收藏。'},
+  {t:'普通人怎么理解"康波周期"',hook:'"为什么说2025是机会年？"',c:'理财',x:'用大白话讲康波，结合《人生财富靠康波》，落到普通人怎么做。',
+   script:'姐妹们，听过"人生财富靠康波"这句话吗？今天用大白话给你讲明白。\n\n康波，就是一个大概50到60年的大经济周期，由技术革命推动。它分四个阶段：繁荣、衰退、萧条、回升。不同阶段，资产表现完全不一样。\n\n简单说：繁荣期，股市房产都在涨，敢下手的人赚；萧条期，资产普跌，现金为王，黄金是避风港；回升期，新技术冒头，是好机会。\n\n那普通人怎么办？记住三点：第一，认清大势，别跟趋势作对；第二，配置要攻守结合，进攻配科技、成长，防守配黄金、现金；第三，保住本金，活着才能等到下一个周期。\n\n你可能想知道现在处于什么阶段、该进攻还是防守，我后面会专门讲。先点赞收藏，关注我别丢了。'},
+  {t:'宝妈副业：自媒体第一个月怎么做',hook:'"从0到1000粉我踩的坑"',c:'成长',x:'选题+拍摄+发布时间，真实分享，引发共鸣。',
+   script:'姐妹们，当妈以后想做点副业，自媒体是不是你也在考虑？今天把第一个月的干货全给你。\n\n第一，定位。别什么都发，想清楚你是谁、能给别人什么。我定位就是执业中药师+宝妈，讲养生变美理财。\n\n第二，选题。别自己瞎想，去刷同领域爆款，看别人什么选题火了，你再结合自己的专业去讲，成功率翻倍。\n\n第三，拍摄。刚开始一部手机就够，竖屏，找个光好的地方，公园、阳台都行，口播讲清楚就行，别追求花哨。\n\n第四，发布。固定时间发，养成习惯，早7点、晚8点流量好。\n\n第五，坚持。第一个月可能没几个人看，太正常了，别放弃，前100条都是在练手。\n\n姐妹们，迈出第一步最难，但也最值。点赞收藏，一起加油。'},
+  {t:'医保+商保，宝妈家庭怎么配才不亏',hook:'"专业人说实话，别买错"',c:'理财',x:'中药师+医药背景视角，讲清家庭保障配置思路。',
+   script:'姐妹们，我在医药行业做了8年质量管理，今天用专业角度，讲讲家庭保障怎么配。\n\n首先，医保是基础，必须交，这是国家给的福利，别断缴。\n\n其次，商保怎么补？记住顺序：先大人后小孩，先保障后理财。\n\n第一，百万医疗险。一年几百块，报销大病住院，性价比最高，全家都该配。\n\n第二，重疾险。得了大病直接赔一笔钱，用于收入损失和康复，优先给家里挣钱的人配。\n\n第三，意外险。一年一两百，杠杆高，也值得买。\n\n至于那些理财型保险，收益低、流动性差，没配齐保障前别碰。\n\n姐妹们，保险是防风险的，不是用来赚钱的。买对不买贵。点赞收藏，别花冤枉钱。'},
+  {t:'孩子生病别慌：中药师的居家护理清单',hook:'"半夜发烧怎么办？"',c:'育儿',x:'常见小病居家护理+就医信号，专业又实用，宝妈收藏党。',
+   script:'姐妹们，孩子半夜发烧，是不是慌得不行？作为中药师和宝妈，今天给你一份居家护理清单。\n\n发烧：38.5度以下，多喝水、物理降温、贴退热贴；超过38.5度，按说明书吃退烧药，注意剂量看体重不看年龄。\n\n咳嗽：多喝温水，房间加湿，别急着吃止咳药，有痰先化痰。\n\n腹泻：口服补液盐防脱水，这个最关键，别只喝白水。\n\n鼻塞：生理海盐水喷鼻，比吃药安全。\n\n重点来了，什么情况必须马上就医：持续高烧超过3天、精神萎靡、抽搐、呼吸困难、反复呕吐。这些信号出现，别犹豫，去医院。\n\n姐妹们，孩子生病是常事，懂点护理知识，能少跑医院少遭罪。点赞收藏，备用。'},
+  {t:'脾胃虚寒的姐妹，早餐别吃这3样',hook:'"越吃越寒，你还天天吃"',c:'养生',x:'冰酸奶、隔夜凉菜、生冷水果，讲清为什么伤脾胃，给出温热早餐替代。',
+   script:'姐妹们，脾胃虚寒的人，早餐吃错了，一天都难受。今天说三样别碰的。\n\n第一，冰牛奶冰酸奶。早上空腹喝凉的，脾胃一激灵，长期下来腹胀、拉肚子。改成温的，或者配点姜。\n\n第二，隔夜的凉拌菜。又凉又可能变质，脾胃弱的人扛不住，尤其夏天。\n\n第三，一大盘生冷水果。水果是好，但空腹吃太多寒性的，比如火龙果、西瓜、梨，脾胃更虚。\n\n那吃啥？温热的：小米粥、山药粥、鸡蛋、热豆浆，配点蒸南瓜、蒸苹果。记住一句：脾胃喜欢温的、软的、熟的。\n\n养脾胃就是养气血，早餐吃对，一天都有劲。点赞收藏，明天就改。'},
+  {t:'经期这3件事千万别做',hook:'"痛经可能就是这么来的"',c:'养生',x:'受寒、剧烈运动、乱喝寒凉茶，讲经期养护+暖宫小方法。',
+   script:'姐妹们，经期不注意，痛经、量少、手脚更凉，全找上门。今天说三件千万别做的事。\n\n第一，受寒。别碰冷水、别光脚踩凉地砖、别喝冰的。寒凝则血瘀，痛经多半是这么来的。\n\n第二，剧烈运动。跑步、跳操先停一停，散散步、做做拉伸就好。\n\n第三，乱喝寒凉茶。很多人经期上火就喝金银花、菊花，结果越喝越痛，这些是寒性的，经期少碰。\n\n该做啥？多喝温水，红糖姜茶暖一暖，用热水袋敷小腹，早点睡别熬夜。\n\n姐妹们，对自己好一点，经期养好了，脸色气色都不一样。点赞收藏。'},
+  {t:'脸色暗黄，不一定是没睡好',hook:'"可能是气血+脾虚在报警"',c:'变美',x:'气血不足、脾虚湿气、熬夜，三个原因对应调理方向。',
+   script:'姐妹们，脸色暗黄、没光泽，化妆都盖不住，别只怪没睡好，可能是身体在报警。\n\n三个常见原因：\n第一，气血不足。唇色淡、易累、掉发，补气血：红枣桂圆、早睡。\n第二，脾虚湿气重。脸黄还容易浮肿、长痘、舌苔厚，要健脾祛湿：少甜少油，喝点红豆薏米水。\n第三，长期熬夜。肝不好脸色就暗，早睡是最便宜的护肤品。\n\n对应怎么做？先看自己属于哪种：累、掉发＝补气血；浮肿、舌苔厚＝祛湿；黑眼圈＝早睡。\n\n别再盲目买贵的粉底遮了，内调好了，素颜都透亮。点赞收藏，对照自查。'},
+  {t:'孩子挑食不爱吃饭，试试这3招',hook:'"追着喂不如这样喂"',c:'育儿',x:'定时定点、少零食、参与做饭，讲脾胃调理+吃饭习惯。',
+   script:'姐妹们，孩子挑食、不爱吃饭，是不是每天都像打仗？今天三招，专治这个。\n\n第一，定时定点。固定时间吃饭，中间不给零食，饿了自然会吃。追着喂只会越来越挑。\n\n第二，少零食少饮料。饭前一小时别给零食、别喝甜饮料，肚子被占满了当然不吃正餐。\n\n第三，让孩子参与。一起去买菜、洗菜、摆盘，孩子对自己参与做的饭更有兴趣。\n\n再从中医说一句：孩子脾胃本就娇嫩，别一顿喂太多，七分饱最好，吃多了反而积食、不爱吃。\n\n姐妹们，吃饭别焦虑，越催越逆反。点赞收藏，慢慢调。'},
+  {t:'拍打操：每天10分钟，气血通一身轻',hook:'"跟着做，拍完浑身舒服"',c:'养生',x:'腋下极泉穴、肘窝、膝窝、八髎穴，讲顺序和手法。',
+   script:'姐妹们，教你们一套拍打操，每天10分钟，气血不通、浑身没劲的都可以试试。\n\n第一站，腋下。拍打「极泉穴」，左右各30下，疏通心经。\n\n第二站，肘窝。手心空着拍，这里连着心肺，拍到微微发红发热。\n\n第三站，膝窝。弯腰拍膝后窝，通畅膀胱经，久坐的人尤其要拍。\n\n第四站，腰骶。双手握拳拍八髎穴，就是后腰屁股上方那块，暖宫、缓解腰酸。\n\n手法记住：手掌空心，力度适中，拍到微微发热就行，别拍青拍紫。早上或睡前一小时做最好。\n\n姐妹们，养生不花钱，贵在坚持。点赞收藏，今晚就拍起来。'},
+  {t:'30+宝妈怎么存下第一笔10万',hook:'"存钱不是靠省，是靠方法"',c:'理财',x:'强制储蓄、闲置变现、记账砍支出，讲普通家庭的存钱路径。',
+   script:'姐妹们，总说存不下钱？今天讲讲30+宝妈怎么攒出第一笔10万。\n\n第一，强制储蓄。发工资那天，先把10%到20%转进一张不用的卡，剩下的才拿来花。先存后花，不是先花后存。\n\n第二，闲置变现。家里不用的婴儿车、玩具、衣服，挂二手平台卖掉，一年也能回几千。\n\n第三，记账砍支出。记一个月，你会发现奶茶、外卖、冲动购物占了大头，砍掉这些，钱就出来了。\n\n第四，别小看复利。每月存1500，一年1万8，加上理财收益，五六年就能到10万。\n\n姐妹们，存钱的快乐是底气。不用跟别人比，存多少算多少，先开始。点赞收藏。'},
+  {t:'带娃也能做的3个轻副业',hook:'"不用露脸的也告诉你"',c:'成长',x:'自媒体、社群团购、技能接单，讲适合宝妈的低门槛方向。',
+   script:'姐妹们，当妈以后想赚点钱，又没时间去上班？给你三个适合宝妈的轻副业。\n\n第一，做自媒体。一部手机就够，把你会的（育儿、养生、做饭）拍出来，前期慢，但能持续。\n\n第二，社群团购。身边宝妈就是你的客户，选靠谱的货，赚差价和佣金，还能照顾家。\n\n第三，技能接单。会做表格、会剪辑、会配音、会写文案，都能在平台上接单，不用露脸。\n\n提醒一句：所有让你先交钱、拉人头的，一律别碰，那是骗局。\n\n姐妹们，先从小钱赚起，跑通了模式再放大。女生的底气，一半是钱给的。点赞收藏。'},
+  {t:'睡不好？睡前这4件事最伤身',hook:'"越熬夜越老，还伤气血"',c:'养生',x:'刷手机、吃宵夜、生气、喝浓茶咖啡，讲睡前习惯+助眠方法。',
+   script:'姐妹们，睡不好，脸黄、掉发、脾气差，全来了。睡前这四件事最伤身。\n\n第一，刷手机。蓝光抑制褪黑素，越刷越清醒，最好睡前半小时放下。\n\n第二，吃宵夜。睡前吃东西，脾胃加班，睡不踏实还长肉。\n\n第三，带着气睡。生闷气伤肝，第二天脸色差、情绪低，睡前把情绪放下。\n\n第四，喝浓茶咖啡。下午三点后就别喝了，敏感的人中午后都别碰。\n\n助眠小方法：睡前泡脚15分钟，按揉脚心涌泉穴；喝点温牛奶或酸枣仁水；房间调暗调静。\n\n姐妹们，睡好觉是最便宜的养生。点赞收藏，今晚就早睡。'},
+  {t:'秋冬养肺：中药师教你3个食疗方',hook:'"干咳、咽干、皮肤痒的都看"',c:'养生',x:'银耳百合、雪梨川贝、山药，讲润肺食疗+禁忌。',
+   script:'姐妹们，一到秋冬就干咳、咽干、皮肤痒？这是肺在提醒你该润一润了。今天三个食疗方。\n\n第一，银耳百合羹。银耳、百合、莲子煮软，润肺养阴，一周喝两三次，皮肤都跟着水润。\n\n第二，雪梨川贝。雪梨挖空放川贝、冰糖蒸熟，适合干咳少痰，但风寒咳嗽（怕冷、流清涕）别用。\n\n第三，山药。蒸着吃或煮粥，健脾益肺，大人小孩都能吃，温和又养人。\n\n注意：如果咳嗽久不好、有黄痰发烧，别自己食疗了，赶紧看医生。\n\n姐妹们，秋冬养肺就是养命，抓住这个季节。点赞收藏。'},
+  {t:'护肤品越用越贵，皮肤却越来越差？',hook:'"可能是你步骤太多了"',c:'变美',x:'精简护肤、屏障修复、防晒，讲成分党避坑。',
+   script:'姐妹们，是不是护肤品越买越贵，脸却越来越敏感、泛红、冒痘？今天告诉你，可能是步骤太多害的。\n\n第一，精简步骤。洁面、保湿、防晒，三样基本够了，别一层叠一层，皮肤根本吸收不了还容易闷痘。\n\n第二，修护屏障。屏障坏了，用什么都会刺痛。少去角质、少用皂基洁面，用温和的氨基酸洁面。\n\n第三，坚持防晒。这是抗老头一号，比任何精华都重要，一年四季都要涂。\n\n第四，别跟风成分。早C晚A、刷酸这些，敏感肌别乱试，先修护再谈功效。\n\n姐妹们，护肤加法容易，减法难。把基础做好，皮肤自己会好。点赞收藏。'},
+  {t:'产后脱发、腰酸？中药师的调理思路',hook:'"当妈的都懂，别硬扛"',c:'育儿',x:'气血亏虚、肾气不足，讲产后调养+作息饮食。',
+   script:'姐妹们，生完孩子脱发、腰酸、记性差，是不是特别多？这是当妈的都懂的痛，别硬扛。\n\n中药师角度看，产后多是气血亏虚、肾气不足。怎么调？\n\n第一，补气血。多吃红枣、桂圆、瘦肉、猪肝，气血足了，头发才长回来。\n\n第二，养肾气。黑芝麻、黑豆、核桃，搭配早睡，别熬夜带娃还要气自己。\n\n第三，护腰。少久站久坐，抱娃用护腰带，做点温和的腰背拉伸。\n\n第四，情绪。产后情绪波动大是正常的，跟家人说、找姐妹聊，别一个人扛。\n\n姐妹们，产后恢复需要时间，一般半年到一年慢慢就好了。善待自己。点赞收藏。'},
+  {t:'家庭保险怎么买不踩坑？',hook:'"顺序错了，白花钱"',c:'理财',x:'先大人后小孩、先保障后理财，讲配置优先级。',
+   script:'姐妹们，家庭保险怎么买才不浪费钱？记住顺序，别买错。\n\n第一，先医保。国家福利，必须交，别断缴。\n\n第二，百万医疗险。一年几百块，报销大病住院，全家都该有一份，性价比最高。\n\n第三，重疾险。优先给家里挣钱的人买，得了大病直接赔一笔，弥补收入损失。\n\n第四，意外险。一年一两百，杠杆高，顺手配上。\n\n至于理财型保险，收益低、流动性差，保障没配齐之前别碰。\n\n记住一句话：保险是防风险的工具，不是赚钱的工具。买对不买贵。点赞收藏，别花冤枉钱。'},
+  {t:'孩子写作业磨蹭？先别吼',hook:'"换个方法比催管用"',c:'育儿',x:'拆分任务、番茄钟、正向鼓励，讲陪写作业的实用方法。',
+   script:'姐妹们，孩子写作业磨蹭，是不是一吼就好、不吼更慢？今天换个方法试试。\n\n第一，拆分任务。别一句"去做作业"，而是"先写5道数学题，再休息2分钟"，小目标更容易开始。\n\n第二，用番茄钟。写20分钟休息5分钟，孩子有盼头，效率反而高。\n\n第三，正向鼓励。写完一道题就夸一句"这道题思路好"，比催十遍管用。\n\n第四，环境要静。桌上别放玩具，家长也别刷手机，你在旁边看书，孩子更专注。\n\n姐妹们，陪写作业是场修行，我们的目标是养习惯，不是今天写完。放平心态，慢慢来。点赞收藏。'}
+];
+
+// 英语短文（成人重拾水平）
+const ENG_PASSAGES=[
+  {t:'The Power of Small Habits',en:'Small habits can change our life. If we read ten minutes a day, we will finish many books in a year. If we walk for twenty minutes, our body will be stronger. The key is to keep going, not to be perfect.',zh:'小习惯能改变生活。每天读十分钟，一年能读完很多书；每天走二十分钟，身体会更好。关键是坚持，而不是完美。'},
+  {t:'A Balance Between Work and Family',en:'Many mothers try to balance work and family. It is not easy. We should learn to say no to things that are not important, and save energy for the things we love. Remember, taking care of yourself is also taking care of your family.',zh:'很多妈妈努力平衡工作与家庭，这并不容易。要学会对不重要的事说"不"，把精力留给热爱的事。记住，照顾好自己也是在照顾家人。'},
+  {t:'Learning Never Stops',en:'After college, many people stop learning. But learning can give us new chances. Learning a language, reading a book, or learning a new skill can all open new doors. It is never too late to start.',zh:'大学毕业后，很多人停止了学习。但学习能带来新机会。学一门语言、读一本书、学一项新技能，都能打开新的大门。开始永远不会太晚。'},
+  {t:'The Secret of a Good Morning',en:"A good morning starts the day before. If we sleep early, we will get up early. In the morning, drinking a cup of warm water and doing some light exercise can make us feel fresh. A calm morning brings a calm day.",zh:'好的早晨从前一晚开始。早睡才能早起。早上喝杯温水、做点轻度运动能让人精神焕发。平静的早晨带来平静的一天。'}
+];
+const ENG_WORDS=[
+  {w:'balance',ph:'/ˈbæləns/',zh:'平衡'},{w:'habit',ph:'/ˈhæbɪt/',zh:'习惯'},
+  {w:'energy',ph:'/ˈenədʒi/',zh:'精力'},{w:'improve',ph:'/ɪmˈpruːv/',zh:'改善'},
+  {w:'healthy',ph:'/ˈhelθi/',zh:'健康的'},{w:'patient',ph:'/ˈpeɪʃnt/',zh:'耐心的'},
+  {w:'confident',ph:'/ˈkɒnfɪdənt/',zh:'自信的'},{w:'routine',ph:'/ruːˈtiːn/',zh:'日常习惯'},
+  {w:'invest',ph:'/ɪnˈvest/',zh:'投资'},{w:'finance',ph:'/ˈfaɪnæns/',zh:'财务'}
+];
+const ENG_ORAL=[
+  {en:'How are you doing today?',zh:'你今天怎么样？'},
+  {en:'I am trying to be better every day.',zh:'我每天都在努力变更好。'},
+  {en:'Good health is more important than money.',zh:'健康比金钱更重要。'},
+  {en:'Let me show you how to do it.',zh:'我来教你怎么做。'},
+  {en:"It's never too late to learn.",zh:'学习永远不会太晚。'}
+];
+const ENG_KID=[
+  {t:'颜色歌 · Colors',en:'Red, yellow, blue and green. What is your favorite color?',zh:'红黄蓝绿，你最喜欢什么颜色？',tip:'指着身边物品问孩子"What color is this?"'},
+  {t:'动物单词 · Animals',en:'Dog, cat, fish, bird. I like the little cat!',zh:'狗狗、猫咪、小鱼、小鸟。我喜欢小猫咪！',tip:'配上动物叫声，让孩子模仿跟读'},
+  {t:'数字歌 · Numbers',en:'One, two, three, four, five. Let us count to five!',zh:'一二三四五，我们一起数到五！',tip:'掰手指数数，边数边说'},
+  {t:'日常问候 · Greetings',en:'Good morning! How are you? I am fine, thank you!',zh:'早上好！你好吗？我很好，谢谢！',tip:'每天早上和孩子互相问候'},
+  {t:'水果单词 · Fruits',en:'Apple, banana, orange, grape. Yummy, I love fruits!',zh:'苹果、香蕉、橙子、葡萄。真好吃，我爱水果！',tip:'吃水果时指着说出英文'}
+];
+
+// 时政热点（板块要点模板，按日期轮换；以官方发布为准）
+const NEWS_POOL=[
+  {tag:'国内要闻',t:'关注宏观经济数据发布：GDP、CPI、PMI等月度指标',x:'要点：经济数据反映基本盘，与就业、消费、投资直接相关；关注权威部门发布口径，理性解读不看小道消息。'},
+  {tag:'政策动向',t:'关注稳增长、促消费、惠民生相关政策的落地',x:'要点：政策直接影响民生和行业机会；以政府官网、权威媒体发布为准，注意区分政策原文与解读观点。'},
+  {tag:'财政货币',t:'关注财政政策与货币政策的基调变化',x:'要点：财政发力稳投资，货币政策影响利率与流动性；对普通家庭最直接的影响是房贷、存款和理财收益。'},
+  {tag:'产业升级',t:'关注新质生产力：人工智能、高端制造、新能源',x:'要点：产业升级决定中长期就业和投资方向；关注国家规划重点，避免追逐短期概念炒作。'},
+  {tag:'民生养老',t:'关注养老、医疗、教育、住房等民生领域动态',x:'要点：民生政策贴近家庭生活；涉及社保、医保调整时，注意官方细则和办理时限，及时办理不掉队。'},
+  {tag:'国际形势',t:'关注全球主要经济体政策与地缘局势走向',x:'要点：国际局势影响汇率、大宗商品和外贸；关注权威国际新闻，判断对家庭资产（如黄金、外币）的间接影响。'},
+  {tag:'乡村振兴',t:'关注乡村振兴与区域协调发展相关举措',x:'要点：县域经济、农产品、文旅是重点方向；与返乡创业、农产品电商、乡村旅游等机会相关。'},
+  {tag:'科技创新',t:'关注国家科技攻关方向与重大科技成果',x:'要点：科技创新是长期主线；关注国家实验室、重大工程、专精特新企业等方向性信号，理性看待概念板块。'},
+  {tag:'绿色低碳',t:'关注双碳目标、绿色能源与生态环保政策',x:'要点：新能源、节能环保是长期赛道；关注政策鼓励方向与补贴细则，注意行业内产能与价格周期。'},
+  {tag:'对外开放',t:'关注自贸区、外资政策与对外开放新举措',x:'要点：开放政策影响外贸、外资和就业；关注跨境贸易、跨境电商、口岸经济等与个人相关的机会。'},
+  {tag:'就业民生',t:'关注就业优先政策、职业培训与人才引进',x:'要点：就业是民生之本；关注本地人才补贴、技能培训和创业扶持政策，符合条件及时申领。'},
+  {tag:'消费提振',t:'关注促消费措施：以旧换新、消费券、文旅促消费',x:'要点：消费政策直接带动生活成本与服务消费；关注本地发放的消费券和补贴，能省则省、应享尽享。'},
+  {tag:'区域发展',t:'关注京津冀、长三角、粤港澳、成渝等区域战略',x:'要点：区域战略影响房价、就业和产业布局；关注自己所在城市群的规划红利与配套政策。'},
+  {tag:'法治社会',t:'关注新出台或修订的民生相关法律法规',x:'要点：法律法规关系每个人的权益；关注劳动、婚姻、消费、个人信息保护等与生活密切相关的条文变化。'}
+];
+
+// 阅读延展：全书版权归作者与出版社，此处提供正规获取渠道
+const BOOK_LINKS=[
+  {n:'微信读书',u:'https://weread.qq.com/',d:'搜索"人生财富靠康波"在线阅读'},
+  {n:'当当图书',u:'https://search.dangdang.com/?key=%E4%BA%BA%E7%94%9F%E8%B4%A2%E5%AF%8C%E9%9D%A0%E5%BA%B7%E6%B3%A2',d:'购买纸质书/电子书'},
+  {n:'京东图书',u:'https://search.jd.com/Search?keyword=%E4%BA%BA%E7%94%9F%E8%B4%A2%E5%AF%8C%E9%9D%A0%E5%BA%B7%E6%B3%A2',d:'购买纸质书/电子书'},
+  {n:'豆瓣读书',u:'https://search.douban.com/book/subject_search?search_text=%E4%BA%BA%E7%94%9F%E8%B4%A2%E5%AF%8C%E9%9D%A0%E5%BA%B7%E6%B3%A2',d:'看评分、书评和目录'}
+];
+
+// 《人生财富靠康波》7天精读导读（作者核心观点归纳 + 解读 + 金句 + 思考题）
+// 说明：以下为对该书核心思想的归纳与读书笔记，非原文照录；全书正文请通过上方渠道正规阅读。
+const READ_PLAN=[
+  {day:1,title:'认识康波周期',part:'第一章 · 什么是康波',
+   key:'康波周期是约50-60年的经济长波，由技术创新驱动，决定了一个时代的大趋势。',
+   content:'康波（Kondratieff Wave）是前苏联经济学家康德拉季耶夫提出的经济长周期理论。他研究发现，资本主义经济存在约50-60年的长期波动，每个周期由一项或多项重大技术革命驱动：<br><br>① <b>第一波（约1780s-1840s）</b>：蒸汽机、纺织技术<br>② <b>第二波（约1840s-1890s）</b>：钢铁、铁路<br>③ <b>第三波（约1890s-1940s）</b>：电力、化工、汽车<br>④ <b>第四波（约1940s-1990s）</b>：石油、电子、计算机<br>⑤ <b>第五波（约1990s-至今）</b>：信息技术、互联网、人工智能<br><br>本书作者（国内周期研究代表人物）提出"人生财富靠康波"这一观点——<b>一个人的财富积累，很大程度上取决于他是否踩对了周期</b>。周期不是玄学，而是有规律的经济现象。',
+   quote:'"人生就是一场康波，人生的财富轨迹取决于你对周期的把握。"',
+   q:'用你自己的生活经历想一想：过去10年，你身边有哪些"周期"现象？（房价、就业、行业兴衰等）'},
+
+  {day:2,title:'周期与人生财富',part:'第二~三章 · 财富的本质',
+   key:'一个人的财富机会藏在周期的节奏里，人生只有三次大的财富机会窗口。',
+   content:'本书的核心观点：一个人的一生中，能遇到的重大财富机会大约只有三次，每次间隔约10-20年。抓住一次，就能实现阶层跃迁；错过，就要等下一个周期。<br><br><b>人生财富的三个来源：</b><br>① <b>时代红利</b>：踩对周期，资产随大势上涨（如过去20年的房地产）<br>② <b>个人能力</b>：在正确的时间做正确的事<br>③ <b>资产配置</b>：把资金放在周期对应的高收益资产上<br><br><b>关键认知：</b>不要和趋势作对。顺势时加杠杆、逆势时保现金。多数人的问题不是不努力，而是"在错误的周期里做了错误的决定"。',
+   quote:'"人生的财富不是靠工资，而是靠对资产的持有和周期节点的把握。"',
+   q:'算一算你的年龄，你大概还能经历几次大的财富周期？现在你该"进攻"还是"防守"？'},
+
+  {day:3,title:'康波的四个阶段',part:'第四章 · 繁荣·衰退·萧条·回升',
+   key:'每个康波分四个阶段：繁荣→衰退→萧条→回升，不同阶段资产表现完全不同。',
+   content:'康波周期内部又分为四个小阶段，每个阶段约10-15年：<br><br>🌞 <b>繁荣期（Spring）</b>：技术成熟、经济扩张、资产普涨。策略＝顺势持有，适度加杠杆。<br><br>🌤 <b>衰退期（Summer）</b>：增长见顶、泡沫显现、波动加大。策略＝降杠杆、锁定收益。<br><br>❄️ <b>萧条期（Autumn）</b>：经济下行、资产下跌、现金为王。策略＝持有现金和避险资产（如黄金），等待机会。<br><br>🌱 <b>回升期（Winter）</b>：新技术萌芽、资产触底、布局良机。策略＝逢低买入优质资产。<br><br><b>关键：</b>识别自己所处的阶段，比预测具体点位更重要。',
+   quote:'"萧条期是财富重新分配的时期，也是普通人唯一能逆袭的窗口。"',
+   q:'回想过去3-5年，你觉得现在更接近哪个阶段？这对你的理财意味着什么？'},
+
+  {day:4,title:'不同周期的投资策略',part:'第五章 · 资产配置',
+   key:'不同阶段配置不同资产：繁荣配成长股，萧条配黄金和现金。',
+   content:'根据康波阶段调整资产配置，是本书最实用的部分：<br><br><b>🔬 科创板/成长股</b>：繁荣期和回升期表现好，萧条期风险大。高弹性，需控制仓位。<br><br><b>🥇 黄金</b>：萧条期和动荡期的最佳避险资产，与美元、利率负相关。适合作为"压舱石"。<br><br><b>🇭🇰 恒生科技</b>：与全球科技周期联动，估值低时关注，波动大。<br><br><b>🇺🇸 纳斯达克</b>：长期成长性强，AI浪潮核心，但估值高，需分批布局。<br><br><b>配置思路：</b>用"攻守组合"——成长资产（纳指/科创）+ 避险资产（黄金）+ 现金储备，按周期阶段动态调整比例。',
+   quote:'"资产配置的核心不是买什么，而是什么时候买、买多少。"',
+   q:'结合你的家庭情况（收入、年龄、风险承受力），现在最该调整的一项配置是什么？'},
+
+  {day:5,title:'普通人的财富机会',part:'第六章 · 抓住机会',
+   key:'普通人抓周期靠"笨办法"：定投、逆向、耐心，而不是追涨杀跌。',
+   content:'普通人没有信息优势，抓周期靠的是纪律和耐心：<br><br>① <b>逆向思维</b>：别人恐慌时布局，别人疯狂时离场。周期底部是最好的买点。<br><br>② <b>基金定投</b>：用时间平滑成本，避免择时难题。适合没有精力盯盘的人。<br><br>③ <b>聚焦能力圈</b>：投资自己懂的行业，不盲目跟风热点。<br><br>④ <b>长期持有</b>：周期以年为单位，短线博弈对普通人胜算低。<br><br>⑤ <b>保住本金</b>：活着才能等到下一个周期，避免all in和杠杆爆仓。<br><br><b>对宝妈的启示：</b>用闲钱投资，家庭应急金永远留足，不影响生活质量。',
+   quote:'"普通人唯一能战胜市场的，是时间和耐心。"',
+   q:'过去你有没有因为"追涨杀跌"而后悔的经历？如果用定投，结果会不同吗？'},
+
+  {day:6,title:'风险与心态',part:'第七章 · 让理财服务生活',
+   key:'理财的目的是让生活更好，不是制造焦虑。控制风险，调整心态。',
+   content:'<b>风险管理的三条底线：</b><br>① 不用杠杆、不借钱投资（尤其是家庭资金）<br>② 留足6个月家庭开支作为应急金<br>③ 单一资产不超过总资产的合理比例<br><br><b>心态建设：</b><br>· 接受波动是常态，不因短期涨跌情绪化<br>· 把注意力放回工作和生活，投资是长期的事<br>· 不与他人比较收益，只与自己的目标比<br>· 记录投资逻辑，复盘而非后悔<br><br><b>康波给普通人的终极启示：</b>看清大势、稳住心态、长期主义，理财才能成为生活的好帮手，而不是焦虑的来源。',
+   quote:'"投资最大的敌人不是市场，而是自己的情绪。"',
+   q:'面对市场涨跌，你目前的心理状态如何？需要怎样调整才能更从容？'},
+
+  {day:7,title:'制定我的行动清单',part:'全书复盘 · 落地',
+   key:'把书中的方法变成自己的行动，才是真正读完了这本书。',
+   content:'<b>7天精读复盘总结：</b><br>· Day1-3 建立了康波周期的认知框架<br>· Day4-5 学会了不同阶段的资产配置策略<br>· Day6 掌握了风险管理和心态建设<br><br><b>现在，把知识变成行动：</b><br>① 定位自己：现在的年龄和资产，处于周期哪个阶段？<br>② 配置清单：列出你的攻守资产比例（成长+黄金+现金）<br>③ 定投计划：选1-2只基金，设定每月定投金额<br>④ 风险底线：确认应急金充足、没有杠杆<br>⑤ 复盘节奏：每季度回顾一次配置，不频繁操作<br><br><b>记住：</b>读完只是开始，坚持执行才是财富增长的真正密码。',
+   quote:'"知易行难，把认知变成纪律，财富才会向你靠拢。"',
+   q:'写下你的3条行动清单，标注完成时间，下周就开始执行。'}
+];
+
+/* ============ 训练动作 SVG 示意图库（起始→发力双帧） ============ */
+// 每个人体剪影用 SVG 绘制，viewBox 0 0 60 70
+function figure(parts,color){
+  return `<g fill="none" stroke="${color}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">${parts}</g>`;
+}
+const MOVE_SVG={
+  // 臀桥
+  '臀桥':{start:'<line x1="10" y1="52" x2="50" y2="52"/><circle cx="14" cy="42" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="46" x2="30" y2="52"/><path d="M30 52 L38 40 L44 40"/><path d="M30 52 L38 52 L30 52"/>',end:'<line x1="10" y1="52" x2="50" y2="52"/><circle cx="14" cy="42" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="46" x2="30" y2="52"/><path d="M30 52 L36 36 L46 40"/><line x1="36" y1="36" x2="30" y2="52"/>'},
+  // 死虫式
+  '死虫式':{start:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="12" cy="44" r="5" fill="#e8746b" stroke="none"/><line x1="16" y1="46" x2="34" y2="50"/><line x1="34" y1="50" x2="30" y2="34"/><line x1="34" y1="50" x2="46" y2="42"/>',end:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="12" cy="44" r="5" fill="#e8746b" stroke="none"/><line x1="16" y1="46" x2="34" y2="50"/><line x1="34" y1="50" x2="34" y2="30"/><line x1="34" y1="50" x2="50" y2="50"/>'},
+  // 猫牛式
+  '猫牛式':{start:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="14" cy="40" r="5" fill="#e8746b" stroke="none"/><path d="M18 44 Q30 38 42 44"/><line x1="18" y1="44" x2="16" y2="54"/><line x1="42" y1="44" x2="44" y2="54"/>',end:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="14" cy="44" r="5" fill="#e8746b" stroke="none"/><path d="M18 44 Q30 52 42 44"/><line x1="18" y1="44" x2="16" y2="54"/><line x1="42" y1="44" x2="44" y2="54"/>'},
+  // 侧卧抬腿
+  '侧卧抬腿':{start:'<line x1="8" y1="54" x2="52" y2="54"/><line x1="14" y1="46" x2="40" y2="46"/><circle cx="12" cy="42" r="4.5" fill="#e8746b" stroke="none"/><line x1="40" y1="46" x2="46" y2="46"/>',end:'<line x1="8" y1="54" x2="52" y2="54"/><line x1="14" y1="46" x2="40" y2="46"/><circle cx="12" cy="42" r="4.5" fill="#e8746b" stroke="none"/><line x1="40" y1="46" x2="48" y2="36"/>'},
+  // 蚌式开合
+  '蚌式开合':{start:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="14" cy="42" r="4.5" fill="#e8746b" stroke="none"/><line x1="18" y1="46" x2="38" y2="46"/><path d="M38 46 L48 46 L48 54"/>',end:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="14" cy="42" r="4.5" fill="#e8746b" stroke="none"/><line x1="18" y1="46" x2="38" y2="46"/><path d="M38 46 L48 46 L46 34"/>'},
+  // 后踢腿
+  '后踢腿':{start:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="14" cy="38" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="42" x2="34" y2="46"/><line x1="18" y1="42" x2="18" y2="54"/><line x1="34" y1="46" x2="34" y2="54"/><line x1="18" y1="42" x2="30" y2="34"/>',end:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="14" cy="38" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="42" x2="34" y2="46"/><line x1="18" y1="42" x2="18" y2="54"/><line x1="34" y1="46" x2="34" y2="54"/><line x1="18" y1="42" x2="18" y2="24"/>'},
+  // 站姿侧抬腿
+  '站姿侧抬腿':{start:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="16" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="21" x2="30" y2="42"/><line x1="30" y1="42" x2="30" y2="58"/><line x1="30" y1="42" x2="36" y2="58"/><line x1="30" y1="30" x2="20" y2="40"/><line x1="30" y1="30" x2="40" y2="40"/>',end:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="16" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="21" x2="30" y2="42"/><line x1="30" y1="42" x2="30" y2="58"/><line x1="30" y1="42" x2="46" y2="44"/><line x1="30" y1="30" x2="20" y2="40"/><line x1="30" y1="30" x2="40" y2="40"/>'},
+  // 靠墙静蹲
+  '靠墙静蹲':{start:'<line x1="10" y1="10" x2="10" y2="58"/><line x1="10" y1="58" x2="52" y2="58"/><circle cx="18" cy="18" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="23" x2="18" y2="42"/><path d="M18 42 L36 44 L36 58"/>',end:'<line x1="10" y1="10" x2="10" y2="58"/><line x1="10" y1="58" x2="52" y2="58"/><circle cx="18" cy="22" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="27" x2="18" y2="44"/><path d="M18 44 L40 44 L40 58"/>'},
+  // 平板支撑
+  '平板支撑':{start:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="14" cy="40" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="44" x2="46" y2="52"/><line x1="18" y1="44" x2="14" y2="54"/><line x1="46" y1="52" x2="50" y2="54"/>',end:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="14" cy="40" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="42" x2="46" y2="44"/><line x1="18" y1="42" x2="14" y2="54"/><line x1="46" y1="44" x2="50" y2="54"/>'},
+  // 鸟狗式
+  '鸟狗式':{start:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="16" cy="38" r="5" fill="#e8746b" stroke="none"/><line x1="20" y1="42" x2="32" y2="46"/><line x1="20" y1="42" x2="18" y2="54"/><line x1="32" y1="46" x2="34" y2="54"/><line x1="32" y1="46" x2="44" y2="50"/>',end:'<line x1="8" y1="54" x2="52" y2="54"/><circle cx="16" cy="38" r="5" fill="#e8746b" stroke="none"/><line x1="20" y1="42" x2="32" y2="46"/><line x1="20" y1="42" x2="18" y2="54"/><line x1="32" y1="46" x2="34" y2="54"/><line x1="32" y1="46" x2="46" y2="36"/>'},
+  // 腹式呼吸
+  '腹式呼吸':{start:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="16" cy="48" r="5" fill="#e8746b" stroke="none"/><path d="M16 53 L40 54 L46 54"/><ellipse cx="30" cy="46" rx="10" ry="5" stroke-dasharray="3 3"/>',end:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="16" cy="48" r="5" fill="#e8746b" stroke="none"/><path d="M16 53 L40 54 L46 54"/><ellipse cx="30" cy="43" rx="14" ry="8"/>'},
+  // 仰卧抱膝
+  '仰卧抱膝':{start:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="14" cy="48" r="5" fill="#e8746b" stroke="none"/><path d="M18 50 L40 52 L48 52"/>',end:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="14" cy="48" r="5" fill="#e8746b" stroke="none"/><path d="M18 50 L30 42 Q36 38 34 50"/>'},
+  // 深蹲
+  '深蹲':{start:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="16" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="21" x2="30" y2="40"/><line x1="30" y1="40" x2="28" y2="58"/><line x1="30" y1="40" x2="34" y2="58"/><line x1="30" y1="28" x2="22" y2="34"/><line x1="30" y1="28" x2="38" y2="34"/>',end:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="24" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="29" x2="30" y2="42"/><path d="M30 42 L42 44 L42 58"/><line x1="30" y1="42" x2="24" y2="56"/><line x1="30" y1="34" x2="22" y2="38"/><line x1="30" y1="34" x2="38" y2="38"/>'},
+  // 原地弓箭步
+  '原地弓箭步':{start:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="14" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="19" x2="30" y2="40"/><line x1="30" y1="40" x2="24" y2="58"/><line x1="30" y1="40" x2="38" y2="58"/>',end:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="20" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="25" x2="30" y2="40"/><path d="M30 40 L18 44 L18 58"/><path d="M30 40 L44 50 L44 58"/>'},
+  // 提踵
+  '提踵':{start:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="14" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="19" x2="30" y2="50"/><line x1="30" y1="50" x2="30" y2="58"/>',end:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="12" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="17" x2="30" y2="48"/><line x1="30" y1="48" x2="26" y2="58"/>'},
+  // 拉伸大腿前后侧
+  '拉伸大腿前后侧':{start:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="16" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="21" x2="30" y2="42"/><line x1="30" y1="42" x2="30" y2="58"/><line x1="30" y1="30" x2="40" y2="26"/>',end:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="16" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="21" x2="30" y2="42"/><line x1="30" y1="42" x2="30" y2="58"/><path d="M30 30 L42 34 L44 26"/>'},
+  // 婴儿式
+  '婴儿式':{start:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="16" cy="40" r="5" fill="#e8746b" stroke="none"/><line x1="20" y1="44" x2="34" y2="48"/><line x1="20" y1="44" x2="16" y2="56"/><line x1="34" y1="48" x2="36" y2="56"/>',end:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="14" cy="50" r="5" fill="#e8746b" stroke="none"/><path d="M18 52 L36 52"/><path d="M36 52 L44 46"/>'},
+  // 站姿开肩
+  '站姿开肩':{start:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="14" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="19" x2="30" y2="44"/><line x1="30" y1="44" x2="26" y2="58"/><line x1="30" y1="44" x2="34" y2="58"/><line x1="30" y1="26" x2="22" y2="36"/><line x1="30" y1="26" x2="38" y2="36"/>',end:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="14" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="19" x2="30" y2="44"/><line x1="30" y1="44" x2="26" y2="58"/><line x1="30" y1="44" x2="34" y2="58"/><line x1="30" y1="26" x2="18" y2="32"/><line x1="30" y1="26" x2="42" y2="32"/>'},
+  // 颈部放松
+  '颈部放松':{start:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="30" cy="14" r="5" fill="#e8746b" stroke="none"/><line x1="30" y1="19" x2="30" y2="44"/><line x1="30" y1="44" x2="26" y2="58"/><line x1="30" y1="44" x2="34" y2="58"/>',end:'<line x1="8" y1="58" x2="52" y2="58"/><circle cx="22" cy="16" r="5" fill="#e8746b" stroke="none"/><line x1="26" y1="20" x2="30" y2="44"/><line x1="30" y1="44" x2="26" y2="58"/><line x1="30" y1="44" x2="34" y2="58"/>'},
+  // 仰卧抬腿
+  '仰卧抬腿':{start:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="14" cy="48" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="50" x2="34" y2="52"/><path d="M34 52 L44 52"/>',end:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="14" cy="48" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="50" x2="34" y2="52"/><path d="M34 52 L44 32"/>'},
+  // 臀桥保持
+  '臀桥保持':{start:'<line x1="10" y1="52" x2="50" y2="52"/><circle cx="14" cy="42" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="46" x2="30" y2="52"/><path d="M30 52 L36 36 L46 40"/><line x1="36" y1="36" x2="30" y2="52"/>',end:'<line x1="10" y1="52" x2="50" y2="52"/><circle cx="14" cy="42" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="46" x2="30" y2="52"/><path d="M30 52 L36 35 L46 39"/><line x1="36" y1="35" x2="30" y2="52"/>'},
+  // 单腿臀桥
+  '单腿臀桥':{start:'<line x1="10" y1="52" x2="50" y2="52"/><circle cx="14" cy="42" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="46" x2="30" y2="50"/><path d="M30 50 L38 38 L46 42"/><line x1="38" y1="38" x2="30" y2="50"/>',end:'<line x1="10" y1="52" x2="50" y2="52"/><circle cx="14" cy="42" r="5" fill="#e8746b" stroke="none"/><line x1="18" y1="46" x2="30" y2="50"/><path d="M30 50 L38 34 L46 40"/><line x1="38" y1="34" x2="30" y2="50"/>'},
+  // 骨盆卷动
+  '骨盆卷动':{start:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="16" cy="50" r="5" fill="#e8746b" stroke="none"/><line x1="20" y1="52" x2="42" y2="54"/>',end:'<line x1="8" y1="56" x2="52" y2="56"/><circle cx="16" cy="50" r="5" fill="#e8746b" stroke="none"/><path d="M20 52 Q26 42 34 46 Q42 50 44 52"/>'}
+};
+const MOVE_SVG_DEFAULT='<circle cx="30" cy="20" r="6" fill="#e8746b" stroke="none"/><line x1="30" y1="26" x2="30" y2="44"/><line x1="30" y1="44" x2="24" y2="58"/><line x1="30" y1="44" x2="36" y2="58"/><line x1="30" y1="32" x2="20" y2="38"/><line x1="30" y1="32" x2="40" y2="38"/>';
+
+// 生成循环动图：起始帧 ↔ 发力帧 往复，用 CSS animation + SVG 两帧交叉淡入
+function moveSvg(name){
+  const m=MOVE_SVG[name];
+  if(!m) return `<div class="gifbox"><svg viewBox="0 0 60 70" width="64" height="74">${figure(MOVE_SVG_DEFAULT,'#c2453a')}</svg></div>`;
+  const id='mv'+Math.random().toString(36).slice(2,8);
+  return `<div class="gifbox" title="循环演示：起始姿势 ↔ 发力姿势">
+    <style>
+      @keyframes f_${id}{0%,30%{opacity:1}50%,80%{opacity:0}100%{opacity:1}}
+      @keyframes g_${id}{0%,30%{opacity:0}50%,80%{opacity:1}100%{opacity:0}}
+      .${id}_a{animation:f_${id} 2.6s ease-in-out infinite}
+      .${id}_b{animation:g_${id} 2.6s ease-in-out infinite}
+    </style>
+    <svg viewBox="0 0 60 70" width="64" height="74" style="position:absolute;left:0;top:0" class="${id}_a">${figure(m.start,'#e8746b')}</svg>
+    <svg viewBox="0 0 60 70" width="64" height="74" style="position:absolute;left:0;top:0" class="${id}_b">${figure(m.end,'#c2453a')}</svg>
+    <svg viewBox="0 0 60 70" width="64" height="74" style="opacity:0">${figure(m.end,'#c2453a')}</svg>
+  </div>`;
+}
+
+/* ============ 面部锻炼动作库（瘦脸提拉） ============ */
+const FACE_PLANS=[
+  {focus:'消除水肿·轮廓提拉',moves:[
+    {n:'淋巴引流推按',d:'用指腹从下巴沿下颌线推向耳后，再顺脖子向下，两侧各10次',t:'1min',tip:'力度轻柔，沿下颌线向耳后、再顺颈侧向下，方向别反。'},
+    {n:'鼓腮运动',d:'嘴巴鼓气在口腔内左右移动，各存留5秒，做10次',t:'1min',tip:'气在口腔左右来回顶，脸颊有酸胀感，力度适中别过度。'},
+    {n:'O字型嘴',d:'嘴巴张成O型保持5秒再放松，重复10次，紧致唇周',t:'1min',tip:'嘴张成O型，下巴微收，唇周发力，动作到位再放松。'},
+    {n:'下颌线提拉',d:'手指从下巴向太阳穴方向提拉，配合面霜，两侧各15次',t:'2min',tip:'指腹贴紧下颌线向上推提，配合面霜避免拉扯皮肤。'}
+  ]},
+  {focus:'瘦咬肌·紧致面颊',moves:[
+    {n:'咬肌放松按摩',d:'用指关节轻揉咬肌位置（耳前下方），画圈30秒',t:'1min',tip:'指关节画小圈，力度以微酸不痛为准，放松紧咬的肌肉。'},
+    {n:'舌头推上颚',d:'舌头顶住上颚用力5秒再放松，重复15次，收紧下巴',t:'1min',tip:'舌根用力顶上颚，下巴会收紧，坚持5秒再放松。'},
+    {n:'大笑保持',d:'嘴角用力上扬做夸张大笑，保持5秒，重复12次',t:'1min',tip:'夸张上扬嘴角、眯眼，面部肌肉整体收紧，保持再放开。'},
+    {n:'腮部提拉',d:'双手掌根从脸颊向耳后提推，各12次，改善双下巴',t:'2min',tip:'掌根从嘴角向耳后向上推提，方向朝上，改善松弛。'}
+  ]},
+  {focus:'眼部·额头按摩',moves:[
+    {n:'眼周点按',d:'用无名指沿眼眶骨轻按一圈，上下各8次，缓解眼袋',t:'1min',tip:'用无名指指腹，沿眼眶骨轻点，眼下由内向外，不按压眼球。'},
+    {n:'眉心舒展',d:'从眉心向两侧太阳穴轻推，抚平额头纹，15次',t:'1min',tip:'两指从眉心向两侧太阳穴轻推，抚平皱眉纹，动作轻柔。'},
+    {n:'太阳穴按揉',d:'指腹按揉太阳穴画圈30秒，放松紧致',t:'1min',tip:'指腹画圈打圈，力度轻缓，有放松感，缓解眼疲劳。'},
+    {n:'全脸提拉',d:'双手从下巴、脸颊、额头依次向上提推，各10次',t:'2min',tip:'从下巴→脸颊→额头依次向上提推，每个部位方向朝上。'}
+  ]}
+];
+const FACE_SVG={
+  '淋巴引流推按':'<circle cx="30" cy="22" r="14" fill="none"/><path d="M20 30 Q30 40 40 30"/><path d="M18 32 L14 44" stroke-dasharray="3 3"/><path d="M42 32 L46 44" stroke-dasharray="3 3"/>',
+  '鼓腮运动':'<circle cx="30" cy="22" r="14" fill="none"/><ellipse cx="22" cy="24" rx="6" ry="5" fill="#e8746b" stroke="none" opacity=".5"/><path d="M22 32 Q30 36 38 32"/>',
+  'O字型嘴':'<circle cx="30" cy="22" r="14" fill="none"/><ellipse cx="30" cy="30" rx="4" ry="6" fill="none"/>',
+  '下颌线提拉':'<circle cx="30" cy="22" r="14" fill="none"/><path d="M22 34 Q30 40 38 34"/><path d="M24 34 L16 20" stroke-dasharray="3 3"/><path d="M36 34 L44 20" stroke-dasharray="3 3"/>',
+  '咬肌放松按摩':'<circle cx="30" cy="22" r="14" fill="none"/><circle cx="19" cy="26" r="3.5" fill="#e8746b" stroke="none"/><circle cx="41" cy="26" r="3.5" fill="#e8746b" stroke="none"/>',
+  '舌头推上颚':'<circle cx="30" cy="22" r="14" fill="none"/><path d="M30 34 L30 26" stroke-width="4"/><path d="M26 26 L30 22 L34 26"/>',
+  '大笑保持':'<circle cx="30" cy="22" r="14" fill="none"/><path d="M22 28 Q30 36 38 28"/><path d="M20 24 L16 22"/><path d="M40 24 L44 22"/>',
+  '腮部提拉':'<circle cx="30" cy="22" r="14" fill="none"/><path d="M20 28 L12 16" stroke-dasharray="3 3"/><path d="M40 28 L48 16" stroke-dasharray="3 3"/>',
+  '眼周点按':'<circle cx="30" cy="22" r="14" fill="none"/><circle cx="24" cy="20" r="2.5"/><circle cx="36" cy="20" r="2.5"/>',
+  '眉心舒展':'<circle cx="30" cy="22" r="14" fill="none"/><path d="M30 16 L22 18" stroke-dasharray="3 3"/><path d="M30 16 L38 18" stroke-dasharray="3 3"/>',
+  '太阳穴按揉':'<circle cx="30" cy="22" r="14" fill="none"/><circle cx="18" cy="20" r="3" fill="#e8746b" stroke="none" opacity=".6"/><circle cx="42" cy="20" r="3" fill="#e8746b" stroke="none" opacity=".6"/>',
+  '全脸提拉':'<circle cx="30" cy="22" r="14" fill="none"/><path d="M18 28 L22 20"/><path d="M42 28 L38 20"/><path d="M30 36 L30 16" stroke-dasharray="3 3"/>'
+};
+function faceSvg(name){
+  const inner=FACE_SVG[name]||'<circle cx="30" cy="22" r="14" fill="none"/>';
+  return `<svg viewBox="0 0 60 60" width="44" height="44"><g fill="none" stroke="#c2453a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${inner}</g></svg>`;
+}
+
+/* ============ 工具 ============ */
+// 稳定的每日伪随机洗牌：同一天结果一致，跨天自动刷新，保证不重复抽取
+function seededShuffle(arr,seed){
+  const a=arr.slice();
+  let s=(seed>>>0)||1;
+  const rnd=()=>{ s=(s*1664525+1013904223)>>>0; return s/4294967296; };
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function pick(arr,n,seed){return seededShuffle(arr,seed).slice(0,n)}
+
+/* 生成真人教学视频搜索链接 */
+function videoLinks(kw){
+  const k=encodeURIComponent(kw);
+  return {
+    dy:'https://www.douyin.com/search/'+k,
+    bili:'https://search.bilibili.com/all?keyword='+k,
+    xhs:'https://www.xiaohongshu.com/search_result?keyword='+k
+  };
+}
+/* 动作的真人示范按钮组 */
+function videoBtns(kw){
+  if(!kw)return '';
+  const l=videoLinks(kw);
+  return `<div class="link-row">
+    <a class="link-btn dy" href="${l.dy}" target="_blank" rel="noopener">▶ 抖音真人示范</a>
+    <a class="link-btn bili" href="${l.bili}" target="_blank" rel="noopener">📺 B站慢速教学</a>
+    <a class="link-btn xhs" href="${l.xhs}" target="_blank" rel="noopener">📕 小红书图解</a>
+  </div>`;
+}
+
+/* ============ 顶部 ============ */
+function renderTop(){
+  const d=new Date(),w=['日','一','二','三','四','五','六'][d.getDay()];
+  document.getElementById('pageSub').textContent=`${d.getMonth()+1}月${d.getDate()}日 周${w} · 向自己的目标前进`;
+  document.getElementById('sunCount').textContent=S.totalSun;
+  document.getElementById('navSun').textContent=S.totalSun;
+}
+
+/* ============ 任务列表 ============ */
+function renderTaskList(elId,list,showCat){
+  const el=document.getElementById(elId);if(!el)return;
+  const td=todayDone();
+  if(!list.length){el.innerHTML=`<div class="empty">还没有任务哦～</div>`;return}
+  el.innerHTML=list.map(it=>{
+    const dn=!!td[it.id];
+    return `<div class="task ${dn?'done':''}">
+      <div class="checkbox ${dn?'done':''}" onclick="toggleTask('${it.id}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="task-body">
+        <div class="task-title">${esc(it.t)}${showCat?`<span class="tag">${catName(it.cat)}</span>`:''}</div>
+        ${it.d?`<div class="task-desc">${esc(it.d)}</div>`:''}
+        <div class="task-meta"><span class="tag sun">☀️ +2</span>${dn?'<span class="tag done">已完成</span>':''}</div>
+      </div>
+      ${it.custom?`<div class="icon-btn" onclick="delHomeTask('${it.id}')">×</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+/* ============ 首页 ============ */
+function renderHome(){
+  const all=allToday(),td=todayDone();
+  document.getElementById('ovTotal').textContent=all.length;
+  document.getElementById('ovDone').textContent=Object.keys(td).length;
+  document.getElementById('ovSun').textContent=todaySun();
+  document.getElementById('ovPlant').textContent=S.gardenPlants;
+  renderTaskList('homeTasks',all,true);
+}
+
+/* ============ 体态减脂 ============ */
+/* ============ 晨起称重记录 ============ */
+function wtTodayStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function saveWeight(){
+  const inp=document.getElementById('wtInput');
+  const v=parseFloat(inp.value);
+  if(!v||v<20||v>150){toast('请输入合理的体重（如 52.5）');return}
+  if(!S.weights)S.weights=[];
+  const t=wtTodayStr();
+  const idx=S.weights.findIndex(x=>x.d===t);
+  if(idx>=0)S.weights[idx].w=v;
+  else S.weights.push({d:t,w:v});
+  S.weights.sort((a,b)=>a.d<b.d?-1:1);
+  inp.value='';
+  save();renderWeight();toast('已记录今日体重 ✅');
+}
+function delWeight(d){
+  S.weights=S.weights.filter(x=>x.d!==d);
+  save();renderWeight();toast('已删除该条记录');
+}
+function renderWeight(){
+  if(!S.weights)S.weights=[];
+  const ws=S.weights;
+  const goal=S.goalWeight||49;
+  const start=52.5;            // 起始体重 105 斤
+  const t=wtTodayStr();
+  const todayRec=ws.find(x=>x.d===t);
+  const last=ws.length?ws[ws.length-1]:null;
+
+  // 今日大字 + 与上次变化
+  const bigEl=document.getElementById('wtToday');
+  if(bigEl){
+    if(todayRec){
+      const prev=ws.length>1?ws[ws.length-2]:null;
+      let dHtml='';
+      if(prev){
+        const diff=(todayRec.w-prev.w);
+        const cls=diff<0?'down':(diff>0?'up':'flat');
+        const sign=diff>0?'+':'';
+        dHtml=`<span class="delta ${cls}">较上次 ${sign}${diff.toFixed(1)} 斤</span>`;
+      }else{
+        dHtml=`<span class="delta flat">首次记录</span>`;
+      }
+      bigEl.innerHTML=`<span class="big">${todayRec.w.toFixed(1)}</span><span class="unit">斤 · 今日已记录</span>${dHtml}`;
+    }else{
+      let dHtml=last?`<span class="delta flat">上次 ${last.w.toFixed(1)} 斤（${last.d.slice(5)}）</span>`:`<span class="delta flat">还没记录过</span>`;
+      bigEl.innerHTML=`<span class="big">--</span><span class="unit">斤 · 今天还没称</span>${dHtml}`;
+    }
+  }
+
+  // 曲线
+  const chartEl=document.getElementById('wtChart');
+  if(chartEl){
+    if(ws.length<2){
+      chartEl.innerHTML=`<div style="text-align:center;color:var(--muted);font-size:12px;font-weight:600;padding:18px 6px">📈 记录满 2 天后，这里会生成体重波动曲线</div>`;
+    }else{
+      chartEl.innerHTML=buildWeightChart(ws);
+    }
+  }
+
+  // 统计
+  const statsEl=document.getElementById('wtStats');
+  if(statsEl){
+    if(!ws.length){
+      statsEl.innerHTML=`<div class="st" style="grid-column:1/-1"><div class="v">--</div><div class="l">暂无数据，先记录一次吧</div></div>`;
+    }else{
+      const cur=ws[ws.length-1].w;
+      const lowest=Math.min(...ws.map(x=>x.w));
+      const total=cur-start;
+      statsEl.innerHTML=`
+        <div class="st"><div class="v">${cur.toFixed(1)}</div><div class="l">当前体重(斤)</div></div>
+        <div class="st"><div class="v">${(cur-goal>0?'-':'+')}${Math.abs(cur-goal).toFixed(1)}</div><div class="l">距目标(斤)</div></div>
+        <div class="st"><div class="v">${total>0?'+':''}${total.toFixed(1)}</div><div class="l">较起始(斤)</div></div>`;
+    }
+  }
+
+  // 分析
+  const anEl=document.getElementById('wtAnalysis');
+  if(anEl){
+    anEl.innerHTML=weightAnalysis(ws,goal,start);
+  }
+
+  // 历史
+  const histEl=document.getElementById('wtHistory');
+  if(histEl){
+    if(!ws.length){
+      histEl.innerHTML=`<span style="font-size:11.5px;color:var(--muted);font-weight:600">暂无记录</span>`;
+    }else{
+      histEl.innerHTML=[...ws].reverse().map(x=>`
+        <span class="wt-chip" onclick="delWeight('${x.d}')">${x.d.slice(5)} · ${x.w.toFixed(1)}斤 <span class="x">×</span></span>`).join('');
+    }
+  }
+}
+function buildWeightChart(ws){
+  const W=320,H=150,pl=30,pr=12,pt=16,pb=22;
+  const data=ws.slice(-14); // 最近14条
+  const vals=data.map(x=>x.w);
+  let mn=Math.min(...vals),mx=Math.max(...vals);
+  if(mx-mn<1){mn-=0.5;mx+=0.5;}
+  const pad=(mx-mn)*0.15;mn-=pad;mx+=pad;
+  const n=data.length;
+  const X=i=>pl+(W-pl-pr)*(n===1?0.5:i/(n-1));
+  const Y=v=>pt+(H-pt-pb)*(1-(v-mn)/(mx-mn));
+  // 目标线
+  const goal=S.goalWeight||49;
+  const gy=Y(goal);
+  let path='',area='';
+  data.forEach((x,i)=>{
+    const px=X(i).toFixed(1),py=Y(x.w).toFixed(1);
+    path+=(i===0?`M${px} ${py}`:` L${px} ${py}`);
+  });
+  area=path+` L${X(n-1).toFixed(1)} ${(H-pb).toFixed(1)} L${X(0).toFixed(1)} ${(H-pb).toFixed(1)} Z`;
+  const dots=data.map((x,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(x.w).toFixed(1)}" r="2.6" fill="#e8746b"/>`).join('');
+  // 目标线仅在范围内画
+  const goalLine=(goal>=mn&&goal<=mx)?`<line x1="${pl}" y1="${gy.toFixed(1)}" x2="${W-pr}" y2="${gy.toFixed(1)}" stroke="#5ba9d6" stroke-width="1.4" stroke-dasharray="5 4"/><text x="${pl+2}" y="${(gy-3).toFixed(1)}" font-size="9" fill="#5ba9d6" font-weight="700">目标${goal}斤</text>`:'';
+  // y轴刻度
+  const yTicks=[mx,(mx+mn)/2,mn].map(v=>`<text x="4" y="${(Y(v)+3).toFixed(1)}" font-size="8.5" fill="#a89a86">${v.toFixed(1)}</text>`).join('');
+  // x轴首尾日期
+  const xL=`<text x="${pl}" y="${H-6}" font-size="8.5" fill="#a89a86">${data[0].d.slice(5)}</text>`;
+  const xR=`<text x="${W-pr}" y="${H-6}" font-size="8.5" fill="#a89a86" text-anchor="end">${data[n-1].d.slice(5)}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">
+    <defs><linearGradient id="wtg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8746b" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#e8746b" stop-opacity="0.02"/>
+    </linearGradient></defs>
+    ${yTicks}
+    <path d="${area}" fill="url(#wtg)"/>
+    <path d="${path}" fill="none" stroke="#e8746b" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}
+    ${goalLine}
+    ${xL}${xR}
+  </svg>`;
+}
+function weightAnalysis(ws,goal,start){
+  if(!ws||ws.length<2){
+    return `💡 <b>开始记录吧：</b>每天晨起空腹、如厕后、穿同样轻薄衣服称重最准。记录满 2 天后，我会自动帮你分析波动趋势和减脂进度。`;
+  }
+  const cur=ws[ws.length-1].w;
+  const first=ws[0].w;
+  const totalDiff=cur-first;            // 总变化
+  const days=ws.length;                 // 记录天数
+  // 近7条趋势
+  const recent=ws.slice(-7);
+  const rFirst=recent[0].w, rLast=cur;
+  const rDiff=rLast-rFirst;
+  const toGoal=cur-goal;
+  let parts=[];
+
+  // 1. 整体趋势
+  if(totalDiff<-0.3) parts.push(`📉 记录以来整体<b>下降 ${Math.abs(totalDiff).toFixed(1)} 斤</b>，方向正确，继续保持！`);
+  else if(totalDiff>0.3) parts.push(`📈 记录以来整体<b>上升 ${totalDiff.toFixed(1)} 斤</b>，注意饮食和作息，别急，先稳住。`);
+  else parts.push(`➖ 记录以来体重<b>基本持平</b>（波动 ${Math.abs(totalDiff).toFixed(1)} 斤内），平台期很正常，坚持就会突破。`);
+
+  // 2. 近期波动
+  if(rDiff<-0.3) parts.push(`✨ 近一周<b>稳步下降</b>（${rDiff.toFixed(1)} 斤），节奏很好。`);
+  else if(rDiff>0.3) parts.push(`⚠️ 近一周<b>略有回升</b>（+${rDiff.toFixed(1)} 斤），回想一下是否水肿、经期或吃得偏咸。`);
+  else parts.push(`🔁 近一周<b>比较平稳</b>，可适当增加训练或调整饮食结构。`);
+
+  // 3. 距目标
+  if(toGoal<=0) parts.push(`🎉 已<b>达成目标体重 ${goal} 斤</b>！进入维持期，重点是体态和紧致。`);
+  else if(toGoal<=2) parts.push(`🎯 距目标只差 <b>${toGoal.toFixed(1)} 斤</b>，冲刺阶段，稳住别松劲！`);
+  else parts.push(`🎯 距目标还差 <b>${toGoal.toFixed(1)} 斤</b>，按每周 0.5-1 斤的健康速度，大约还需 <b>${Math.ceil(toGoal/0.75)} 周</b>。`);
+
+  // 4. 波动幅度健康度
+  const vals=ws.map(x=>x.w);
+  const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+  const variance=vals.reduce((a,b)=>a+(b-avg)*(b-avg),0)/vals.length;
+  const sd=Math.sqrt(variance);
+  if(sd>1.2) parts.push(`🌊 记录波动较大（±${sd.toFixed(1)} 斤），多是水肿/进食/称重时间不固定，建议每天同一条件下称重。`);
+  else parts.push(`✅ 记录数据较稳定（±${sd.toFixed(1)} 斤），说明你的作息和饮食比较规律。`);
+
+  // 5. 梨形/腰腹建议（结合她的定位）
+  parts.push(`💡 <b>持续建议：</b>晨起空腹称重为准；每周看趋势而非单日数字；配合臀腿训练+减少久坐+少盐，腰腹和下肢变化会更明显。`);
+
+  return `🤖 <b>体重波动分析</b><br>${parts.join('<br>')}`;
+}
+
+function renderFit(){
+  renderTaskList('fitTasks',S.tasks.fit,false);
+  renderWeight();
+  const seed=daySeed();
+  const p=FIT_PLANS[Math.abs(seed+ (window.__fitShift||0))%FIT_PLANS.length];
+  document.getElementById('fitFocus').textContent=p.focus;
+  document.getElementById('fitDur').textContent=p.dur;
+  document.getElementById('fitMoves').innerHTML=p.moves.map((m,i)=>`
+    <div class="move">
+      <div class="mhead">
+        <div class="n">${i+1}</div>
+        <div class="fig">${moveSvg(m.n)}</div>
+        <div class="b"><h5>${esc(m.n)}</h5></div>
+        <span class="time">${m.t}</span>
+      </div>
+      <p class="mdesc">${esc(m.d)}</p>
+      <div class="kpt"><b>✓ 发力要点</b>：${esc(m.tip||'保持核心收紧，动作缓慢可控，配合呼吸，腰椎不代偿。')}</div>
+    </div>`).join('');
+  renderFace();
+}
+function newFitPlan(){window.__fitShift=(window.__fitShift||0)+1;renderFit();toast('已换一套动作 💪')}
+function renderFace(){
+  const seed=daySeed();
+  const p=FACE_PLANS[Math.abs(seed+ (window.__faceShift||0))%FACE_PLANS.length];
+  const fe=document.getElementById('faceFocus');
+  if(!fe)return;
+  fe.textContent=p.focus;
+  document.getElementById('faceMoves').innerHTML=p.moves.map((m,i)=>`
+    <div class="fmove">
+      <div class="mhead">
+        <div class="fig">${faceSvg(m.n)}</div>
+        <div class="b"><h5>${i+1}. ${esc(m.n)}</h5></div>
+        <span class="time">${m.t}</span>
+      </div>
+      <p class="mdesc">${esc(m.d)}</p>
+      <div class="kpt"><b>✓ 要领</b>：${esc(m.tip||'手法轻柔，向上提拉，不拉扯皮肤，配合面霜避免干纹。')}</div>
+    </div>`).join('');
+}
+function newFacePlan(){window.__faceShift=(window.__faceShift||0)+1;renderFace();toast('已换一组面部动作 💆')}
+
+/* ============ 自媒体 ============ */
+function renderMedia(){
+  renderTaskList('mediaTasks',S.tasks.media,false);
+  const d=new Date();
+  document.getElementById('mediaDate').textContent=`${d.getMonth()+1}/${d.getDate()} 9:00更新 · 选题池${TOPIC_POOL.length}条`;
+  const seed=daySeed();
+  const daily=pick(TOPIC_POOL,3,seed);
+  const custom=S.mediaTopics.map(t=>({...t,custom:true}));
+  const all=[...custom,...daily];
+  document.getElementById('topicList').innerHTML=all.map(t=>{
+    const kt=encodeURIComponent(t.t);
+    const dy='https://www.douyin.com/search/'+kt;
+    const xhs='https://www.xiaohongshu.com/search_result?keyword='+kt;
+    const bili='https://search.bilibili.com/all?keyword='+kt;
+    const sid='sc'+Math.random().toString(36).slice(2,8);
+    return `
+    <div class="topic">
+      <h5>${esc(t.t)}${t.custom?' <span class="tag" style="background:#ffe6c2;color:#b5731a">自定义</span>':''}</h5>
+      ${t.hook?`<div class="hook">🎣 开场钩子：${esc(t.hook)}</div>`:''}
+      <p>📝 ${esc(t.x||t.desc||'')}</p>
+      <div class="tags"><span class="tag" style="background:#fff4d6;color:#9a7a10">${esc(t.c||'选题')}</span><span class="tag" style="background:#e8f5d0;color:#4d7a2a">🎬 含完整口播稿</span>${t.custom?`<span class="icon-btn" style="width:auto;padding:0 8px;font-size:11px" onclick="delTopic('${t.id}')">删除</span>`:''}</div>
+      <button class="script-btn" onclick="toggleScript('${sid}')">📜 展开完整口播逐字稿（直接照读拍摄）</button>
+      <div class="script-box" id="${sid}" style="display:none">${t.script?esc(t.script).replace(/\n/g,'<br>'):'（暂无逐字稿，可点击下方平台找同类爆款参考后自行补充）'}</div>
+      <div class="link-row">
+        <a class="link-btn dy" href="${dy}" target="_blank" rel="noopener">▶ 抖音找对标</a>
+        <a class="link-btn xhs" href="${xhs}" target="_blank" rel="noopener">📕 小红书参考</a>
+        <a class="link-btn wx" href="${bili}" target="_blank" rel="noopener">📺 B站参考</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleScript(id){
+  const el=document.getElementById(id);if(!el)return;
+  el.style.display=el.style.display==='none'?'block':'none';
+}
+function addTopic(){
+  const ti=document.getElementById('newTopic'),hk=document.getElementById('newHook'),sc=document.getElementById('newScript');
+  const v=ti.value.trim();if(!v){toast('写个选题标题吧');return}
+  S.mediaTopics.unshift({id:uid(),t:v,hook:hk.value.trim(),script:sc.value.trim(),c:'自定义',x:'我的原创选题'});
+  ti.value='';hk.value='';sc.value='';save();renderMedia();toast('选题已添加 ✨');
+}
+function delTopic(id){S.mediaTopics=S.mediaTopics.filter(x=>x.id!==id);save();renderMedia();toast('已删除')}
+
+/* ============ 英语 ============ */
+function renderEng(){
+  renderTaskList('engTasks',S.tasks.eng,false);
+  const seed=daySeed();
+  const p=pick(ENG_PASSAGES,1,seed)[0];
+  document.getElementById('engPassage').innerHTML=`<b style="color:var(--eng-deep)">📖 ${esc(p.t)}</b><br><br><span style="font-size:13px;color:var(--text)">${esc(p.en)}</span><br><br><small style="color:var(--muted)">${esc(p.zh)}</small>`;
+  window.__passage=p.en;
+  const ws=pick(ENG_WORDS,5,seed);
+  document.getElementById('engWords').innerHTML=ws.map(w=>`<span class="chip3" onclick="speak('${w.w}')">${w.w}<small>${w.ph} ${w.zh}</small></span>`).join('');
+  const os=pick(ENG_ORAL,3,seed);
+  document.getElementById('engOral').innerHTML=os.map(o=>`
+    <div class="task" style="align-items:center;cursor:pointer" onclick="speak('${o.en.replace(/'/g,"\\'")}')">
+      <div class="icon-btn" style="width:34px;height:34px;font-size:17px;border-color:var(--eng);background:#e3f0f8">🔊</div>
+      <div class="task-body"><div class="task-title" style="color:var(--eng-deep)">${esc(o.en)}</div><div class="task-desc">${esc(o.zh)}</div></div>
+    </div>`).join('');
+  const k=pick(ENG_KID,1,seed)[0];
+  document.getElementById('engKid').innerHTML=`<b style="color:var(--eng-deep)">👶 ${esc(k.t)}</b><br><br>${esc(k.en)}<br><small style="color:var(--muted)">${esc(k.zh)}</small><br><br>💡 讲给孩子：${esc(k.tip)}`;
+}
+function speakPassage(){speak(window.__passage||'')}
+
+/* ============ 理财 ============ */
+function renderInvest(){
+  renderTaskList('investTasks',S.tasks.invest,false);
+  const d=new Date();
+  document.getElementById('investDate').textContent=`${d.getMonth()+1}/${d.getDate()} 更新 · 共${NEWS_POOL.length}条`;
+  const seed=daySeed();
+  const ns=pick(NEWS_POOL,4,seed);
+  document.getElementById('newsList').innerHTML=ns.map(n=>`
+    <div class="news"><h5><span class="tag2">${esc(n.tag)}</span>${esc(n.t)}</h5><p>${esc(n.x)}</p></div>`).join('');
+  loadGold();
+}
+/* 实时国际金价（gold-api.com，支持下线降级） */
+let goldTimer=null;
+async function loadGold(){
+  const priceEl=document.getElementById('goldPrice');
+  const chgEl=document.getElementById('goldChg');
+  const metaEl=document.getElementById('goldMeta');
+  const card=document.getElementById('goldCard');
+  if(!priceEl)return;
+  priceEl.textContent='加载中…';
+  try{
+    const r=await fetch('https://api.gold-api.com/price/XAU',{cache:'no-store'});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    const price=Number(d.price);
+    // 记录上次价格算涨跌
+    const last=S.goldLast||price;
+    const diff=price-last;
+    const pct=last?((diff/last)*100):0;
+    S.goldLast=price;save();
+    priceEl.innerHTML=`$${price.toFixed(2)}<small>/盎司</small>`;
+    const cls=diff>=0?'up':'down';
+    const arrow=diff>=0?'▲':'▼';
+    const gPerOunce=31.1035; // 1盎司=31.1035克
+    const perGram=price/gPerOunce;
+    chgEl.className='chg '+cls;
+    chgEl.innerHTML=`${arrow} ${diff>=0?'+':''}${diff.toFixed(2)} (${pct.toFixed(2)}%)　折算约 ¥${(perGram*7.1).toFixed(0)}/克*`;
+    const t=new Date();
+    metaEl.textContent=`更新时间 ${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}:${String(t.getSeconds()).padStart(2,'0')} · 来源 gold-api.com · *按汇率7.1估算`;
+  }catch(e){
+    priceEl.innerHTML='--';
+    chgEl.className='chg';
+    chgEl.textContent='实时数据暂不可用，点这里重试';
+    metaEl.textContent='可点击下方"新浪看详情"查看行情';
+  }
+}
+
+/* ============ 阅读 ============ */
+function renderRead(){
+  renderTaskList('readTasks',S.tasks.read,false);
+  const day=new Date().getDate();
+  const todayIdx=((day-1)%7)+1;
+  document.getElementById('readProgress').textContent=`今日读第 ${todayIdx} 天 / 共7天`;
+  document.getElementById('readDays').innerHTML=READ_PLAN.map(r=>`
+    <details class="read-detail" ${r.day===todayIdx?'open':''}>
+      <summary style="display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none;padding:9px;background:${r.day===todayIdx?'#efeaf9':'var(--bg2)'};border-radius:11px;border:1.5px solid ${r.day===todayIdx?'var(--read)':'var(--line)'};margin-bottom:7px">
+        <span style="flex-shrink:0;width:44px;text-align:center">
+          <span style="display:block;font-size:15px;font-weight:800;color:var(--read-deep)">Day${r.day}</span>
+          <span style="display:block;font-size:9px;color:var(--muted);font-weight:600">${esc(r.part)}</span>
+        </span>
+        <span style="flex:1;font-size:12.5px;font-weight:700;color:var(--text)">${esc(r.title)}${r.day===todayIdx?' <span style="color:var(--read);font-size:10px">⬅今天</span>':''}</span>
+        <span style="font-size:12px;color:var(--muted)">▾</span>
+      </summary>
+      <div style="padding:2px 4px 12px">
+        <div class="read-key">🎯 本日重点：${esc(r.key)}</div>
+        <div class="read-body">${r.content}</div>
+        <div class="read-quote">💬 ${esc(r.quote)}</div>
+        <div style="background:#fff;border:1.5px dashed var(--read);border-radius:10px;padding:10px;font-size:12px;color:var(--read-deep);font-weight:600;line-height:1.7">
+          💭 思考题：${esc(r.q)}
+        </div>
+      </div>
+    </details>`).join('');
+  const ta=document.getElementById('readNote');
+  if(ta){ta.value=S.readNote||'';ta.oninput=()=>{S.readNote=ta.value;save()}}
+  const bl=document.getElementById('bookLinks');
+  if(bl){
+    bl.innerHTML=BOOK_LINKS.map(b=>`
+      <a class="link-btn" href="${b.u}" target="_blank" rel="noopener" style="flex:1;min-width:calc(50% - 4px);justify-content:center;text-decoration:none">
+        📚 ${esc(b.n)}<small style="display:block;font-size:9px;opacity:.75;font-weight:600">${esc(b.d)}</small>
+      </a>`).join('');
+  }
+}
+
+/* ============ 语音 ============ */
+function speak(text){
+  if(!text)return;
+  if(!('speechSynthesis' in window)){toast('设备不支持朗读哦');return}
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=/[a-zA-Z]/.test(text)?'en-US':'zh-CN';u.rate=0.85;u.pitch=1.05;speechSynthesis.speak(u)}catch(e){}
+}
+
+/* ============ 打卡 ============ */
+function toggleTask(id){
+  const td=todayDone();
+  const before=Object.keys(td).length;
+  if(td[id])delete td[id];else td[id]=true;
+  recomputeSun();checkGrow();save();renderAll();
+  const after=Object.keys(td).length;
+  toast(after>before?'打卡成功 ☀️ +2 阳光':'已取消打卡');
+}
+function recomputeSun(){
+  let cnt=0;Object.values(S.done).forEach(day=>cnt+=Object.keys(day).length);
+  S.totalSun=cnt*2+(S.bonusSun||0);
+}
+function checkGrow(){
+  const can=Math.floor(S.totalSun/10);
+  const target=Math.max(0,can-S.totalEaten);
+  if(target>S.gardenPlants){S.totalPlants+=(target-S.gardenPlants)}
+  S.gardenPlants=target;
+}
+function addSun(n){S.bonusSun=(S.bonusSun||0)+n;recomputeSun();save()}
+
+/* ============ 花园 ============ */
+function renderGarden(){
+  checkGrow();
+  const max=8,plants=['🌱','🌿','🌻','🌷','🌹','🍀','🌵','🎋'];
+  let html='';
+  for(let i=0;i<max;i++){
+    html+=i<S.gardenPlants?`<div class="slot grown">${plants[i%plants.length]}<span class="lv">${i+1}</span></div>`:`<div class="slot">🟫</div>`;
+  }
+  document.getElementById('gardenSlots').innerHTML=html;
+  const cur=S.totalSun%10;
+  document.getElementById('gardenFill').style.width=(cur*10)+'%';
+  document.getElementById('gardenStatus').textContent=`阳光值 ${cur} / 10`;
+  document.getElementById('gardenPlants').textContent=`植物 ${S.gardenPlants} 棵`;
+  document.getElementById('achTotalSun').textContent=S.totalSun;
+  document.getElementById('achPlants').textContent=S.totalPlants;
+  document.getElementById('achEaten').textContent=S.totalEaten;
+  document.getElementById('achDays').textContent=S.days;
+  document.getElementById('zombieWalk').style.display=S.gardenPlants>0?'block':'none';
+  checkStorageSafety();
+}
+
+/* ============ 僵尸机制 ============ */
+function checkZombie(){
+  const today=todayStr();
+  if(!S.lastChecked){S.lastChecked=today;save();return}
+  if(S.lastChecked===today)return;
+  const prev=S.done[S.lastChecked]||{};
+  const prevCount=Object.keys(prev).length;
+  const expect=totalTaskCount();
+  if(prevCount<expect&&S.gardenPlants>0){
+    S.gardenPlants=Math.max(0,S.gardenPlants-1);S.totalEaten++;
+    showZombie(prevCount,expect);
+  }else if(prevCount>0){S.days++}
+  S.lastChecked=today;save();
+}
+function showZombie(done,expect){
+  document.getElementById('modalEm').textContent='🧟';
+  document.getElementById('modalTitle').textContent='僵尸来啦！';
+  document.getElementById('modalText').textContent=`昨天只完成了 ${done}/${expect} 个任务，花园里的一棵植物被僵尸吃掉了！今天要加油全部完成哦～`;
+  document.getElementById('modalMask').classList.add('show');
+}
+
+/* ============ 弹窗 ============ */
+function closeModal(){document.getElementById('modalMask').classList.remove('show')}
+
+/* ============ 自定义任务 ============ */
+function addHomeTask(){
+  const inp=document.getElementById('newHomeTask'),v=inp.value.trim();
+  if(!v){toast('写点什么再添加哦');return}
+  S.custom.push({id:uid(),t:v,d:'自定义任务',custom:true});
+  inp.value='';save();renderHome();toast('已添加任务');
+}
+function delHomeTask(id){S.custom=S.custom.filter(x=>x.id!==id);save();renderHome();toast('已删除')}
+
+/* ============ 重置 ============ */
+function resetGarden(){
+  if(!confirm('确定要重置花园和打卡数据吗？'))return;
+  S=def();save();S.lastChecked=todayStr();save();renderAll();toast('已重置，重新开始吧！');
+}
+
+/* ============ 导航 ============ */
+const TITLES={home:'🏠 今日总览',fit:'💪 体态减脂',media:'🎬 自媒体副业',eng:'🔤 英语学习',invest:'📈 理财投资',read:'📚 阅读计划',garden:'🌻 我的花园'};
+function go(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.go===name));
+  document.getElementById('pageTitle').textContent=TITLES[name]||'向阳工作台';
+  if(name==='home')renderHome();
+  if(name==='fit')renderFit();
+  if(name==='media')renderMedia();
+  if(name==='eng')renderEng();
+  if(name==='invest')renderInvest();
+  if(name==='read')renderRead();
+  if(name==='garden')renderGarden();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+/* ============ 通用 ============ */
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(()=>el.classList.remove('show'),1500)}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+function renderAll(){
+  renderTop();renderHome();
+  const cur=document.querySelector('.nav-item.active')?.dataset.go||'home';
+  if(cur==='fit')renderFit();
+  if(cur==='media')renderMedia();
+  if(cur==='eng')renderEng();
+  if(cur==='invest')renderInvest();
+  if(cur==='read')renderRead();
+  if(cur==='garden')renderGarden();
+}
+
+/* ============ 初始化 ============ */
+document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>go(n.dataset.go)));
+document.getElementById('newHomeTask').addEventListener('keydown',e=>{if(e.key==='Enter')addHomeTask()});
+document.getElementById('newTopic').addEventListener('keydown',e=>{if(e.key==='Enter')addTopic()});
+const __wtInp=document.getElementById('wtInput');
+if(__wtInp)__wtInp.addEventListener('keydown',e=>{if(e.key==='Enter')saveWeight()});
+renderTop();
+recomputeSun();
+checkZombie();
+go('home');
+
+/* ============ Service Worker（内联，离线可用 + 免登录直接加载） ============ */
+if('serviceWorker' in navigator){
+  const swCode=`
+    self.addEventListener('install',e=>self.skipWaiting());
+    self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));
+    self.addEventListener('fetch',e=>{
+      if(e.request.method!=='GET')return;
+      e.respondWith(
+        caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{
+          try{const c=res.clone();caches.open('xiangyang-v1').then(cc=>cc.put(e.request,c))}catch(_){}
+          return res;
+        }).catch(()=>caches.match('/index.html')))
+      );
+    });
+  `;
+  try{
+    const blob=new Blob([swCode],{type:'application/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+  }catch(_){}
+}
+</script>
+</body>
+</html>
