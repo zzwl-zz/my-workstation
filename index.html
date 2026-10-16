@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="我的工作台">
+<meta name="theme-color" content="#7a9b4e">
+<title>我的工作台</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%237a9b4e'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='%23fff' font-family='sans-serif' font-weight='bold'%3E%E5%B7%A5%3C/text%3E%3C/svg%3E">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --fit:#e8746b; --media:#d98a3d; --eng:#5b9bd5; --invest:#c9a227; --read:#8b7cc8; --kids:#7a9b4e;
+  --bg:#f6f7f2; --card:#fff; --text:#2f3826; --muted:#8a917d; --line:#e3e6da;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:linear-gradient(170deg,#fafbf6 0%,#eef3e6 100%);
+  min-height:100vh;color:var(--text);
+  padding:calc(28px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;align-items:center;
+}
+.head{text-align:center;margin-bottom:26px}
+.head .emblem{
+  width:76px;height:76px;border-radius:22px;margin:0 auto 14px;
+  background:linear-gradient(145deg,#8fb35e,#5f7f3c);
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;box-shadow:0 8px 22px rgba(95,127,60,.35);
+}
+.head h1{font-size:23px;font-weight:800;letter-spacing:1px;color:#3d4a2c}
+.head p{font-size:12.5px;color:var(--muted);margin-top:7px;font-weight:500;letter-spacing:.5px}
+.cards{width:100%;max-width:460px;display:flex;flex-direction:column;gap:16px}
+a.card{
+  display:flex;align-items:center;gap:16px;padding:20px 20px;
+  background:var(--card);border-radius:20px;text-decoration:none;color:inherit;
+  box-shadow:0 4px 18px rgba(60,80,40,.09);border:1.5px solid rgba(255,255,255,.9);
+  transition:transform .16s,box-shadow .16s;position:relative;overflow:hidden;
+}
+a.card:active{transform:scale(.975);box-shadow:0 2px 10px rgba(60,80,40,.14)}
+a.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px}
+a.growth::before{background:linear-gradient(180deg,var(--fit),var(--read))}
+a.kids::before{background:linear-gradient(180deg,#8fb35e,#5f7f3c)}
+.card .ico{
+  width:58px;height:58px;border-radius:16px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:30px;
+}
+.growth .ico{background:linear-gradient(145deg,#fdece9,#f6e6f2)}
+.kids .ico{background:linear-gradient(145deg,#eaf5d8,#d7ecc0)}
+.card .body{flex:1;min-width:0}
+.card .body h3{font-size:17px;font-weight:800;margin-bottom:5px}
+.card .body p{font-size:12px;color:var(--muted);line-height:1.55}
+.card .arrow{font-size:20px;color:#c3c9b8;flex-shrink:0}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.tag{font-size:10px;padding:2px 8px;border-radius:99px;font-weight:700;background:#f1f3ea;color:#7d8670}
+.tip{
+  margin-top:28px;max-width:460px;width:100%;text-align:center;
+  font-size:11.5px;color:var(--muted);line-height:1.85;
+  background:rgba(255,255,255,.6);border-radius:14px;padding:14px 16px;border:1px dashed var(--line);
+}
+.tip b{color:#5f7f3c}
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="emblem">🌿</div>
+    <h1>我的工作台</h1>
+    <p>Personal · Life Dashboard</p>
+  </div>
+  <div class="cards">
+    <a class="card growth" href="./growth/">
+      <div class="ico">🌻</div>
+      <div class="body">
+        <h3>个人成长工作台</h3>
+        <p>体态减脂 · 自媒体 · 英语 · 理财 · 阅读 · 打卡花园</p>
+        <div class="tags"><span class="tag">💪 打卡</span><span class="tag">🎬 选题</span><span class="tag">🥇 金价</span></div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a class="card kids" href="./kids/">
+      <div class="ico">🧟</div>
+      <div class="body">
+        <h3>中班小朋友工作台</h3>
+        <p>语文启蒙 · 数学 · 英语 · 对对碰 · 户外 · 打卡花园</p>
+        <div class="tags"><span class="tag">📖 跟读</span><span class="tag">🔢 数感</span><span class="tag">🎮 游戏</span></div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+  </div>
+  <div class="tip">
+    💡 想加到手机桌面：点浏览器菜单 → <b>「添加到主屏幕」</b><br>
+    数据自动保存在本机，换设备不通用，建议定期在花园页导出备份
+  </div>
+</body>
+</html>
