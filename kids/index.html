@@ -283,6 +283,12 @@
   .garden-bar{height:14px;background:rgba(255,255,255,.5);border-radius:99px;overflow:hidden;margin:10px 0;border:2px solid var(--grass-dark)}
   .garden-bar > span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--sun),var(--sun-deep));transition:width .5s}
 
+  /* 拼音/音节卡片 */
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip3{display:inline-flex;flex-direction:column;align-items:center;gap:1px;background:#fdf1e3;border:1.5px solid #e8985a;border-radius:11px;padding:8px 11px;font-weight:800;color:#b06a2f;font-family:Georgia,serif;font-size:16px}
+  .chip3 small{font-weight:700;color:var(--muted);font-size:9.5px;font-family:-apple-system,sans-serif}
+  .chip3:active{transform:scale(.93);background:#fbe4cd}
+
   /* 对对碰游戏 */
   .game-board{background:linear-gradient(180deg,#cfe8a8,var(--grass));border:3px solid var(--grass-dark);border-radius:16px;padding:12px;margin-bottom:12px}
   .game-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -360,6 +366,7 @@
     <div data-page-node-id="TM82UniBkHsxy5hayjL6QE" class="nav-item active" data-go="home"><span data-page-node-id="5PrPI8TUY7nw43VjPOF0QV" class="ic"><!--pnid:5seWqN6UxWoARkNUmUcXaF-->🏠</span><!--pnid:nI3lSy6fqJRrM0WvdZInWD-->首页</div>
     <div data-page-node-id="bFmJZEvURSlui0bUFGzkK0" class="nav-item" data-go="chinese"><span data-page-node-id="CZxOgg5RFxHcfMMb44NAJO" class="ic"><!--pnid:THaiHEbCbIpj73kyaOgjPq-->📖</span><!--pnid:8iJaoYd3U9UzHpLW8N7d3V-->语文启蒙</div>
     <div data-page-node-id="TQA9UIgFa1ZJZ9FeiL5Lzm" class="nav-item" data-go="math"><span data-page-node-id="rHOramAddj6kN8nt0I66mg" class="ic"><!--pnid:4TmWePikvPLyMLtaf4ZTvW-->🔢</span><!--pnid:7zChPhJidcg76oVrdBh2OI-->数学启蒙</div>
+    <div class="nav-item" data-go="pinyin"><span class="ic">🔠</span>拼音学堂</div>
     <div data-page-node-id="gHCKhWDLXBcJIkSx9AMuAr" class="nav-item" data-go="english"><span data-page-node-id="MLsJHS1pDucBFQwS4h1GVD" class="ic"><!--pnid:qESVsbkUt9ExDO23gAI4Qs-->🔤</span><!--pnid:ONMQrOy9kTiGbcgswUkaCF-->英语启蒙</div>
     <div data-page-node-id="ZYAffFAyVORDrwP6igqsBn" class="nav-item" data-go="game"><span data-page-node-id="GWCyRPjemo0xGplgEbmkic" class="ic"><!--pnid:6yjUTdJYmqShI9Rsgfg7kk-->🎯</span><!--pnid:ztmsdfVkWc38Kok5sMgHuV-->对对碰</div>
     <div data-page-node-id="vWeqVv2bn2P2JHb48NN39i" class="nav-item" data-go="outdoor"><span data-page-node-id="UImbW4mSgD7kmMRiow9i9c" class="ic"><!--pnid:5FSHeXxDnS5Ea0uqhAYCCt-->⚽</span><!--pnid:DEMVnE3CrLqLySctUZTEha-->户外锻炼</div>
@@ -430,6 +437,23 @@
             <div data-page-node-id="Oz68LUkO3nVgCZSvCcRM0E" id="picEmoji" style="text-align:center; font-size:56px; padding:8px 0"></div>
             <div data-page-node-id="PI7oBZw36disJLoPNzKahV" id="picTip" style="background:var(--bg2); border-radius:11px; padding:11px; font-size:12.5px; color:var(--text2); line-height:1.7"></div>
           </div>
+        </div>
+      </div>
+
+      <!-- 拼音学堂 -->
+      <div class="page" id="page-pinyin">
+        <div class="wrap">
+          <div class="section-title"><h3><span class="dot" style="background:#e8985a"></span>拼音学堂 · 今日内容</h3><span class="hint">每天更新</span></div>
+          <div class="card chinese"><div id="pinyinTasks"></div></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:#e8985a"></span>今日新学</h3><span class="hint" id="pyLevel"></span></div>
+          <div class="card chinese" id="pyNewCard"></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:#e8985a"></span>本级复习</h3><span class="hint">点一下听读</span></div>
+          <div class="card chinese" id="pyReview"></div>
+
+          <div class="section-title"><h3><span class="dot" style="background:#e8985a"></span>今日拼读练习</h3><span class="hint">点音节听读</span></div>
+          <div class="card chinese" id="pySpell"></div>
         </div>
       </div>
 
@@ -665,6 +689,10 @@ function def(){
         {id:uid(),t:'海尼曼分级阅读 1 本',d:'按 GK→G1→G2 顺序，每次完整读一本',base:true},
         {id:uid(),t:'单词练习 5 个',d:'指读+跟读，见下方单词卡',base:true},
         {id:uid(),t:'简单口语短句 5 句',d:'跟着读，大声说出来',base:true},
+      ],
+      pinyin:[
+        {id:uid(),t:'拼音学习 10 分钟',d:'见拼音学堂，跟读今天的新字母',base:true},
+        {id:uid(),t:'拼读练习 5 个音节',d:'把今天的音节读给爸爸妈妈听',base:true},
       ],
       outdoor:[
         {id:uid(),t:'户外锻炼 1.5 小时',d:'在「今天玩什么」里勾选当天项目',base:true},
@@ -999,7 +1027,7 @@ function todayOutdoor(){
 function allOutdoorItems(){return [...(S.outdoorItems||[]),...(S.outdoorExtra||[])]}
 function allTodayTasks(){
   const t=[];
-  ['chinese','math','english','outdoor'].forEach(cat=>S.tasks[cat].forEach(x=>t.push({...x,cat})));
+  ['chinese','pinyin','math','english','outdoor'].forEach(cat=>S.tasks[cat].forEach(x=>t.push({...x,cat})));
   S.custom.forEach(x=>t.push({...x,cat:'home'}));
   return t;
 }
@@ -1578,7 +1606,7 @@ function renderTaskList(elId,list,showCat){
     </div>`;
   }).join('');
 }
-function catName(c){return {chinese:'语文',math:'数学',english:'英语',outdoor:'户外',home:'自定义'}[c]||'任务'}
+function catName(c){return {chinese:'语文',pinyin:'拼音',math:'数学',english:'英语',outdoor:'户外',home:'自定义'}[c]||'任务'}
 
 /* ================= 渲染：首页 ================= */
 function renderHome(){
@@ -1674,6 +1702,149 @@ function playWholeStory(){
       speechSynthesis.speak(u);
     });
   }catch(e){}
+}
+
+/* ================= 拼音学堂 ================= */
+/* 五级内容库：从零起步，按累计阳光逐级解锁 */
+const PY_L1=[ // 单韵母 6 个
+  {p:'a',tip:'张大嘴巴 a a a',ex:'啊～阿姨的"啊"'},
+  {p:'o',tip:'公鸡打鸣 o o o',ex:'喔～公鸡喔喔叫'},
+  {p:'e',tip:'白鹅倒影 e e e',ex:'鹅～大白鹅的"鹅"'},
+  {p:'i',tip:'牙齿对齐 i i i',ex:'衣～衣服的"衣"'},
+  {p:'u',tip:'嘴巴突出 u u u',ex:'乌～乌鸦的"乌"'},
+  {p:'ü',tip:'像吹笛子 ü ü ü',ex:'鱼～小金鱼的"鱼"'}
+];
+const PY_L2=[ // 声母 23 个
+  {p:'b',tip:'听广播 b b b',ex:'爸～爸爸的"爸"'},
+  {p:'p',tip:'爬山坡 p p p',ex:'怕～跑步的"跑"声母'},
+  {p:'m',tip:'两个门洞 m m m',ex:'妈～妈妈的"妈"'},
+  {p:'f',tip:'一根拐杖 f f f',ex:'父～父亲的"父"'},
+  {p:'d',tip:'马蹄响 dada d d',ex:'大～大大的"大"'},
+  {p:'t',tip:'一把雨伞伞朝下 t t t',ex:'兔～小兔子的"兔"'},
+  {p:'n',tip:'一个门洞 n n n',ex:'拿～拿苹果的"拿"'},
+  {p:'l',tip:'一根小棍 l l l',ex:'乐～快乐的"乐"'},
+  {p:'g',tip:'鸽子飞 g g g',ex:'哥～哥哥的"哥"'},
+  {p:'k',tip:'小蝌蚪 k k k',ex:'口～开口笑的"口"'},
+  {p:'h',tip:'喝水hū hū h h',ex:'花～花朵的"花"'},
+  {p:'j',tip:'小鸡捉虫 j j j',ex:'家～回家jiā的声母'},
+  {p:'q',tip:'气球飘 q q q',ex:'球～皮球的"球"声母'},
+  {p:'x',tip:'切西瓜 x x x',ex:'西～西瓜的"西"'},
+  {p:'zh',tip:'蜘蛛织网 zh zh zh',ex:'蛛～蜘蛛的"蛛"声母'},
+  {p:'ch',tip:'小铲车 ch ch ch',ex:'车～汽车的"车"声母'},
+  {p:'sh',tip:'小狮子 sh sh sh',ex:'狮～狮子的"狮"声母'},
+  {p:'r',tip:'小苗发芽 r r r',ex:'日～太阳日 rì'},
+  {p:'z',tip:'像数字2 z z z',ex:'字～写字的"字"声母'},
+  {p:'c',tip:'刺猬扎人 c c c',ex:'草～小草cǎo的声母'},
+  {p:'s',tip:'蚕吐丝 s s s',ex:'伞～雨伞sǎn的声母'},
+  {p:'y',tip:'树杈像y y y y',ex:'鸭～小鸭子的"鸭"声母'},
+  {p:'w',tip:'屋顶弯弯 w w w',ex:'蛙～青蛙wā的声母'}
+];
+const PY_L3=[ // 复韵母+鼻韵母 18 个
+  {p:'ai',tip:'阿姨和我比高低 ai ai ai',ex:'爱～爱妈妈的"爱"'},
+  {p:'ei',tip:'用力砍树 ei ei ei',ex:'飞～飞机fēi的韵母'},
+  {p:'ui',tip:'围巾围上 ui ui ui',ex:'水～喝水喝shuǐ的韵母'},
+  {p:'ao',tip:'穿棉袄 ao ao ao',ex:'猫～小花猫māo的韵母'},
+  {p:'ou',tip:'大藕白白 ou ou ou',ex:'藕～莲藕ǒu'},
+  {p:'iu',tip:'皮球拍拍 iu iu iu',ex:'球～皮球qiú的韵母'},
+  {p:'ie',tip:'树叶飘落 ie ie ie',ex:'叶～树叶yè'},
+  {p:'üe',tip:'月亮弯弯 üe üe üe',ex:'月～月亮yuè'},
+  {p:'er',tip:'小耳朵 er er er',ex:'耳～耳朵ěr'},
+  {p:'an',tip:'天安门 an an an',ex:'山～爬山的"山"韵母'},
+  {p:'en',tip:'摁门铃 en en en',ex:'门～大门mén的韵母'},
+  {p:'in',tip:'树荫凉凉 in in in',ex:'金～金鱼jīn的韵母'},
+  {p:'un',tip:'温度计 un un un',ex:'温～温水wēn的韵母'},
+  {p:'ün',tip:'白云朵朵 ün ün ün',ex:'云～白云yún的韵母'},
+  {p:'ang',tip:'山羊山羊 ang ang ang',ex:'羊～山羊yáng的韵母'},
+  {p:'eng',tip:'开灯关灯 eng eng eng',ex:'灯～台灯dēng的韵母'},
+  {p:'ing',tip:'老鹰飞翔 ing ing ing',ex:'鹰～老鹰yīng的韵母'},
+  {p:'ong',tip:'闹钟嘀嗒 ong ong ong',ex:'钟～闹钟zhōng的韵母'}
+];
+const PY_L5=[ // 整体认读音节 16 个（不用拼，直接读）
+  {p:'zhi',tip:'整体认读，直接读"之"',ex:'之～蜘蛛的"蛛"整体认读'},
+  {p:'chi',tip:'整体认读，直接读"吃"',ex:'吃～吃饭的"吃"'},
+  {p:'shi',tip:'整体认读，直接读"狮"',ex:'狮～狮子的"狮"'},
+  {p:'ri',tip:'整体认读，直接读"日"',ex:'日～太阳rì'},
+  {p:'zi',tip:'整体认读，直接读"字"',ex:'字～写字的"字"'},
+  {p:'ci',tip:'整体认读，直接读"刺"',ex:'刺～刺猬的"刺"'},
+  {p:'si',tip:'整体认读，直接读"丝"',ex:'丝～蚕丝的"丝"'},
+  {p:'yi',tip:'整体认读，直接读"一"',ex:'一～一二三的"一"'},
+  {p:'wu',tip:'整体认读，直接读"五"',ex:'五～乌鸦wū'},
+  {p:'yu',tip:'整体认读，直接读"鱼"',ex:'鱼～小鱼yú'},
+  {p:'ye',tip:'整体认读，直接读"爷"',ex:'爷～爷爷yé'},
+  {p:'yue',tip:'整体认读，直接读"月"',ex:'月～月亮yuè'},
+  {p:'yin',tip:'整体认读，直接读"音"',ex:'音～音乐的"音"'},
+  {p:'yun',tip:'整体认读，直接读"云"',ex:'云～白云yún'},
+  {p:'ying',tip:'整体认读，直接读"鹰"',ex:'鹰～老鹰yīng'},
+  {p:'yuan',tip:'整体认读，直接读"圆"',ex:'圆～圆形yuán'}
+];
+const PY_SPELL=[ // 两拼/三拼常用音节（L4 起练习）
+  {s:'bà',h:'爸',w:'爸爸的爸'},{s:'mā',h:'妈',w:'妈妈的妈'},{s:'bō',h:'菠',w:'菠菜的菠'},
+  {s:'fó',h:'佛',w:'大佛的佛'},{s:'dà',h:'大',w:'大小的大'},{s:'tā',h:'他',w:'他们的他'},
+  {s:'nǐ',h:'你',w:'你的你'},{s:'lè',h:'乐',w:'快乐的乐'},{s:'gē',h:'哥',w:'哥哥的哥'},
+  {s:'kě',h:'可',w:'可爱的可'},{s:'hā',h:'哈',w:'哈哈笑的哈'},{s:'jī',h:'鸡',w:'小鸡的鸡'},
+  {s:'qì',h:'气',w:'气球的气'},{s:'xī',h:'西',w:'西瓜的西'},{s:'zhū',h:'猪',w:'小猪的猪'},
+  {s:'chē',h:'车',w:'汽车的车'},{s:'shū',h:'书',w:'读书的书'},{s:'rì',h:'日',w:'太阳日'},
+  {s:'zì',h:'字',w:'写字的字'},{s:'cì',h:'刺',w:'刺猬的刺'},{s:'sì',h:'四',w:'四个的四'},
+  {s:'yā',h:'鸭',w:'鸭子的鸭'},{s:'wā',h:'蛙',w:'青蛙的蛙'},{s:'guā',h:'瓜',w:'西瓜的瓜（三拼）'},
+  {s:'huā',h:'花',w:'花朵的花（三拼）'},{s:'xiǎo',h:'小',w:'大小的小（三拼）'},
+  {s:'jiā',h:'家',w:'回家的家（三拼）'},{s:'guó',h:'国',w:'国家的国（三拼）'},
+  {s:'duō',h:'多',w:'多少的多（三拼）'},{s:'tuō',h:'拖',w:'拖地的拖（三拼）'},
+  {s:'niǎo',h:'鸟',w:'小鸟的鸟（三拼）'},{s:'liǎng',h:'两',w:'两个的两（三拼）'},
+  {s:'māo',h:'猫',w:'小猫的猫（三拼）'},{s:'shǒu',h:'手',w:'小手的手（三拼）'},
+  {s:'bái',h:'白',w:'白色的白'},{s:'hǎi',h:'海',w:'大海的海'},{s:'shān',h:'山',w:'爬山的山'},
+  {s:'tiān',h:'天',w:'天空的天（三拼）'},{s:'yuè',h:'月',w:'月亮的月'},
+  {s:'xīng',h:'星',w:'星星的星（三拼）'},{s:'chūn',h:'春',w:'春天的春（三拼）'}
+];
+const PY_LEVELS=[
+  {lv:1,name:'① 单韵母',min:0, pool:PY_L1,  goal:'认识并会读 6 个单韵母：a o e i u ü'},
+  {lv:2,name:'② 声母',min:25, pool:PY_L2,  goal:'认识 23 个声母，能读出带声调的例词'},
+  {lv:3,name:'③ 复韵母和鼻韵母',min:80, pool:PY_L3, goal:'认识 18 个复韵母，能区分 ai/ei 和 an/ang'},
+  {lv:4,name:'④ 两拼音节',min:150,pool:PY_SPELL, goal:'声母+韵母连读成音节，会拼 40 个常用音节'},
+  {lv:5,name:'⑤ 整体认读',min:240,pool:PY_L5, goal:'16 个整体认读音节不用拼、直接读'}
+];
+function pyLevel(){
+  let cur=PY_LEVELS[0];
+  PY_LEVELS.forEach(l=>{ if(S.totalSun>=l.min) cur=l; });
+  return cur;
+}
+function renderPinyin(){
+  renderTaskList('pinyinTasks',S.tasks.pinyin,false);
+  const seed=daySeed();
+  const lv=pyLevel();
+  const nextLv=PY_LEVELS.find(l=>l.min>S.totalSun);
+  document.getElementById('pyLevel').textContent=lv.name+' · 共5级';
+  /* 今日新学 */
+  let nc='';
+  if(lv.lv===4){
+    // 拼读级：讲解两拼法则
+    nc=`<div style="text-align:center"><span data-say="今天学习两拼音节。声母轻，韵母响，两音相连猛一碰。" style="display:inline-block;background:#e8985a;color:#fff;border-radius:99px;padding:2px 10px;font-size:10.5px;font-weight:800;cursor:pointer">🔊 听方法</span></div><br><b style="font-size:34px;color:#b06a2f;font-family:Georgia,serif">声母 + 韵母 → 音节</b><br><br><span style="font-size:13px;color:var(--text2);line-height:1.8">📖 拼读口诀：<b>前音（声母）轻短后音（韵母）重，两音相连猛一碰。</b><br>例如：b-à → bà（爸爸的爸）。今天的 8 个音节在下方"今日拼读练习"，点一个听一个，跟着大声读！</span>`;
+  }else{
+    const p=pick(lv.pool,1,seed)[0];
+    nc=`<div style="text-align:center"><span data-say="难度${lv.name}。${p.p}，${p.tip.replace(/b b b|dada d d/g,'')}" style="display:inline-block;background:#e8985a;color:#fff;border-radius:99px;padding:2px 10px;font-size:10.5px;font-weight:800;cursor:pointer">🔊 听今天的新字母</span></div><br><b style="font-size:52px;color:#b06a2f;font-family:Georgia,serif;line-height:1.2">${p.p}</b><br><br><span style="font-size:13px;color:var(--text2);line-height:1.8">🎵 口诀：<b>${p.tip}</b><br>🗣 例词：${p.ex}<br>👀 描一描：用手指在空中把这个字母写三遍</span>`;
+  }
+  document.getElementById('pyNewCard').innerHTML=nc;
+  /* 本级复习：整级字母（或音节）网格，点读 */
+  const items=lv.pool.map((x,i)=>`<span data-say="${(x.w?x.h+'，'+x.w:x.p+'，'+x.tip).replace(/"/g,'')}" class="chip3" style="cursor:pointer;font-size:15px">${x.s||x.p}<small style="font-size:9px">${x.h||''}</small></span>`).join('');
+  document.getElementById('pyReview').innerHTML=`<div class="chips" style="gap:7px">${items}</div>`;
+  /* 今日拼读练习 */
+  let sp='';
+  if(lv.lv<=2){
+    // 初级：声母+单韵母的组合示范（用已学内容）
+    const demos=[
+      {s:'b-a→ba',h:'爸',w:'b-a，爸，爸爸的爸'},{s:'m-o→mo',h:'摸',w:'m-o，摸，摸一摸的摸'},
+      {s:'d-i→di',h:'笛',w:'d-i，笛，笛子的笛'},{s:'n-u→nu',h:'努',w:'n-u，努，努力的努'},
+      {s:'l-e→le',h:'乐',w:'l-e，乐，快乐的乐'},{s:'g-u→gu',h:'鼓',w:'g-u，鼓，打鼓的鼓'}
+    ];
+    const ds=pick(demos,4,seed);
+    sp=ds.map(x=>`<div style="display:flex;align-items:center;gap:9px;background:var(--bg2);border-radius:11px;padding:10px;margin-bottom:7px;border:1.5px solid var(--line)"><span data-say="${x.w}" style="flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#fdf1e3;border:1.5px solid #e8985a;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer">🔊</span><div style="flex:1"><b style="font-size:16px;color:#b06a2f;font-family:Georgia,serif">${x.s}</b> <span style="font-size:12px;color:var(--text2)">→ ${x.h}</span></div></div>`).join('');
+    sp+=`<div style="font-size:11px;color:var(--muted)">💡 和爸爸妈妈一起玩"找朋友"：说出例词，找到对应的音节</div>`;
+  }else{
+    const n=lv.lv===5?6:8;
+    const ss=pick(PY_SPELL,n,seed+7);
+    sp=ss.map(x=>`<span data-say="${x.w}" class="chip3" style="cursor:pointer;font-size:15px">${x.s}<small style="font-size:9px">${x.h}</small></span>`).join('');
+    sp=`<div class="chips" style="gap:7px">${sp}</div><div style="font-size:11px;color:var(--muted);margin-top:8px">💡 拼读方法：声母轻短 + 韵母响亮，快速连读${lv.lv===5?'；整体认读音节不用拼，直接读出来':''}</div>`;
+  }
+  document.getElementById('pySpell').innerHTML=sp;
 }
 
 /* ================= 渲染：数学 ================= */
@@ -2284,7 +2455,7 @@ function resetGarden(){
 }
 
 /* ================= 导航 ================= */
-const TITLES={home:'🏠 今日任务',chinese:'📖 语文启蒙',math:'🔢 数学启蒙',english:'🔤 英语启蒙',game:'🎯 单词对对碰',outdoor:'⚽ 户外锻炼',garden:'🌻 我的花园'};
+const TITLES={home:'🏠 今日任务',chinese:'📖 语文启蒙',pinyin:'🔠 拼音学堂',math:'🔢 数学启蒙',english:'🔤 英语启蒙',game:'🎯 单词对对碰',outdoor:'⚽ 户外锻炼',garden:'🌻 我的花园'};
 function go(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
@@ -2292,6 +2463,7 @@ function go(name){
   document.getElementById('pageTitle').textContent=TITLES[name]||'小葵花学堂';
   if(name==='home')renderHome();
   if(name==='chinese')renderChinese();
+  if(name==='pinyin')renderPinyin();
   if(name==='math')renderMath();
   if(name==='english')renderEnglish();
   if(name==='game')newGame();
@@ -2311,6 +2483,7 @@ function renderAll(){
   renderTop();renderHome();
   const cur=document.querySelector('.nav-item.active')?.dataset.go||'home';
   if(cur==='chinese')renderChinese();
+  if(cur==='pinyin')renderPinyin();
   if(cur==='math')renderMath();
   if(cur==='english')renderEnglish();
   if(cur==='outdoor')renderOutdoor();
