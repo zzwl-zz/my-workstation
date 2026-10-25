@@ -2,6 +2,7 @@
 <html data-page-node-id="iNxIT3jPdveVGHfkHar3Aq" lang="zh-CN">
 <head data-page-node-id="BGaIq7s95D2mLptJcT3mA7">
 
+
 <meta data-page-node-id="kcRcofwdlU0iDRWDIhPwwi" charset="UTF-8">
 <meta data-page-node-id="n5epYytze4FTm7xPOQrGp6" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
 <title data-page-node-id="L7iUswIkdVDh9cich6Xcm1" data-pnid-children="SPeUVWKIFILnGkIwCdk4mI">小葵花学堂 · 中班工作台</title>
@@ -289,6 +290,90 @@
   .chip3 small{font-weight:700;color:var(--muted);font-size:9.5px;font-family:-apple-system,sans-serif}
   .chip3:active{transform:scale(.93);background:#fbe4cd}
 
+  /* ===== 拼音学院：进度 / 关卡 / 字母卡 / 听音选卡 / 拼读组合 ===== */
+  .py-map{background:linear-gradient(180deg,#fff8ef,#fdf1e3);border:2px solid #f0c59b;border-radius:16px;padding:12px;margin-bottom:12px}
+  .py-map-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+  .py-map-head .tt{font-size:13px;font-weight:800;color:#b06a2f}
+  .py-map-head .tt small{display:block;font-size:10.5px;color:var(--muted);font-weight:700;margin-top:1px}
+  .py-ring{position:relative;width:54px;height:54px;flex-shrink:0}
+  .py-ring svg{transform:rotate(-90deg)}
+  .py-ring .tx{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#b06a2f;line-height:1}
+  .py-ring .tx small{font-size:8.5px;color:var(--muted);font-weight:700;margin-top:2px}
+  .py-bar{height:9px;background:#f3e3d2;border-radius:99px;overflow:hidden;margin-bottom:3px}
+  .py-bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#f7c777,#e8985a);transition:width .45s}
+  .py-bar-txt{display:flex;justify-content:space-between;font-size:10.5px;font-weight:700;color:var(--muted);margin-bottom:10px}
+  .py-stages{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .py-st{padding:7px 2px;border-radius:10px;text-align:center;background:#fff;border:1.5px solid var(--line);position:relative}
+  .py-st .n{font-size:10px;font-weight:800;color:var(--muted);display:block}
+  .py-st .c{font-size:9.5px;font-weight:700;color:var(--muted)}
+  .py-st.now{border-color:#e8985a;background:#fff4e8;box-shadow:0 0 0 2px rgba(232,152,90,.22)}
+  .py-st.now .n,.py-st.now .c{color:#b06a2f}
+  .py-st.ok{background:#eef7e2;border-color:#a8cd7d}
+  .py-st.ok .n,.py-st.ok .c{color:var(--grass-dark)}
+  .py-st.lock{opacity:.55}
+
+  .py-levelbar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+  .py-pill{display:inline-flex;align-items:center;gap:4px;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:3px 9px;font-size:10.5px;font-weight:800;color:var(--text2)}
+  .py-pill.hot{background:#fdf1e3;border-color:#e8985a;color:#b06a2f}
+  .py-pill b{color:#b06a2f}
+
+  .py-q{font-size:13px;font-weight:800;color:var(--text);text-align:center;line-height:1.6;margin:2px 0 12px}
+  .py-q em{font-style:normal;color:#b06a2f}
+  .py-plus{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 12px;flex-wrap:wrap}
+  .py-box{min-width:52px;height:56px;border-radius:12px;border:2px dashed #e8985a;background:#fff8ef;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#b06a2f;font-family:Georgia,"Times New Roman",serif;padding:0 6px}
+  .py-box.solid{border-style:solid;border-color:#a8cd7d;background:#f2fae8;color:var(--grass-dark)}
+  .py-box.ask{border-style:solid;border-color:#e8985a;background:#fff;color:var(--muted);font-size:22px}
+  .py-box.ask.ok{border-color:#7bb24a;background:#eef7e2;color:var(--grass-dark)}
+  .py-box.ask.no{border-color:var(--danger);background:#fbeceb;color:var(--danger)}
+  .py-op{font-size:20px;font-weight:800;color:var(--muted)}
+
+  .py-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 10px}
+  .py-opt{background:linear-gradient(160deg,#fff,#fff8ef);border:2px solid #f0c59b;border-radius:13px;padding:10px 4px;text-align:center;cursor:pointer;transition:all .16s;user-select:none}
+  .py-opt:active{transform:scale(.96)}
+  .py-opt .g{font-size:26px;font-weight:800;color:#b06a2f;font-family:Georgia,"Times New Roman",serif;line-height:1.15}
+  .py-opt .h{font-size:10px;color:var(--muted);font-weight:700;margin-top:2px}
+  .py-opt.ok{border-color:#7bb24a;background:#eef7e2;box-shadow:0 0 0 3px rgba(123,178,74,.2)}
+  .py-opt.ok .g{color:var(--grass-dark)}
+  .py-opt.no{border-color:var(--danger);background:#fbeceb;animation:shake .3s}
+  .py-opt.dim{opacity:.45}
+
+  .py-fb{font-size:12px;font-weight:700;text-align:center;color:var(--muted);margin-top:2px;min-height:17px}
+  .py-fb.ok{color:var(--grass-dark)}
+  .py-fb.no{color:#c25e42}
+  .py-acts{display:flex;gap:7px;margin-top:10px}
+  .py-acts .btn{flex:1}
+
+  .py-teach{background:#fff8ef;border:1.5px dashed #e8985a;border-radius:12px;padding:10px 11px;font-size:12px;color:var(--text2);line-height:1.8;font-weight:600}
+  .py-teach b{color:#b06a2f}
+  .py-line{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;border-radius:11px;background:#fff8ef;border:1.5px solid #f3d8bd;margin-bottom:7px}
+  .py-line .t{flex:1;font-size:12.5px;line-height:1.7;color:var(--text2);font-weight:600}
+  .py-line .t b{color:#b06a2f}
+  .py-line .spk{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:#e8985a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer}
+
+  .py-review{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:7px}
+  .py-rev{background:#fff;border:1.5px solid var(--line);border-radius:11px;padding:7px 2px;text-align:center;cursor:pointer;transition:all .16s}
+  .py-rev:active{transform:scale(.94)}
+  .py-rev .g{font-size:18px;font-weight:800;color:#b06a2f;font-family:Georgia,"Times New Roman",serif;line-height:1.2}
+  .py-rev .h{font-size:9.5px;color:var(--muted);font-weight:700;margin-top:1px}
+  .py-rev.mastered{background:#f2fae8;border-color:#a8cd7d}
+  .py-rev.mastered .g{color:var(--grass-dark)}
+  .py-rev.weak{border-color:#e8985a}
+  .py-rev .st{font-size:8.5px;font-weight:800;color:#e8985a;line-height:1}
+  .py-rev.mastered .st{color:#7bb24a}
+
+  .py-medals{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+  .py-medal{display:inline-flex;align-items:center;gap:4px;background:#fff4e8;border:1.5px solid #f0c59b;border-radius:99px;padding:3px 9px;font-size:10.5px;font-weight:800;color:#b06a2f}
+  .py-medal.off{background:var(--bg2);border-color:var(--line);color:var(--muted);opacity:.75}
+  .py-tip{font-size:11px;color:var(--muted);font-weight:600;line-height:1.75;margin-top:9px;background:var(--bg2);border-radius:10px;padding:8px 10px}
+
+  @media (max-width:600px){
+    .py-stages{grid-template-columns:repeat(2,1fr)}
+    .py-opts{grid-template-columns:repeat(3,1fr);gap:6px}
+    .py-opt .g{font-size:23px}
+    .py-review{grid-template-columns:repeat(auto-fill,minmax(48px,1fr))}
+    .py-box{min-width:46px;height:50px;font-size:23px}
+  }
+
   /* 对对碰游戏 */
   .game-board{background:linear-gradient(180deg,#cfe8a8,var(--grass));border:3px solid var(--grass-dark);border-radius:16px;padding:12px;margin-bottom:12px}
   .game-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -366,7 +451,7 @@
     <div data-page-node-id="TM82UniBkHsxy5hayjL6QE" class="nav-item active" data-go="home"><span data-page-node-id="5PrPI8TUY7nw43VjPOF0QV" class="ic"><!--pnid:5seWqN6UxWoARkNUmUcXaF-->🏠</span><!--pnid:nI3lSy6fqJRrM0WvdZInWD-->首页</div>
     <div data-page-node-id="bFmJZEvURSlui0bUFGzkK0" class="nav-item" data-go="chinese"><span data-page-node-id="CZxOgg5RFxHcfMMb44NAJO" class="ic"><!--pnid:THaiHEbCbIpj73kyaOgjPq-->📖</span><!--pnid:8iJaoYd3U9UzHpLW8N7d3V-->语文启蒙</div>
     <div data-page-node-id="TQA9UIgFa1ZJZ9FeiL5Lzm" class="nav-item" data-go="math"><span data-page-node-id="rHOramAddj6kN8nt0I66mg" class="ic"><!--pnid:4TmWePikvPLyMLtaf4ZTvW-->🔢</span><!--pnid:7zChPhJidcg76oVrdBh2OI-->数学启蒙</div>
-    <div class="nav-item" data-go="pinyin"><span class="ic">🔠</span>拼音学堂</div>
+    <div data-page-node-id="K9dzwTOW8yGrkkckySLlxL" class="nav-item" data-go="pinyin"><span data-page-node-id="Paf5KjbJDHtyFY6Ql7kqPJ" class="ic"><!--pnid:znCQOTXjfl7sHwCNd7Gzpb-->🔠</span><!--pnid:B3mo9k2in6e4688CSM4ZQb-->拼音学堂</div>
     <div data-page-node-id="gHCKhWDLXBcJIkSx9AMuAr" class="nav-item" data-go="english"><span data-page-node-id="MLsJHS1pDucBFQwS4h1GVD" class="ic"><!--pnid:qESVsbkUt9ExDO23gAI4Qs-->🔤</span><!--pnid:ONMQrOy9kTiGbcgswUkaCF-->英语启蒙</div>
     <div data-page-node-id="ZYAffFAyVORDrwP6igqsBn" class="nav-item" data-go="game"><span data-page-node-id="GWCyRPjemo0xGplgEbmkic" class="ic"><!--pnid:6yjUTdJYmqShI9Rsgfg7kk-->🎯</span><!--pnid:ztmsdfVkWc38Kok5sMgHuV-->对对碰</div>
     <div data-page-node-id="vWeqVv2bn2P2JHb48NN39i" class="nav-item" data-go="outdoor"><span data-page-node-id="UImbW4mSgD7kmMRiow9i9c" class="ic"><!--pnid:5FSHeXxDnS5Ea0uqhAYCCt-->⚽</span><!--pnid:DEMVnE3CrLqLySctUZTEha-->户外锻炼</div>
@@ -440,20 +525,25 @@
         </div>
       </div>
 
-      <!-- 拼音学堂 -->
-      <div class="page" id="page-pinyin">
-        <div class="wrap">
-          <div class="section-title"><h3><span class="dot" style="background:#e8985a"></span>拼音学堂 · 今日内容</h3><span class="hint">每天更新</span></div>
-          <div class="card chinese"><div id="pinyinTasks"></div></div>
+      <!--pnid:FXpQm9isiEkvUavX7tCyM8--><!-- 拼音学堂 -->
+      <div data-page-node-id="bBUW4krfBbKRZdKt4sBttA" class="page" id="page-pinyin">
+        <div data-page-node-id="DMw5oPPPzuNi1IMb3zn9sL" class="wrap">
+          <div data-page-node-id="Nj9Ov6HyPc9TnUuqCT9WES" class="card chinese"><div data-page-node-id="28oBZbU4mKHkUbhCtVgoOF" id="pinyinTasks"></div></div>
 
-          <div class="section-title"><h3><span class="dot" style="background:#e8985a"></span>今日新学</h3><span class="hint" id="pyLevel"></span></div>
-          <div class="card chinese" id="pyNewCard"></div>
+          <div data-page-node-id="pyM1Map" class="section-title"><h3 data-page-node-id="pyM1MapH"><span data-page-node-id="pyM1MapD" class="dot" style="background:#e8985a"></span><!--pnid:UaXXIkfJWADvORf0sSbsA6--><!--pnid:pyM1MapT--><!--pnid:G0Wh4A9kz5Vox5Nfr1S5kE-->拼音学习地图</h3><span data-page-node-id="pyM1MapHint" class="hint"><!--pnid:FE5l0emxb6oxNgy2g5QZJC--><!--pnid:pyM1MapN--><!--pnid:kttito2rEoenSm2FUFqmKi-->6 个阶段 · 从零开始</span></div>
+          <div data-page-node-id="pyMapBox" class="py-map" id="pyMap"></div>
 
-          <div class="section-title"><h3><span class="dot" style="background:#e8985a"></span>本级复习</h3><span class="hint">点一下听读</span></div>
-          <div class="card chinese" id="pyReview"></div>
+          <div data-page-node-id="B6J0QoSx4mHvhi87rwPKKl" class="section-title"><h3 data-page-node-id="m6pYB1Es7sFHF2VnhP0Hye"><span data-page-node-id="mwbrwVChW5CiQWzT8dVKWb" class="dot" style="background:#e8985a"></span><!--pnid:1mD37B8gnW8evJmm5BBqbW-->今日关卡</h3><span data-page-node-id="OQf8JWfdy0RzYOaPSW2Eo1" class="hint" id="pyLevel"></span></div>
+          <div data-page-node-id="VWZwvmVtrfn9DzOwic1mEr" class="card chinese" id="pyNewCard"></div>
 
-          <div class="section-title"><h3><span class="dot" style="background:#e8985a"></span>今日拼读练习</h3><span class="hint">点音节听读</span></div>
-          <div class="card chinese" id="pySpell"></div>
+          <div data-page-node-id="pyM2New" class="section-title"><h3 data-page-node-id="pyM2NewH"><span data-page-node-id="pyM2NewD" class="dot" style="background:#e8985a"></span><!--pnid:6Gkh8Ipp8ggJ5F3g3JTEpK--><!--pnid:pyM2NewT--><!--pnid:mL6TfL2zi7pz0gZM4gAHiv-->本关新学</h3><span data-page-node-id="pyM2NewHint" class="hint"><!--pnid:O2fBjatgZunynX4jLg8fJT--><!--pnid:pyM2NewN--><!--pnid:v9M2mj9VyBIDEitXiiqpgo-->点一下听一听</span></div>
+          <div data-page-node-id="pyM2NewBox" class="card chinese" id="pyLearn"></div>
+
+          <div data-page-node-id="OGzl7a93GgN0itqkh9iowR" class="section-title"><h3 data-page-node-id="xzkG4J0Dcte4fcWHZcqh0k"><span data-page-node-id="p57O15WfQh3b4xVcUNaXFc" class="dot" style="background:#e8985a"></span><!--pnid:BZy8g0r9MjZuRBMrmaeWlt-->已学复习</h3><span data-page-node-id="ptGBkNdGqOX1wcC7yga3q6" class="hint"><!--pnid:pECDeW3p3GRW7j4wu9fRi1-->⭐ 掌握度 · 点一下听读</span></div>
+          <div data-page-node-id="l8Ky5cFAYFm2pv5Qzgsfi9" class="card chinese" id="pyReview"></div>
+
+          <div data-page-node-id="pyM4Tip" class="section-title"><h3 data-page-node-id="pyM4TipH"><span data-page-node-id="pyM4TipD" class="dot" style="background:#e8985a"></span><!--pnid:JzNdfJDlQjuBJqu1bRwIqQ--><!--pnid:pyM4TipT--><!--pnid:MrBDxJuK6DYg3iCY8cbqEX-->学习小贴士</h3></div>
+          <div data-page-node-id="pyM4TipBox" class="card chinese" id="pyTips"></div>
         </div>
       </div>
 
@@ -571,7 +661,7 @@
               ☀️ 完成 1 个任务 = <b data-page-node-id="tiJYXRdC5GNNCIf8t8Tvll"><!--pnid:Lui5x0LYF1F5yNDvoKacGH-->+2 阳光值</b><br data-page-node-id="6ru9mWHWmWUkJ9LyKxaIXN"><!--pnid:jokOq0uVwSdemx4iB8i6CE-->
               🌱 每攒够 <b data-page-node-id="KOfoYlu1sapNqqOlJvKOSG"><!--pnid:Ab3JNeuu3qb1K6fYmAQwrX-->10 阳光值</b><!--pnid:Q5Dl6XMss5ZRlSohtOVOlo--> 就能培育出 1 棵新植物<br data-page-node-id="WTenrRuKI8oxerSvv8u4ER"><!--pnid:VHY3s2njy1Zblb8fLxAfaC-->
               🧟 如果当天有任务没完成，僵尸就会来吃掉花园里的 1 棵植物！<br data-page-node-id="XMAlrFJGW82tGQiQfs74uM"><!--pnid:EHmet8kwRER0PvdN9T0k59-->
-              🌻 花园能<b>无限生长</b>，坚持打卡，植物会越来越多！
+              🌻 花园能<b data-page-node-id="IbxGIVaY4LXDbwnGfOJXoD"><!--pnid:qeEoGosLYf3dnbF5w3s4bQ-->无限生长</b><!--pnid:3NZRvrHoLByvEEoi1lolS4-->，坚持打卡，植物会越来越多！
             </div>
           </div>
 
@@ -649,6 +739,10 @@ function migrate(o){
   // 户外自定义项并入 extra
   if(Array.isArray(o.outdoorItems)){}
   if(!s.heinemann||typeof s.heinemann!=='object')s.heinemann={level:'GK',idx:0,read:{}};
+  if(!s.pinyin||typeof s.pinyin!=='object')s.pinyin=pyDef();
+  else{const pd=pyDef();Object.keys(pd).forEach(k=>{if(s.pinyin[k]===undefined)s.pinyin[k]=pd[k]});
+       ['learned','ok','bad','rounds','pass','best','tone'].forEach(k=>{if(!s.pinyin[k]||typeof s.pinyin[k]!=='object')s.pinyin[k]={}});
+       if(!Array.isArray(s.pinyin.medals))s.pinyin.medals=[];}
   if(!s.heinemann.read)s.heinemann.read={};
   if(!s.custom)s.custom=[];
   if(!s.done)s.done={};
@@ -691,8 +785,8 @@ function def(){
         {id:uid(),t:'简单口语短句 5 句',d:'跟着读，大声说出来',base:true},
       ],
       pinyin:[
-        {id:uid(),t:'拼音学习 10 分钟',d:'见拼音学堂，跟读今天的新字母',base:true},
-        {id:uid(),t:'拼读练习 5 个音节',d:'把今天的音节读给爸爸妈妈听',base:true},
+        {id:uid(),t:'拼音学习 10 分钟',d:'先听「本关新学」，再闯关，答对 2 题以上过关',base:true},
+        {id:uid(),t:'读给爸爸妈妈听 3 个',d:'把「已学复习」里带 ★ 的字母读一遍',base:true},
       ],
       outdoor:[
         {id:uid(),t:'户外锻炼 1.5 小时',d:'在「今天玩什么」里勾选当天项目',base:true},
@@ -714,6 +808,8 @@ function def(){
     outdoorPicks:{},    // { '2026-10-15': {obId:true} }
     // 海尼曼阅读进度
     heinemann:{level:'GK',idx:0,read:{}},
+    // 拼音学堂进度（首次进入等同于从零开始）
+    pinyin:{stage:1,lv:1,lc:0,learned:{},ok:{},bad:{},rounds:{},pass:{},best:{},tone:{},medals:[],lastDay:'',today:null,cleared:false},
     savedAt:''          // 最近一次保存时间
   };
 }
@@ -791,6 +887,7 @@ function packToday(){
       gardenPlants:S.gardenPlants||0, totalPlants:S.totalPlants||0,
       totalEaten:S.totalEaten||0, days:S.days||0,
       outdoorExtra:S.outdoorExtra||[], custom:S.custom||[],
+      pinyin:pyS(),
       legacyClean:1
     })
   };
@@ -870,6 +967,23 @@ function applyCloud(rawRec){
         const lv=a>b?d.heinemann.level:(cur.level||'GK');
         const ai=d.heinemann.idx||0,bi=cur.idx||0;
         S.heinemann={level:lv,idx:(a>b?ai:(a===b?Math.max(ai,bi):bi)),read:merged};
+      }
+      if(d.pinyin&&typeof d.pinyin==='object'){
+        const cur=pyS(),inc=d.pinyin;
+        const ki=PY_STAGES.findIndex(s=>s.id===(inc.stage||1));
+        const kc=PY_STAGES.findIndex(s=>s.id===(cur.stage||1));
+        if(ki>kc||(ki===kc&&(inc.lv||1)>(cur.lv||1))){cur.stage=inc.stage||1;cur.lv=inc.lv||1;cur.lc=inc.lc||0;}
+        ['learned','ok','bad','pass','best','tone'].forEach(bag=>{
+          if(inc[bag]&&typeof inc[bag]==='object'&&!Array.isArray(inc[bag])){
+            Object.keys(inc[bag]).forEach(k=>{
+              const a=cur[bag][k],b=inc[bag][k];
+              if(bag==='learned'){if(!a)cur[bag][k]=b;}
+              else if(typeof b==='number'){cur[bag][k]=Math.max(a||0,b);}
+              else{cur[bag][k]=a||b;}
+            });
+          }
+        });
+        if(Array.isArray(inc.medals))inc.medals.forEach(m=>{if(!cur.medals.includes(m))cur.medals.push(m)});
       }
       ['bonusSun','totalSun','gardenPlants','totalPlants','totalEaten','days'].forEach(key=>{
         if(typeof d[key]==='number')S[key]=Math.max(S[key]||0,d[key]);
@@ -1704,147 +1818,738 @@ function playWholeStory(){
   }catch(e){}
 }
 
-/* ================= 拼音学堂 ================= */
-/* 五级内容库：从零起步，按累计阳光逐级解锁 */
-const PY_L1=[ // 单韵母 6 个
-  {p:'a',tip:'张大嘴巴 a a a',ex:'啊～阿姨的"啊"'},
-  {p:'o',tip:'公鸡打鸣 o o o',ex:'喔～公鸡喔喔叫'},
-  {p:'e',tip:'白鹅倒影 e e e',ex:'鹅～大白鹅的"鹅"'},
-  {p:'i',tip:'牙齿对齐 i i i',ex:'衣～衣服的"衣"'},
-  {p:'u',tip:'嘴巴突出 u u u',ex:'乌～乌鸦的"乌"'},
-  {p:'ü',tip:'像吹笛子 ü ü ü',ex:'鱼～小金鱼的"鱼"'}
+/* ================= 拼音学堂 v2：六阶课程 · 逐关解锁 · 掌握度自适应 =================
+   设计要点：
+   1) 从零起步：孩子没接触过拼音，第 1 阶从「什么是拼音、四个声调」讲起，再学单韵母。
+   2) 难度随掌握度增长：每关「学 → 玩 → 测」，测对 3 题才算过关并解锁下一关；
+      答错的知识点会记进"薄弱点"，明天的练习优先抽到。
+   3) 每关配 1 种新题型（听音选卡 → 四声辨认 → 看图找音节 → 拼读组合 → 整体认读 → 读句子）。 */
+const PY_ROUNDS=3;                 // 每关 3 题
+const PY_PASS_RATE=0.7;            // 答对 70% 即过关
+
+const PY_STAGES=[
+  {id:1,lv:2,short:'第1阶',name:'认识拼音和四声',des:'拼音是汉字的小名，四个声调像四座小滑梯'},
+  {id:2,lv:2,short:'第2阶',name:'单韵母 a o e i u ü',des:'6 个单韵母，是拼音里最基础的声音'},
+  {id:3,lv:6,short:'第3阶',name:'声母 b p m f …',des:'23 个声母，像拼图的另一半'},
+  {id:4,lv:5,short:'第4阶',name:'复韵母与鼻韵母',des:'ai ei ui ao ou iu … 让声音更丰富'},
+  {id:5,lv:4,short:'第5阶',name:'拼一拼：两拼与三拼',des:'声母 + 韵母 → 一个完整的音节'},
+  {id:6,lv:4,short:'第6阶',name:'整体认读与读句子',des:'16 个整体认读音节直接读，试着读一句话'}
 ];
-const PY_L2=[ // 声母 23 个
-  {p:'b',tip:'听广播 b b b',ex:'爸～爸爸的"爸"'},
-  {p:'p',tip:'爬山坡 p p p',ex:'怕～跑步的"跑"声母'},
-  {p:'m',tip:'两个门洞 m m m',ex:'妈～妈妈的"妈"'},
-  {p:'f',tip:'一根拐杖 f f f',ex:'父～父亲的"父"'},
-  {p:'d',tip:'马蹄响 dada d d',ex:'大～大大的"大"'},
-  {p:'t',tip:'一把雨伞伞朝下 t t t',ex:'兔～小兔子的"兔"'},
-  {p:'n',tip:'一个门洞 n n n',ex:'拿～拿苹果的"拿"'},
-  {p:'l',tip:'一根小棍 l l l',ex:'乐～快乐的"乐"'},
-  {p:'g',tip:'鸽子飞 g g g',ex:'哥～哥哥的"哥"'},
-  {p:'k',tip:'小蝌蚪 k k k',ex:'口～开口笑的"口"'},
-  {p:'h',tip:'喝水hū hū h h',ex:'花～花朵的"花"'},
-  {p:'j',tip:'小鸡捉虫 j j j',ex:'家～回家jiā的声母'},
-  {p:'q',tip:'气球飘 q q q',ex:'球～皮球的"球"声母'},
-  {p:'x',tip:'切西瓜 x x x',ex:'西～西瓜的"西"'},
-  {p:'zh',tip:'蜘蛛织网 zh zh zh',ex:'蛛～蜘蛛的"蛛"声母'},
-  {p:'ch',tip:'小铲车 ch ch ch',ex:'车～汽车的"车"声母'},
-  {p:'sh',tip:'小狮子 sh sh sh',ex:'狮～狮子的"狮"声母'},
-  {p:'r',tip:'小苗发芽 r r r',ex:'日～太阳日 rì'},
-  {p:'z',tip:'像数字2 z z z',ex:'字～写字的"字"声母'},
-  {p:'c',tip:'刺猬扎人 c c c',ex:'草～小草cǎo的声母'},
-  {p:'s',tip:'蚕吐丝 s s s',ex:'伞～雨伞sǎn的声母'},
-  {p:'y',tip:'树杈像y y y y',ex:'鸭～小鸭子的"鸭"声母'},
-  {p:'w',tip:'屋顶弯弯 w w w',ex:'蛙～青蛙wā的声母'}
+
+/* ---------- 第 1 阶：认识拼音 + 四声 ---------- */
+const PY_HELLO=[
+  {g:'👦',t:'我叫拼音',h:'拼音',say:'我叫拼音。拼音是汉字的小名，学会它，你就能自己读故事书啦。'},
+  {g:'🅰️',t:'字母',h:'a',say:'这些像小图形的东西，叫做字母。'},
+  {g:'🎵',t:'音节',h:'ba',say:'字母手拉手，就变成了音节，比如 b a，巴。'},
+  {g:'⛰️',t:'声调',h:'ā á ǎ à',say:'拼音头上戴的小帽子，叫做声调。一共有四个声调。'}
 ];
-const PY_L3=[ // 复韵母+鼻韵母 18 个
-  {p:'ai',tip:'阿姨和我比高低 ai ai ai',ex:'爱～爱妈妈的"爱"'},
-  {p:'ei',tip:'用力砍树 ei ei ei',ex:'飞～飞机fēi的韵母'},
-  {p:'ui',tip:'围巾围上 ui ui ui',ex:'水～喝水喝shuǐ的韵母'},
-  {p:'ao',tip:'穿棉袄 ao ao ao',ex:'猫～小花猫māo的韵母'},
-  {p:'ou',tip:'大藕白白 ou ou ou',ex:'藕～莲藕ǒu'},
-  {p:'iu',tip:'皮球拍拍 iu iu iu',ex:'球～皮球qiú的韵母'},
-  {p:'ie',tip:'树叶飘落 ie ie ie',ex:'叶～树叶yè'},
-  {p:'üe',tip:'月亮弯弯 üe üe üe',ex:'月～月亮yuè'},
-  {p:'er',tip:'小耳朵 er er er',ex:'耳～耳朵ěr'},
-  {p:'an',tip:'天安门 an an an',ex:'山～爬山的"山"韵母'},
-  {p:'en',tip:'摁门铃 en en en',ex:'门～大门mén的韵母'},
-  {p:'in',tip:'树荫凉凉 in in in',ex:'金～金鱼jīn的韵母'},
-  {p:'un',tip:'温度计 un un un',ex:'温～温水wēn的韵母'},
-  {p:'ün',tip:'白云朵朵 ün ün ün',ex:'云～白云yún的韵母'},
-  {p:'ang',tip:'山羊山羊 ang ang ang',ex:'羊～山羊yáng的韵母'},
-  {p:'eng',tip:'开灯关灯 eng eng eng',ex:'灯～台灯dēng的韵母'},
-  {p:'ing',tip:'老鹰飞翔 ing ing ing',ex:'鹰～老鹰yīng的韵母'},
-  {p:'ong',tip:'闹钟嘀嗒 ong ong ong',ex:'钟～闹钟zhōng的韵母'}
+const PY_TONE=[
+  {tone:1,p:'ā',h:'妈',w:'mā',say:'第一声，平平的，像小汽车在平路上开。妈，妈妈的妈。'},
+  {tone:2,p:'á',h:'麻',w:'má',say:'第二声，往上扬，像小汽车爬坡。麻。'},
+  {tone:3,p:'ǎ',h:'马',w:'mǎ',say:'第三声，先下坡再上坡，像小汽车过小坑。马，小马的马。'},
+  {tone:4,p:'à',h:'爸',w:'bà',say:'第四声，快快地往下落，像小汽车冲下坡。爸，爸爸的爸。'}
 ];
-const PY_L5=[ // 整体认读音节 16 个（不用拼，直接读）
-  {p:'zhi',tip:'整体认读，直接读"之"',ex:'之～蜘蛛的"蛛"整体认读'},
-  {p:'chi',tip:'整体认读，直接读"吃"',ex:'吃～吃饭的"吃"'},
-  {p:'shi',tip:'整体认读，直接读"狮"',ex:'狮～狮子的"狮"'},
-  {p:'ri',tip:'整体认读，直接读"日"',ex:'日～太阳rì'},
-  {p:'zi',tip:'整体认读，直接读"字"',ex:'字～写字的"字"'},
-  {p:'ci',tip:'整体认读，直接读"刺"',ex:'刺～刺猬的"刺"'},
-  {p:'si',tip:'整体认读，直接读"丝"',ex:'丝～蚕丝的"丝"'},
-  {p:'yi',tip:'整体认读，直接读"一"',ex:'一～一二三的"一"'},
-  {p:'wu',tip:'整体认读，直接读"五"',ex:'五～乌鸦wū'},
-  {p:'yu',tip:'整体认读，直接读"鱼"',ex:'鱼～小鱼yú'},
-  {p:'ye',tip:'整体认读，直接读"爷"',ex:'爷～爷爷yé'},
-  {p:'yue',tip:'整体认读，直接读"月"',ex:'月～月亮yuè'},
-  {p:'yin',tip:'整体认读，直接读"音"',ex:'音～音乐的"音"'},
-  {p:'yun',tip:'整体认读，直接读"云"',ex:'云～白云yún'},
-  {p:'ying',tip:'整体认读，直接读"鹰"',ex:'鹰～老鹰yīng'},
-  {p:'yuan',tip:'整体认读，直接读"圆"',ex:'圆～圆形yuán'}
+/* 四声辨认：听到一句话里藏着某个字，选出它的声调 */
+const PY_TONE_Q=[
+  {w:'妈',g:'ā',h:'mā',ans:1,line:'妈妈在厨房做饭。'},
+  {w:'麻',g:'á',h:'má',ans:2,line:'这根绳子有点麻。'},
+  {w:'马',g:'ǎ',h:'mǎ',ans:3,line:'小马在草地上跑。'},
+  {w:'爸',g:'à',h:'bà',ans:4,line:'爸爸带我去公园。'},
+  {w:'鱼',g:'á',h:'yú',ans:2,noTone:'yu',line:'小金鱼在水里游。'},
+  {w:'手',g:'ǒ',h:'shǒu',ans:3,line:'我有一双小小手。'},
+  {w:'书',g:'ū',h:'shū',ans:1,line:'我在看图画书。'},
+  {w:'雨',g:'ǔ',h:'yǔ',ans:3,line:'外面下雨了。'},
+  {w:'花',g:'ā',h:'huā',ans:1,line:'小红花真漂亮。'},
+  {w:'树',g:'ù',h:'shù',ans:4,line:'大树下面真凉快。'},
+  {w:'云',g:'ún',h:'yún',ans:2,line:'天上有一朵白云。'},
+  {w:'月',g:'è',h:'yuè',ans:4,line:'月亮出来了。'}
 ];
-const PY_SPELL=[ // 两拼/三拼常用音节（L4 起练习）
-  {s:'bà',h:'爸',w:'爸爸的爸'},{s:'mā',h:'妈',w:'妈妈的妈'},{s:'bō',h:'菠',w:'菠菜的菠'},
-  {s:'fó',h:'佛',w:'大佛的佛'},{s:'dà',h:'大',w:'大小的大'},{s:'tā',h:'他',w:'他们的他'},
-  {s:'nǐ',h:'你',w:'你的你'},{s:'lè',h:'乐',w:'快乐的乐'},{s:'gē',h:'哥',w:'哥哥的哥'},
-  {s:'kě',h:'可',w:'可爱的可'},{s:'hā',h:'哈',w:'哈哈笑的哈'},{s:'jī',h:'鸡',w:'小鸡的鸡'},
-  {s:'qì',h:'气',w:'气球的气'},{s:'xī',h:'西',w:'西瓜的西'},{s:'zhū',h:'猪',w:'小猪的猪'},
-  {s:'chē',h:'车',w:'汽车的车'},{s:'shū',h:'书',w:'读书的书'},{s:'rì',h:'日',w:'太阳日'},
-  {s:'zì',h:'字',w:'写字的字'},{s:'cì',h:'刺',w:'刺猬的刺'},{s:'sì',h:'四',w:'四个的四'},
-  {s:'yā',h:'鸭',w:'鸭子的鸭'},{s:'wā',h:'蛙',w:'青蛙的蛙'},{s:'guā',h:'瓜',w:'西瓜的瓜（三拼）'},
-  {s:'huā',h:'花',w:'花朵的花（三拼）'},{s:'xiǎo',h:'小',w:'大小的小（三拼）'},
-  {s:'jiā',h:'家',w:'回家的家（三拼）'},{s:'guó',h:'国',w:'国家的国（三拼）'},
-  {s:'duō',h:'多',w:'多少的多（三拼）'},{s:'tuō',h:'拖',w:'拖地的拖（三拼）'},
-  {s:'niǎo',h:'鸟',w:'小鸟的鸟（三拼）'},{s:'liǎng',h:'两',w:'两个的两（三拼）'},
-  {s:'māo',h:'猫',w:'小猫的猫（三拼）'},{s:'shǒu',h:'手',w:'小手的手（三拼）'},
-  {s:'bái',h:'白',w:'白色的白'},{s:'hǎi',h:'海',w:'大海的海'},{s:'shān',h:'山',w:'爬山的山'},
-  {s:'tiān',h:'天',w:'天空的天（三拼）'},{s:'yuè',h:'月',w:'月亮的月'},
-  {s:'xīng',h:'星',w:'星星的星（三拼）'},{s:'chūn',h:'春',w:'春天的春（三拼）'}
+
+/* ---------- 第 2 阶：单韵母 ---------- */
+const PY_FINAL_S=[
+  {g:'a',h:'啊',say:'a，张大嘴巴，啊。',tip:'张大嘴巴 a a a',mouth:'嘴巴张得最大'},
+  {g:'o',h:'喔',say:'o，嘴巴圆圆，喔。',tip:'嘴巴圆圆 o o o',mouth:'嘴巴圆成一个小圈'},
+  {g:'e',h:'鹅',say:'e，嘴巴扁扁，鹅。',tip:'嘴巴扁扁 e e e',mouth:'嘴巴扁扁的，嘴角往两边拉'},
+  {g:'i',h:'衣',say:'i，牙齿对齐，衣。',tip:'牙齿对齐 i i i',mouth:'嘴巴扁扁，上下牙齿对齐'},
+  {g:'u',h:'乌',say:'u，嘴巴突出，乌。',tip:'嘴巴突出 u u u',mouth:'嘴巴往前噘起来'},
+  {g:'ü',h:'鱼',say:'ü，嘴巴圆圆再加两点，鱼。',tip:'像吹笛子 ü ü ü',mouth:'嘴巴噘起，像吹笛子'}
 ];
-const PY_LEVELS=[
-  {lv:1,name:'① 单韵母',min:0, pool:PY_L1,  goal:'认识并会读 6 个单韵母：a o e i u ü'},
-  {lv:2,name:'② 声母',min:25, pool:PY_L2,  goal:'认识 23 个声母，能读出带声调的例词'},
-  {lv:3,name:'③ 复韵母和鼻韵母',min:80, pool:PY_L3, goal:'认识 18 个复韵母，能区分 ai/ei 和 an/ang'},
-  {lv:4,name:'④ 两拼音节',min:150,pool:PY_SPELL, goal:'声母+韵母连读成音节，会拼 40 个常用音节'},
-  {lv:5,name:'⑤ 整体认读',min:240,pool:PY_L5, goal:'16 个整体认读音节不用拼、直接读'}
+const PY_VOWEL_Q=[
+  {q:'哪个单韵母的嘴巴张得最大？',opts:[{g:'a',h:'啊'},{g:'o',h:'喔'},{g:'i',h:'衣'}],ans:0,why:'a 的嘴巴张得最大，可以放进一个大苹果。'},
+  {q:'哪个单韵母的嘴巴是圆圆的？',opts:[{g:'o',h:'喔'},{g:'e',h:'鹅'},{g:'i',h:'衣'}],ans:0,why:'o 的嘴巴圆圆的，像一个小气球。'},
+  {q:'"衣服"的"衣"，是哪个单韵母？',opts:[{g:'u',h:'乌'},{g:'i',h:'衣'},{g:'ü',h:'鱼'}],ans:1,why:'衣服的衣，读音是 i。'},
+  {q:'"小鱼"的"鱼"，是哪个单韵母？',opts:[{g:'u',h:'乌'},{g:'ü',h:'鱼'},{g:'e',h:'鹅'}],ans:1,why:'鱼的读音是 yú，韵母是 ü。'},
+  {q:'哪个字母上面有两个小点？',opts:[{g:'u',h:'乌'},{g:'ü',h:'鱼'},{g:'o',h:'喔'}],ans:1,why:'只有 ü 上面有两个小点，像小鱼的两只眼睛。'},
+  {q:'"大白鹅"的"鹅"，是哪个单韵母？',opts:[{g:'e',h:'鹅'},{g:'a',h:'啊'},{g:'o',h:'喔'}],ans:0,why:'鹅的读音是 é，韵母是 e。'},
+  {q:'哪个单韵母要噘起嘴巴，像吹笛子？',opts:[{g:'i',h:'衣'},{g:'e',h:'鹅'},{g:'ü',h:'鱼'}],ans:2,why:'ü 要噘起嘴巴，像在吹笛子。'},
+  {q:'"乌鸦"的"乌"，是哪个单韵母？',opts:[{g:'u',h:'乌'},{g:'o',h:'喔'},{g:'a',h:'啊'}],ans:0,why:'乌的读音是 wū，韵母是 u。'},
+  {q:'6 个单韵母里，哪个字母像一个圆圈加一条小尾巴？',opts:[{g:'a',h:'啊'},{g:'e',h:'鹅'},{g:'u',h:'乌'}],ans:0,why:'a 是一个圆圈加一条小尾巴，像小蝌蚪。'}
 ];
-function pyLevel(){
-  let cur=PY_LEVELS[0];
-  PY_LEVELS.forEach(l=>{ if(S.totalSun>=l.min) cur=l; });
-  return cur;
+const PY_VOWEL_SP={
+  a:[{s:'bā',h:'八',r:'b－ā → 八',zh:'八个',u:'b-ā'},{s:'mā',h:'妈',r:'m－ā → 妈',zh:'妈妈',u:'m-ā'},{s:'dà',h:'大',r:'d－à → 大',zh:'大小',u:'d-à'},{s:'nǎ',h:'哪',r:'n－ǎ → 哪',zh:'哪里',u:'n-ǎ'}],
+  o:[{s:'bō',h:'波',r:'b－ō → 波',zh:'波浪',u:'b-ō'},{s:'pó',h:'婆',r:'p－ó → 婆',zh:'外婆',u:'p-ó'},{s:'mō',h:'摸',r:'m－ō → 摸',zh:'摸一摸',u:'m-ō'},{s:'fó',h:'佛',r:'f－ó → 佛',zh:'大佛',u:'f-ó'}],
+  e:[{s:'gē',h:'哥',r:'g－ē → 哥',zh:'哥哥',u:'g-ē'},{s:'hē',h:'喝',r:'h－ē → 喝',zh:'喝水',u:'h-ē'},{s:'tè',h:'特',r:'t－è → 特',zh:'特别',u:'t-è'},{s:'dé',h:'得',r:'d－é → 得',zh:'得到',u:'d-é'}],
+  i:[{s:'bǐ',h:'笔',r:'b－ǐ → 笔',zh:'铅笔',u:'b-ǐ'},{s:'nǐ',h:'你',r:'n－ǐ → 你',zh:'你好',u:'n-ǐ'},{s:'lì',h:'力',r:'l－ì → 力',zh:'力气',u:'l-ì'},{s:'mí',h:'迷',r:'m－í → 迷',zh:'迷路',u:'m-í'}],
+  u:[{s:'bù',h:'布',r:'b－ù → 布',zh:'花布',u:'b-ù'},{s:'tù',h:'兔',r:'t－ù → 兔',zh:'小兔子',u:'t-ù'},{s:'gǔ',h:'鼓',r:'g－ǔ → 鼓',zh:'打鼓',u:'g-ǔ'},{s:'hú',h:'湖',r:'h－ú → 湖',zh:'湖水',u:'h-ú'}],
+  'ü':[{s:'nǚ',h:'女',r:'n－ǚ → 女',zh:'女孩',u:'n-ǚ'},{s:'lǘ',h:'驴',r:'l－ǘ → 驴',zh:'小毛驴',u:'l-ǘ'},{s:'jū',h:'居',r:'j－ū → 居（ü 见 j 去两点）',zh:'居住',u:'j-ū'},{s:'qù',h:'去',r:'q－ù → 去（ü 见 q 去两点）',zh:'回去',u:'q-ù'}]
+};
+
+/* ---------- 第 3 阶：声母 ---------- */
+const PY_INIT=[
+  {g:'b',h:'爸',say:'b，爸，爸爸的爸。',tip:'听广播 b b b，右下半圆'},
+  {g:'p',h:'坡',say:'p，坡，山坡的坡。',tip:'爬山坡 p p p，右上半圆'},
+  {g:'m',h:'妈',say:'m，妈，妈妈的妈。',tip:'两个门洞 m m m'},
+  {g:'f',h:'佛',say:'f，佛，大佛的佛。',tip:'一根拐杖 f f f'},
+  {g:'d',h:'大',say:'d，大，大小的大。',tip:'左下半圆 d d d'},
+  {g:'t',h:'兔',say:'t，兔，小兔子的兔。',tip:'伞把朝下 t t t'},
+  {g:'n',h:'拿',say:'n，拿，拿苹果的拿。',tip:'一个门洞 n n n'},
+  {g:'l',h:'乐',say:'l，乐，快乐的乐。',tip:'一根小棍 l l l'},
+  {g:'g',h:'哥',say:'g，哥，哥哥的哥。',tip:'鸽子飞飞 g g g'},
+  {g:'k',h:'口',say:'k，口，开口的口。',tip:'蝌蚪游泳 k k k'},
+  {g:'h',h:'花',say:'h，花，花朵的花。',tip:'一把椅子 h h h'},
+  {g:'j',h:'鸡',say:'j，鸡，小鸡的鸡。',tip:'一只小鸡 j j j'},
+  {g:'q',h:'球',say:'q，球，皮球的球。',tip:'一个气球 q q q'},
+  {g:'x',h:'西',say:'x，西，西瓜的西。',tip:'切个西瓜 x x x'},
+  {g:'zh',h:'猪',say:'zh，猪，小猪的猪。',tip:'织毛衣 zh zh zh，z 和 h 手拉手'},
+  {g:'ch',h:'车',say:'ch，车，汽车的车。',tip:'小铲车 ch ch ch，c 和 h 手拉手'},
+  {g:'sh',h:'狮',say:'sh，狮，狮子的狮。',tip:'小狮子 sh sh sh，s 和 h 手拉手'},
+  {g:'r',h:'日',say:'r，日，太阳日。',tip:'小苗发芽 r r r'},
+  {g:'z',h:'字',say:'z，字，写字的字。',tip:'像个数字 2，zzz'},
+  {g:'c',h:'草',say:'c，草，小草的草。',tip:'半圆开口 c c c'},
+  {g:'s',h:'伞',say:'s，伞，雨伞的伞。',tip:'蚕吐丝 s s s'},
+  {g:'y',h:'鸭',say:'y，鸭，小鸭子的鸭。',tip:'树杈像 y'},
+  {g:'w',h:'蛙',say:'w，蛙，青蛙的蛙。',tip:'屋顶弯弯 w'}
+];
+const PY_INIT_Q=[
+  {q:'"妈妈"的"妈"，声母是哪个？',opts:[{g:'m',h:''},{g:'n',h:''},{g:'b',h:''}],ans:0,why:'妈 mā 的声母是 m，两个门洞 m m m。'},
+  {q:'"爸爸"的"爸"，声母是哪个？',opts:[{g:'p',h:''},{g:'b',h:''},{g:'d',h:''}],ans:1,why:'爸 bà 的声母是 b，听广播 b b b。'},
+  {q:'哪个声母只有一个门洞？',opts:[{g:'m',h:''},{g:'n',h:''},{g:'h',h:''}],ans:1,why:'n 只有一个门洞，m 有两个门洞。'},
+  {q:'哪个声母是两个门洞？',opts:[{g:'m',h:''},{g:'n',h:''},{g:'u',h:''}],ans:0,why:'m 像两个门洞。'},
+  {q:'"大树"的"大"，声母是哪个？',opts:[{g:'t',h:''},{g:'d',h:''},{g:'b',h:''}],ans:1,why:'大 dà 的声母是 d，左下半圆 d d d。'},
+  {q:'"兔子"的"兔"，声母是哪个？',opts:[{g:'d',h:''},{g:'t',h:''},{g:'f',h:''}],ans:1,why:'兔 tù 的声母是 t，伞把朝下 t t t。'},
+  {q:'哪一个声母是由两个字母组成的？',opts:[{g:'b',h:''},{g:'zh',h:''},{g:'l',h:''}],ans:1,why:'zh、ch、sh 都是两个字母手拉手做成的声母。'},
+  {q:'"西瓜"的"西"，声母是哪个？',opts:[{g:'s',h:''},{g:'x',h:''},{g:'q',h:''}],ans:1,why:'西 xī 的声母是 x，切个西瓜 x x x。'},
+  {q:'"汽车"的"车"，声母是哪个？',opts:[{g:'ch',h:''},{g:'c',h:''},{g:'zh',h:''}],ans:0,why:'车 chē 的声母是 ch，c 和 h 手拉手。'},
+  {q:'"狮子"的"狮"，声母是哪个？',opts:[{g:'s',h:''},{g:'sh',h:''},{g:'r',h:''}],ans:1,why:'狮 shī 的声母是 sh，s 和 h 手拉手。'},
+  {q:'"小草"的"草"，声母是哪个？',opts:[{g:'c',h:''},{g:'ch',h:''},{g:'z',h:''}],ans:0,why:'草 cǎo 的声母是 c，半圆开口 c c c。'},
+  {q:'"小鸡"的"鸡"，声母是哪个？',opts:[{g:'q',h:''},{g:'j',h:''},{g:'x',h:''}],ans:1,why:'鸡 jī 的声母是 j，一只小鸡 j j j。'}
+];
+
+/* ---------- 第 4 阶：复韵母 / 鼻韵母 ---------- */
+const PY_COMPOUND=[
+  {g:'ai',h:'爱',say:'ai，阿姨和我比高低，爱。',tip:'a 和 i 手拉手，阿姨和我比高低'},
+  {g:'ei',h:'飞',say:'ei，飞机飞，飞。',tip:'e 和 i 手拉手，用力砍树 ei ei ei'},
+  {g:'ui',h:'水',say:'ui，喝水的水。',tip:'u 和 i 手拉手，围巾围上 ui ui ui'},
+  {g:'ao',h:'猫',say:'ao，小猫的猫。',tip:'a 和 o 手拉手，穿棉袄 ao ao ao'},
+  {g:'ou',h:'藕',say:'ou，莲藕的藕。',tip:'o 和 u 手拉手，大藕白白 ou ou ou'},
+  {g:'iu',h:'球',say:'iu，皮球的球。',tip:'i 和 u 手拉手，皮球拍拍 iu iu iu'},
+  {g:'ie',h:'叶',say:'ie，树叶的叶。',tip:'i 和 e 手拉手，树叶飘落 ie ie ie'},
+  {g:'üe',h:'月',say:'üe，月亮的月。',tip:'ü 和 e 手拉手，月亮弯弯 üe üe üe'},
+  {g:'er',h:'耳',say:'er，耳朵的耳。',tip:'e 和 r 在一起，小耳朵 er er er，r 像小舌头卷起来'},
+  {g:'an',h:'山',say:'an，高山的山。',tip:'a 和 n 在一起，天安门 an an an'},
+  {g:'en',h:'门',say:'en，大门的门。',tip:'e 和 n 在一起，摁门铃 en en en'},
+  {g:'in',h:'金',say:'in，金鱼的金。',tip:'i 和 n 在一起，树荫凉凉 in in in'},
+  {g:'un',h:'温',say:'un，温水的温。',tip:'u 和 n 在一起，温度计 un un un'},
+  {g:'ün',h:'云',say:'ün，白云的云。',tip:'ü 和 n 在一起，白云朵朵 ün ün ün'},
+  {g:'ang',h:'羊',say:'ang，山羊的羊。',tip:'a、n、g 三个一起，山羊山羊 ang ang ang'},
+  {g:'eng',h:'灯',say:'eng，台灯的灯。',tip:'e、n、g 三个一起，开灯关灯 eng eng eng'},
+  {g:'ing',h:'鹰',say:'ing，老鹰的鹰。',tip:'i、n、g 三个一起，老鹰飞翔 ing ing ing'},
+  {g:'ong',h:'钟',say:'ong，闹钟的钟。',tip:'o、n、g 三个一起，闹钟嘀嗒 ong ong ong'}
+];
+const PY_COMPOUND_Q=[
+  {q:'"白云"的"云"，韵母是哪个？',opts:[{g:'un',h:''},{g:'ün',h:''},{g:'in',h:''}],ans:1,why:'云 yún 的韵母是 ün，要带两点。'},
+  {q:'"山羊"的"羊"，韵母是哪个？',opts:[{g:'an',h:''},{g:'ang',h:''},{g:'ai',h:''}],ans:1,why:'羊 yáng 带后鼻音，韵母是 ang。'},
+  {q:'"高山"的"山"，韵母是哪个？',opts:[{g:'an',h:''},{g:'ang',h:''},{g:'en',h:''}],ans:0,why:'山 shān 的韵母是 an，是前鼻音。'},
+  {q:'"台灯"的"灯"，韵母是哪个？',opts:[{g:'en',h:''},{g:'eng',h:''},{g:'ing',h:''}],ans:1,why:'灯 dēng 的韵母是 eng。'},
+  {q:'"老鹰"的"鹰"，韵母是哪个？',opts:[{g:'in',h:''},{g:'ing',h:''},{g:'ün',h:''}],ans:1,why:'鹰 yīng 的韵母是 ing。'},
+  {q:'"小猫"的"猫"，韵母是哪个？',opts:[{g:'ao',h:''},{g:'ou',h:''},{g:'ai',h:''}],ans:0,why:'猫 māo 的韵母是 ao，像个棉花袄。'},
+  {q:'"皮球"的"球"，韵母是哪个？',opts:[{g:'iu',h:''},{g:'ui',h:''},{g:'ou',h:''}],ans:0,why:'球 qiú 的韵母是 iu。'},
+  {q:'"月亮"的"月"，韵母是哪个？',opts:[{g:'ie',h:''},{g:'üe',h:''},{g:'ue',h:''}],ans:1,why:'月 yuè 的韵母是 üe，两点不能丢。'},
+  {q:'"喝水"的"水"，韵母是哪个？',opts:[{g:'iu',h:''},{g:'ui',h:''},{g:'ei',h:''}],ans:1,why:'水 shuǐ 的韵母是 ui。'},
+  {q:'"耳朵"的"耳"，韵母是哪个？',opts:[{g:'er',h:''},{g:'en',h:''},{g:'ei',h:''}],ans:0,why:'耳 ěr 的韵母是 er，舌尖要卷起来。'},
+  {q:'下面哪个是后鼻音？',opts:[{g:'an',h:''},{g:'en',h:''},{g:'ang',h:''}],ans:2,why:'末尾有 g 的都是后鼻音，ang 是后鼻音。'},
+  {q:'"闹钟"的"钟"，韵母是哪个？',opts:[{g:'ong',h:''},{g:'eng',h:''},{g:'un',h:''}],ans:0,why:'钟 zhōng 的韵母是 ong。'}
+];
+
+/* ---------- 第 5 阶：拼读 ---------- */
+const PY_SPELL_Q=[
+  {a:'b',b:'ā',ans:'bā',ok:'八',opts:['bā','pā','dā','mā'],why:'b 加 a 一声，读 bā，八个的八。'},
+  {a:'m',b:'ā',ans:'mā',ok:'妈',opts:['mā','má','mǎ','mà'],why:'同一个音，声调不同意思不同：mā 是妈妈。'},
+  {a:'d',b:'à',ans:'dà',ok:'大',opts:['dà','tà','dā','bà'],why:'d 加 a 四声，读 dà，大小的大。'},
+  {a:'n',b:'ǐ',ans:'nǐ',ok:'你',opts:['nǐ','mǐ','lǐ','bǐ'],why:'n 加 i 三声，读 nǐ，你的你。'},
+  {a:'h',b:'uā',ans:'huā',ok:'花',opts:['huā','guā','kuā','huá'],why:'h－u－ā，三拼，读 huā，花朵的花。'},
+  {a:'x',b:'iǎo',ans:'xiǎo',ok:'小',opts:['xiǎo','xǎo','xiào','qiǎo'],why:'x－i－ǎo，三拼，读 xiǎo，大小的小。'},
+  {a:'j',b:'iā',ans:'jiā',ok:'家',opts:['jiā','jià','jā','qiā'],why:'j－i－ā，三拼，读 jiā，回家的家。'},
+  {a:'g',b:'uǒ',ans:'guǒ',ok:'果',opts:['guǒ','guó','gǒ','kuǒ'],why:'g－u－ǒ，三拼，读 guǒ，水果的果。'},
+  {a:'sh',b:'ū',ans:'shū',ok:'书',opts:['shū','sū','zhū','shǔ'],why:'sh 加 u 一声，读 shū，看书的书。'},
+  {a:'t',b:'ù',ans:'tù',ok:'兔',opts:['tù','dù','tǔ','tú'],why:'t 加 u 四声，读 tù，小兔子的兔。'},
+  {a:'y',b:'ú',ans:'yú',ok:'鱼',opts:['yú','yǔ','wú','yù'],why:'y 加 u，读 yú，小鱼的鱼。'},
+  {a:'q',b:'iú',ans:'qiú',ok:'球',opts:['qiú','qiǔ','qú','jiú'],why:'q－i－ú，三拼，读 qiú，皮球的球。'},
+  {a:'n',b:'iú',ans:'niú',ok:'牛',opts:['niú','liú','niǔ','niū'],why:'n－i－ú，三拼，读 niú，牛奶的牛。'},
+  {a:'c',b:'ǎo',ans:'cǎo',ok:'草',opts:['cǎo','zhǎo','chǎo','cāo'],why:'c－ǎ－o，三拼，读 cǎo，小草的草。'},
+  {a:'l',b:'ǜ',ans:'lǜ',ok:'绿',opts:['lǜ','lù','nǜ','lǚ'],why:'l 加 ü 四声，读 lǜ，绿色的绿，ü 的两点要保留。'},
+  {a:'g',b:'ē',ans:'gē',ok:'哥',opts:['gē','kē','hē','gé'],why:'g 加 e 一声，读 gē，哥哥的哥。'}
+];
+const PY_SPELL_EMOJI=[
+  {g:'🐟',ans:'yú',h:'鱼'},{g:'🐰',ans:'tù',h:'兔'},{g:'🍉',ans:'guā',h:'瓜'},
+  {g:'🌺',ans:'huā',h:'花'},{g:'🐱',ans:'māo',h:'猫'},{g:'🐶',ans:'gǒu',h:'狗'},
+  {g:'🍎',ans:'guǒ',h:'果'},{g:'🌙',ans:'yuè',h:'月'},{g:'🐦',ans:'niǎo',h:'鸟'},
+  {g:'🍚',ans:'fàn',h:'饭'},{g:'🐔',ans:'jī',h:'鸡'},{g:'🚗',ans:'chē',h:'车'},
+  {g:'📖',ans:'shū',h:'书'},{g:'🌳',ans:'shù',h:'树'},{g:'🐮',ans:'niú',h:'牛'}
+];
+
+/* ---------- 第 6 阶：整体认读 + 句子 ---------- */
+const PY_WHOLE=[
+  {g:'zhi',h:'纸',say:'zhi，纸，一张纸。',tip:'整体认读，不用拼，直接读'},
+  {g:'chi',h:'吃',say:'chi，吃，吃饭的吃。',tip:'整体认读，直接读'},
+  {g:'shi',h:'狮',say:'shi，狮，狮子的狮。',tip:'整体认读，直接读'},
+  {g:'ri',h:'日',say:'ri，日，太阳日。',tip:'整体认读，直接读'},
+  {g:'zi',h:'字',say:'zi，字，写字的字。',tip:'整体认读，直接读'},
+  {g:'ci',h:'刺',say:'ci，刺，刺猬的刺。',tip:'整体认读，直接读'},
+  {g:'si',h:'丝',say:'si，丝，蚕丝的丝。',tip:'整体认读，直接读'},
+  {g:'yi',h:'衣',say:'yi，衣，衣服的衣。',tip:'整体认读，直接读'},
+  {g:'wu',h:'五',say:'wu，五，五个的五。',tip:'整体认读，直接读'},
+  {g:'yu',h:'鱼',say:'yu，鱼，小鱼的鱼。',tip:'整体认读，直接读'},
+  {g:'ye',h:'爷',say:'ye，爷，爷爷的爷。',tip:'整体认读，直接读'},
+  {g:'yue',h:'月',say:'yue，月，月亮的月。',tip:'整体认读，直接读'},
+  {g:'yin',h:'音',say:'yin，音，音乐的音。',tip:'整体认读，直接读'},
+  {g:'yun',h:'云',say:'yun，云，白云的云。',tip:'整体认读，直接读'},
+  {g:'ying',h:'鹰',say:'ying，鹰，老鹰的鹰。',tip:'整体认读，直接读'},
+  {g:'yuan',h:'圆',say:'yuan，圆，圆形的圆。',tip:'整体认读，直接读'}
+];
+const PY_WHOLE_Q=[
+  {q:'下列哪个是整体认读音节？',opts:[{g:'zhi',h:''},{g:'zh',h:''},{g:'zhā',h:''}],ans:0,why:'zhi 是整体认读音节，不用拼，直接读。'},
+  {q:'下列哪个是整体认读音节？',opts:[{g:'yi',h:''},{g:'y',h:''},{g:'yā',h:''}],ans:0,why:'yi 是整体认读音节，直接读衣。'},
+  {q:'"衣服"的"衣"，用整体认读怎么写？',opts:[{g:'yi',h:''},{g:'y',h:''},{g:'i',h:''}],ans:0,why:'整体认读音节 yi，直接读衣。'},
+  {q:'"白云"的"云"，用整体认读怎么写？',opts:[{g:'yun',h:''},{g:'ün',h:''},{g:'yún',h:''}],ans:0,why:'整体认读音节是 yun（不带点的那个是音节本身，写在本页用于认读）。'},
+  {q:'下列哪个是整体认读音节？',opts:[{g:'wu',h:''},{g:'w',h:''},{g:'wā',h:''}],ans:0,why:'wu 是整体认读音节，直接读五。'},
+  {q:'下列哪个是整体认读音节？',opts:[{g:'yue',h:''},{g:'üe',h:''},{g:'yuè',h:''}],ans:0,why:'yue 是整体认读音节，直接读月。'},
+  {q:'下列哪个是整体认读音节？',opts:[{g:'ying',h:''},{g:'ing',h:''},{g:'yīng',h:''}],ans:0,why:'ying 是整体认读音节，直接读鹰。'},
+  {q:'下列哪个是整体认读音节？',opts:[{g:'shi',h:''},{g:'sh',h:''},{g:'shī',h:''}],ans:0,why:'shi 是整体认读音节，直接读狮。'},
+  {q:'"圆形"的"圆"，用整体认读怎么写？',opts:[{g:'yuan',h:''},{g:'yüan',h:''},{g:'uan',h:''}],ans:0,why:'整体认读音节 yuan，直接读圆。'}
+];
+/* 句子：音节拼读，逐词点读 */
+const PY_SENT=[
+  {t:'wǒ ài mā ma',h:'我爱妈妈',z:'我爱妈妈。'},
+  {t:'xiǎo māo chī yú',h:'小猫吃鱼',z:'小猫吃鱼。'},
+  {t:'bà ba qí chē',h:'爸爸骑车',z:'爸爸骑车。'},
+  {t:'wǒ yǒu yī běn shū',h:'我有一本书',z:'我有一本书。'},
+  {t:'tài yáng chū lái le',h:'太阳出来了',z:'太阳出来了。'},
+  {t:'xiǎo niǎo fēi a fēi',h:'小鸟飞啊飞',z:'小鸟飞啊飞。'},
+  {t:'huā er hóng le',h:'花儿红了',z:'花儿红了。'},
+  {t:'wǒ men qù gōng yuán',h:'我们去公园',z:'我们去公园。'},
+  {t:'mā ma shuō wǒ zhēn bàng',h:'妈妈说我真棒',z:'妈妈说我真棒。'},
+  {t:'yuè liang wān wān de',h:'月亮弯弯的',z:'月亮弯弯的。'}
+];
+
+/* ================= 进度状态 ================= */
+function pyDef(){
+  return {stage:1,lv:1,lc:0,learned:{},ok:{},bad:{},rounds:{},pass:{},best:{},tone:{},medals:[],lastDay:'',today:null,cleared:false};
 }
+function pyS(){
+  if(!S.pinyin||typeof S.pinyin!=='object')S.pinyin=pyDef();
+  const d=pyDef();
+  Object.keys(d).forEach(k=>{ if(S.pinyin[k]===undefined)S.pinyin[k]=d[k]; });
+  if(!S.pinyin.learned)S.pinyin.learned={};
+  if(!S.pinyin.ok)S.pinyin.ok={};
+  if(!S.pinyin.bad)S.pinyin.bad={};
+  if(!S.pinyin.rounds)S.pinyin.rounds={};
+  if(!S.pinyin.pass)S.pinyin.pass={};
+  if(!S.pinyin.best)S.pinyin.best={};
+  if(!S.pinyin.tone)S.pinyin.tone={};
+  if(!Array.isArray(S.pinyin.medals))S.pinyin.medals=[];
+  return S.pinyin;
+}
+function pyTotalLevels(){return PY_STAGES.reduce((a,s)=>a+s.lv,0)}
+function pySolvedAll(){const p=pyS();return Object.keys(p.pass).length}
+/* 已掌握数量：需要复习的条数 - 答对次数≥2 的条数（取 0 不为负） */
+function pyMastery(){
+  const p=pyS();let need=0,done=0;
+  Object.keys(p.learned).forEach(k=>{
+    if(k.indexOf('hello')===0)return;
+    need++;
+    if((p.ok[k]||0)>=2)done++;
+  });
+  return {need,done,rate:need?Math.round(done/need*100):0};
+}
+function pyIsMastered(k){const p=pyS();return (p.ok[k]||0)>=2}
+
+/* 值提取：用于生成选项、读音 */
+function pyVal(it){return it.s||it.p||it.g||''}
+function pyName(it){return it.h||''}
+function pyRand(n){const a=[];for(let i=0;i<n;i++)a.push(Math.floor(Math.random()*1000));return a}
+function pyShuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+/* 混合干扰项：优先同阶、相近字母，保证难度递进 */
+function pyOpts(ans,pool,n){
+  const cands=shuffleLike(pool.filter(x=>pyVal(x)!==pyVal(ans)));
+  const near=cands.filter(x=>{
+    const a=pyVal(ans),b=pyVal(x);
+    return a[0]===b[0]||a.slice(-1)===b.slice(-1)||a.length===b.length;
+  });
+  const pick=[];const src=near.length>=n?near:cands;
+  src.forEach(x=>{if(pick.length<n)pick.push(x)});
+  return pyShuffle([ans,...pick]);
+}
+function shuffleLike(a){return pyShuffle(a)}
+
+/* ================= 关卡池 ================= */
+function pyPoolFor(stage){
+  if(stage===2)return PY_FINAL_S;
+  if(stage===3)return PY_INIT;
+  if(stage===4)return PY_COMPOUND;
+  if(stage===6)return PY_WHOLE;
+  return null;
+}
+function pyLevelItems(){
+  const p=pyS();
+  if(p.stage===1)return PY_TONE;
+  const pool=pyPoolFor(p.stage)||[];
+  const sz=Math.ceil(pool.length/(PY_STAGES[p.stage-1]?PY_STAGES[p.stage-1].lv:1))||4;
+  const start=(p.lv-1)*sz;
+  return pool.slice(start,start+sz).filter(Boolean);
+}
+function pyLevelTitle(){
+  const p=pyS();
+  if(p.stage===1)return p.lv===1?'认识拼音':'四个声调';
+  if(p.stage===5)return '拼一拼';
+  if(p.stage===6)return '整体认读';
+  const s=PY_STAGES[p.stage-1];
+  return s?s.name:'拼音';
+}
+
+/* ================= 题目生成 ================= */
+/* 每关 3 题：学完马上测，题型按阶递增 */
+function buildQuiz(){
+  const p=pyS();
+  const qs=[];
+  if(p.stage===1){
+    if(p.lv===1){
+      qs.push({k:'choice',q:'拼音是什么？',opts:pyShuffle([{g:'汉字的小名'},{g:'一种水果'},{g:'一种动物'}]),ansVal:'汉字的小名',why:'拼音是汉字的小名，学会它就能自己读故事书。'});
+      qs.push({k:'choice',q:'下面哪一个是「音节」？',opts:pyShuffle([{g:'ba'},{g:'🐱'},{g:'b'}]),ansVal:'ba',why:'字母 b 和 a 手拉手，就变成了音节 ba。'});
+      qs.push({k:'choice',q:'拼音头上戴的小帽子叫什么？',opts:pyShuffle([{g:'声调'},{g:'帽子'},{g:'尾巴'}]),ansVal:'声调',why:'拼音头上的小帽子叫声调，一共有四个声调。'});
+    }else{
+      pyShuffle(PY_TONE_Q).slice(0,PY_ROUNDS).forEach(t=>{
+        qs.push({k:'tone',q:`听句子，选出「${t.w}」的声调`,line:t.line,g:t.g,h:t.h,
+          opts:['一声 ˉ','二声 ˊ','三声 ˇ','四声 ˋ'].map((nm,i)=>({g:nm,h:PY_TONE[i].p})),
+          ansVal:['一声 ˉ','二声 ˊ','三声 ˇ','四声 ˋ'][t.ans-1],
+          why:`「${t.w}」读作 ${t.h}，是第${['一','二','三','四'][t.ans-1]}声。`});
+      });
+    }
+    return qs.slice(0,PY_ROUNDS).map((q,i)=>({...q,no:i+1}));
+  }
+  if(p.stage===2){
+    const items=pyLevelItems();
+    items.slice(0,1).forEach(it=>qs.push({
+      k:'sound',q:`听一听，这是哪个韵母？`,audio:it.h+'，'+it.say.replace(/^[^，]*，/,''),
+      opts:pyOpts(it,PY_FINAL_S,2).map(x=>({g:x.g,h:x.h,kh:'snd|'+x.say})),ansKey:'snd|'+it.say,ansVal:it.g
+    }));
+    const bank=pyShuffle(PY_VOWEL_Q).slice(0,2);
+    bank.forEach(b=>qs.push({k:'choice',q:b.q,opts:b.opts.map(o=>({g:o.g,h:o.h,kh:'v|'+o.g})),ansVal:b.opts[b.ans].g,why:b.why}));
+  }else if(p.stage===3){
+    const items=pyLevelItems();
+    items.slice(0,1).forEach(it=>qs.push({
+      k:'sound',q:'听一听，这是哪个声母？',audio:it.say,
+      opts:pyOpts(it,PY_INIT,2).map(x=>({g:x.g,h:'',kh:'i|'+x.g})),ansVal:it.g
+    }));
+    pyShuffle(PY_INIT_Q).slice(0,2).forEach(b=>qs.push({k:'choice',q:b.q,opts:b.opts.map(o=>({g:o.g,h:''})),ansVal:b.opts[b.ans].g,why:b.why}));
+  }else if(p.stage===4){
+    const items=pyLevelItems();
+    items.slice(0,1).forEach(it=>qs.push({
+      k:'sound',q:'听一听，这是哪个韵母？',audio:it.say,
+      opts:pyOpts(it,PY_COMPOUND,2).map(x=>({g:x.g,h:x.h})),ansVal:it.g
+    }));
+    pyShuffle(PY_COMPOUND_Q).slice(0,2).forEach(b=>qs.push({k:'choice',q:b.q,opts:b.opts.map(o=>({g:o.g,h:''})),ansVal:b.opts[b.ans].g,why:b.why}));
+  }else if(p.stage===5){
+    pyShuffle(PY_SPELL_Q).slice(0,2).forEach(b=>qs.push({k:'spell',q:'拼一拼，合起来读什么？',a:b.a,b:b.b,ansVal:b.ans,why:b.why,
+      opts:b.opts.map(o=>({g:o,h:(PY_SPELL_Q.find(x=>x.ans===o)||{}).ok||''}))}));
+    const em=pyShuffle(PY_SPELL_EMOJI)[0];
+    qs.push({k:'emoji',q:'看图，选出正确的拼音',g:em.g,ansVal:em.ans,opts:pyShuffle([em.ans,...pyShuffle(PY_SPELL_EMOJI.filter(x=>x.ans!==em.ans)).slice(0,2).map(x=>x.ans)]).map(v=>({g:v,h:(PY_SPELL_EMOJI.find(x=>x.ans===v)||{}).h||''})),
+      why:`这个是${em.h}，拼音是 ${em.ans}。`});
+  }else{
+    pyShuffle(PY_WHOLE_Q).slice(0,2).forEach(b=>qs.push({k:'choice',q:b.q,opts:b.opts.map(o=>({g:o.g,h:''})),ansVal:b.opts[b.ans].g,why:b.why}));
+    const se=pyShuffle(PY_SENT)[0];
+    qs.push({k:'read',q:'读一读这句话，选出它的意思',py:se.t,
+      ansVal:se.z,
+      opts:pyShuffle([se.z,...pyShuffle(PY_SENT.filter(x=>x.z!==se.z)).slice(0,2).map(x=>x.z)]).map(v=>({g:v,h:''})),
+      why:`${se.t} 读作：${se.z}`});
+  }
+  return qs.slice(0,PY_ROUNDS).map((q,i)=>({...q,no:i+1}));
+}
+
+/* ================= 交互 ================= */
+let __pyQ=null,__pyIdx=0,__pyAns=[],__pyLocked=false;
+function pyStartRound(){
+  const p=pyS();
+  p.rounds[p.stage]=0;
+  __pyIdx=0;__pyAns=[];__pyLocked=false;
+  __pyQ=buildQuiz();
+  save();renderPinyin();
+}
+function pyPick(el,val){
+  if(__pyLocked||!__pyQ||!__pyQ[__pyIdx])return;
+  const q=__pyQ[__pyIdx];
+  const right=val===q.ansVal;
+  if(right){
+    __pyLocked=true;
+    el.classList.add('ok');
+    pyMarkRight(q);
+    __pyAns.push(1);
+    const ab=document.getElementById('pyAnsBox');
+    if(ab){ab.textContent=val;ab.className='py-box ask ok';}
+    document.getElementById('pyFb').textContent='答对啦 ✅ '+(q.why||'真棒！');
+    document.getElementById('pyFb').className='py-fb ok';
+    speak('答对啦');
+    setTimeout(()=>{__pyLocked=false;pyNextRound()},950);
+  }else{
+    el.classList.add('no');
+    pyMarkWrong(q,val);
+    __pyAns.push(0);
+    __pyLocked=true;
+    document.getElementById('pyFb').textContent='再想一想～ 先听一听：'+(q.audio||q.py||'');
+    document.getElementById('pyFb').className='py-fb no';
+    if(q.audio)speak(q.audio);
+    setTimeout(()=>{el.classList.remove('no');__pyLocked=false;},1100);
+  }
+}
+function pyNextRound(){
+  const p=pyS();
+  __pyIdx++;
+  p.rounds[p.stage]=(p.rounds[p.stage]||0)+1;
+  if(__pyIdx>=__pyQ.length){
+    pyFinish();
+    return;
+  }
+  save();renderRoundCard();
+}
+function pyFinish(){
+  const p=pyS();
+  const right=__pyAns.filter(x=>x).length;
+  const total=__pyQ.length||1;
+  const rate=right/total;
+  p.best[p.stage]=Math.max(p.best[p.stage]||0,Math.round(rate*100));
+  const key=p.stage+'|'+p.lv;
+  if(rate>=PY_PASS_RATE){
+    p.pass[key]=true;
+    pyUnlockMedal(p.stage);
+    speak(right===total?'全部答对，太厉害了':'过关啦，真棒');
+    if(p.stage===1&&p.lv===1)p.cleared=true;
+    __pyQ=null;save();
+    const last=(p.stage===PY_STAGES.length&&p.lv>=PY_STAGES[5].lv);
+    celebrate('🎉',last?'拼音小达人！':'过关啦！',
+      `第${p.stage}阶 第${p.lv}关 答对 ${right}/${total} 题。${last?'六个阶段全部学完，你已经是拼音小达人啦！':'已解锁下一关，去看看吧～'}`);
+    renderPinyin();
+    return;
+  }
+  speak('再试一次，你可以的');
+  document.getElementById('pyFb').textContent=`这次答对 ${right}/${total} 题，再读一遍，再来一次吧！`;
+  document.getElementById('pyFb').className='py-fb no';
+  __pyQ=null;
+  p.rounds[p.stage]=0;
+  save();
+  setTimeout(()=>{renderPinyin()},700);
+}
+function pyMarkRight(q){
+  const p=pyS();
+  let ks=[];
+  if(q.k==='sound')ks=[q.ansVal];
+  else if(q.k==='choice')ks=[q.ansVal];
+  else if(q.k==='spell')ks=[q.ansVal];
+  else if(q.k==='emoji')ks=[q.ansVal];
+  else if(q.k==='read')ks=['sent:'+q.py];
+  ks.forEach(k=>{p.ok[k]=(p.ok[k]||0)+1;if(p.bad[k])p.bad[k]=Math.max(0,p.bad[k]-1)});
+}
+function pyMarkWrong(q,val){
+  const p=pyS();
+  const k=(q.k==='read')?('sent:'+q.py):val;
+  p.bad[k]=(p.bad[k]||0)+1;
+}
+function pyUnlockMedal(stage){
+  const p=pyS();
+  const m=PY_STAGES[stage-1];
+  if(!m)return;
+  if(!p.medals.includes(stage)){
+    p.medals.push(stage);
+    setTimeout(()=>toast(`🏅 获得奖章：${m.name}`),600);
+  }
+}
+function pySay(it){
+  speak(it.say||((it.h?it.h+'，':'')+pyVal(it)));
+}
+function pySayVal(v){
+  const all=[...PY_FINAL_S,...PY_INIT,...PY_COMPOUND,...PY_WHOLE];
+  const it=all.find(x=>pyVal(x)===v);
+  if(it)return speak(it.say);
+  const sp=PY_SPELL_Q.find(x=>x.ans===v);
+  if(sp)return speak(sp.ans+'，'+sp.ok);
+  speak(v);
+}
+function pyPlayLine(line){speak(line)}
+function pyClearStage(){
+  const p=pyS();
+  const cur=p.stage,st=PY_STAGES[cur-1];
+  if(!confirm(`确定要重置「${st.name}」的学习记录吗？（已得的奖章会保留）`))return;
+  Object.keys(p.pass).forEach(k=>{if(k.indexOf(cur+'|')===0)delete p.pass[k]});
+  Object.keys(p.ok).forEach(k=>{delete p.ok[k]});
+  Object.keys(p.bad).forEach(k=>{delete p.bad[k]});
+  p.medals=p.medals.filter(x=>x!==cur);
+  p.lv=1;p.rounds[cur]=0;
+  save();renderPinyin();toast('已重置本阶进度');
+}
+
+/* ================= 渲染 ================= */
 function renderPinyin(){
-  renderTaskList('pinyinTasks',S.tasks.pinyin,false);
-  const seed=daySeed();
-  const lv=pyLevel();
-  const nextLv=PY_LEVELS.find(l=>l.min>S.totalSun);
-  document.getElementById('pyLevel').textContent=lv.name+' · 共5级';
-  /* 今日新学 */
-  let nc='';
-  if(lv.lv===4){
-    // 拼读级：讲解两拼法则
-    nc=`<div style="text-align:center"><span data-say="今天学习两拼音节。声母轻，韵母响，两音相连猛一碰。" style="display:inline-block;background:#e8985a;color:#fff;border-radius:99px;padding:2px 10px;font-size:10.5px;font-weight:800;cursor:pointer">🔊 听方法</span></div><br><b style="font-size:34px;color:#b06a2f;font-family:Georgia,serif">声母 + 韵母 → 音节</b><br><br><span style="font-size:13px;color:var(--text2);line-height:1.8">📖 拼读口诀：<b>前音（声母）轻短后音（韵母）重，两音相连猛一碰。</b><br>例如：b-à → bà（爸爸的爸）。今天的 8 个音节在下方"今日拼读练习"，点一个听一个，跟着大声读！</span>`;
-  }else{
-    const p=pick(lv.pool,1,seed)[0];
-    nc=`<div style="text-align:center"><span data-say="难度${lv.name}。${p.p}，${p.tip.replace(/b b b|dada d d/g,'')}" style="display:inline-block;background:#e8985a;color:#fff;border-radius:99px;padding:2px 10px;font-size:10.5px;font-weight:800;cursor:pointer">🔊 听今天的新字母</span></div><br><b style="font-size:52px;color:#b06a2f;font-family:Georgia,serif;line-height:1.2">${p.p}</b><br><br><span style="font-size:13px;color:var(--text2);line-height:1.8">🎵 口诀：<b>${p.tip}</b><br>🗣 例词：${p.ex}<br>👀 描一描：用手指在空中把这个字母写三遍</span>`;
+  const p=pyS();
+  /* 跨天：保存昨天的成绩，今天从"学过的内容里"重新练 */
+  if(p.lastDay!==todayStr()){
+    p.lastDay=todayStr();
+    p.rounds[p.stage]=0;
+    save();
   }
-  document.getElementById('pyNewCard').innerHTML=nc;
-  /* 本级复习：整级字母（或音节）网格，点读 */
-  const items=lv.pool.map((x,i)=>`<span data-say="${(x.w?x.h+'，'+x.w:x.p+'，'+x.tip).replace(/"/g,'')}" class="chip3" style="cursor:pointer;font-size:15px">${x.s||x.p}<small style="font-size:9px">${x.h||''}</small></span>`).join('');
-  document.getElementById('pyReview').innerHTML=`<div class="chips" style="gap:7px">${items}</div>`;
-  /* 今日拼读练习 */
-  let sp='';
-  if(lv.lv<=2){
-    // 初级：声母+单韵母的组合示范（用已学内容）
-    const demos=[
-      {s:'b-a→ba',h:'爸',w:'b-a，爸，爸爸的爸'},{s:'m-o→mo',h:'摸',w:'m-o，摸，摸一摸的摸'},
-      {s:'d-i→di',h:'笛',w:'d-i，笛，笛子的笛'},{s:'n-u→nu',h:'努',w:'n-u，努，努力的努'},
-      {s:'l-e→le',h:'乐',w:'l-e，乐，快乐的乐'},{s:'g-u→gu',h:'鼓',w:'g-u，鼓，打鼓的鼓'}
-    ];
-    const ds=pick(demos,4,seed);
-    sp=ds.map(x=>`<div style="display:flex;align-items:center;gap:9px;background:var(--bg2);border-radius:11px;padding:10px;margin-bottom:7px;border:1.5px solid var(--line)"><span data-say="${x.w}" style="flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#fdf1e3;border:1.5px solid #e8985a;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer">🔊</span><div style="flex:1"><b style="font-size:16px;color:#b06a2f;font-family:Georgia,serif">${x.s}</b> <span style="font-size:12px;color:var(--text2)">→ ${x.h}</span></div></div>`).join('');
-    sp+=`<div style="font-size:11px;color:var(--muted)">💡 和爸爸妈妈一起玩"找朋友"：说出例词，找到对应的音节</div>`;
-  }else{
-    const n=lv.lv===5?6:8;
-    const ss=pick(PY_SPELL,n,seed+7);
-    sp=ss.map(x=>`<span data-say="${x.w}" class="chip3" style="cursor:pointer;font-size:15px">${x.s}<small style="font-size:9px">${x.h}</small></span>`).join('');
-    sp=`<div class="chips" style="gap:7px">${sp}</div><div style="font-size:11px;color:var(--muted);margin-top:8px">💡 拼读方法：声母轻短 + 韵母响亮，快速连读${lv.lv===5?'；整体认读音节不用拼，直接读出来':''}</div>`;
+  const ps=PY_STAGES[p.stage-1]||PY_STAGES[0];
+  const total=pySolvedAll(),all=pyTotalLevels();
+  /* --- 学习地图 --- */
+  const map=document.getElementById('pyMap');
+  if(map){
+    const pct=Math.round(total/all*100);
+    const circ=2*Math.PI*22;
+    let stHtml='';
+    PY_STAGES.forEach(s=>{
+      const doneLv=Object.keys(p.pass).filter(k=>k.indexOf(s.id+'|')===0).length;
+      const cls=s.id<p.stage?'ok':(s.id===p.stage?'now':'lock');
+      const ic=s.id<p.stage?'✅':(s.id===p.stage?'▶️':'🔒');
+      stHtml+=`<div class="py-st ${cls}"><span class="n">${ic} ${s.short}</span><span class="c">${doneLv}/${s.lv} 关</span></div>`;
+    });
+    map.innerHTML=`
+      <div class="py-map-head">
+        <div class="tt">${esc(ps.name)}<small>${esc(ps.des)}</small></div>
+        <div class="py-ring">
+          <svg width="54" height="54"><circle cx="27" cy="27" r="22" fill="none" stroke="#f3e3d2" stroke-width="6"></circle><circle cx="27" cy="27" r="22" fill="none" stroke="#e8985a" stroke-width="6" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ*(1-pct/100)}"></circle></svg>
+          <div class="tx">${pct}%<small>总进度</small></div>
+        </div>
+      </div>
+      <div class="py-bar"><span style="width:${pct}%"></span></div>
+      <div class="py-bar-txt"><span>已过 ${total} / ${all} 关</span><span>掌握度 ${pyMastery().rate}%</span></div>
+      <div class="py-stages">${stHtml}</div>
+      <div class="py-medals">${PY_STAGES.map(s=>`<span class="py-medal ${p.medals.includes(s.id)?'':'off'}">${p.medals.includes(s.id)?'🏅':'⚪'} 第${s.id}阶</span>`).join('')}</div>
+    `;
   }
-  document.getElementById('pySpell').innerHTML=sp;
+  /* --- 今日关卡卡 --- */
+  const lvEl=document.getElementById('pyLevel');
+  if(lvEl)lvEl.textContent=`第${p.stage}阶 · 第${p.lv}关 / 共${ps.lv}关`;
+  const nc=document.getElementById('pyNewCard');
+  if(nc){
+    if(__pyQ&&__pyQ[__pyIdx]){
+      renderRoundCard();
+    }else{
+      const cleared=p.pass[p.stage+'|'+p.lv];
+      nc.innerHTML=`
+        <div class="py-levelbar">
+          <span class="py-pill hot">${esc(pyLevelTitle())}</span>
+          <span class="py-pill">第 ${p.lv} / ${ps.lv} 关</span>
+          <span class="py-pill">本阶最好 <b>${p.best[p.stage]||0}%</b></span>
+        </div>
+        <div class="py-q">${cleared?'这一关已经过关啦 🎉 可以再练一次，或者点击下面按钮进入下一关。':'先看下面的「本关新学」，再点开始闯关。答对 3 题里 2 题以上就过关！'}</div>
+        <div class="py-acts">
+          <button class="btn sun" onclick="pyStartRound()" style="flex:2">${cleared?'再练一次 🔁':'开始闯关 🎯'}</button>
+          ${cleared?`<button class="btn" onclick="pyNextLevel()" style="flex:1">下一关 ➡️</button>`:`<button class="btn ghost" onclick="pySpeakAll()" style="flex:1">🔊 全部听一遍</button>`}
+        </div>
+        <div class="py-fb" id="pyFb"></div>
+      `;
+    }
+  }
+  /* --- 本关新学 --- */
+  const lc=document.getElementById('pyLearn');
+  if(lc)lc.innerHTML=renderPyLearn();
+  /* --- 已学复习 --- */
+  const rv=document.getElementById('pyReview');
+  if(rv)rv.innerHTML=renderPyReview();
+  /* --- 小贴士 --- */
+  const tp=document.getElementById('pyTips');
+  if(tp)tp.innerHTML=renderPyTips();
+}
+function renderRoundCard(){
+  const q=__pyQ&&__pyQ[__pyIdx];
+  const nc=document.getElementById('pyNewCard');
+  if(!nc)return;
+  if(!q){nc.innerHTML='';return}
+  const p=pyS();
+  const dots=__pyQ.map((_,i)=>i<__pyIdx?'●':(i===__pyIdx?'○':'·')).join(' ');
+  let body='';
+  if(q.k==='spell'){
+    body=`<div class="py-plus"><div class="py-box">${esc(q.a)}</div><div class="py-op">＋</div><div class="py-box">${esc(q.b)}</div><div class="py-op">＝</div><div class="py-box ask" id="pyAnsBox">?</div></div>`;
+  }
+  if(q.k==='emoji'){
+    body=`<div style="text-align:center;font-size:52px;line-height:1.2;margin:2px 0 6px">${q.g}</div>`;
+  }
+  if(q.k==='tone'){
+    body=`<div style="text-align:center;margin:0 0 10px"><span class="py-pill" style="cursor:pointer;font-size:12px" onclick="pyPlayLine('${q.line.replace(/'/g,'')}')">🔊 听句子：${esc(q.line)}</span></div>`;
+  }
+  if(q.k==='read'){
+    body=`<div style="text-align:center;font-size:19px;font-weight:800;color:#b06a2f;letter-spacing:1px;line-height:1.8;margin:4px 0 10px">${esc(q.py)}</div>
+      <div style="text-align:center;margin-bottom:8px"><span class="py-pill" onclick="pyPlayLine('${q.py.replace(/'/g,'')}')" style="cursor:pointer">🔊 听这句话</span></div>`;
+  }
+  const opts=q.opts.map((o,i)=>{
+    const txt=o.g&&/^[\u4e00-\u9fa5，。！？]/.test(o.g)?`<div style="font-size:13px;font-weight:800;color:var(--text);line-height:1.5">${esc(o.g)}</div>`:`<div class="g">${esc(o.g)}</div>${o.h?`<div class="h">${esc(o.h)}</div>`:''}`;
+    return `<div class="py-opt" data-val="${esc(o.g)}" onclick="pyPick(this,this.getAttribute('data-val'))">${txt}</div>`;
+  }).join('');
+  nc.innerHTML=`
+    <div class="py-levelbar">
+      <span class="py-pill hot">${esc(pyLevelTitle())}</span>
+      <span class="py-pill">第 ${p.lv} 关 · 第 ${q.no} 题</span>
+      <span class="py-pill">${dots}</span>
+    </div>
+    <div class="py-q">${esc(q.q)}${q.audio?`<br><span class="py-pill" style="margin-top:6px;cursor:pointer" onclick="speak('${q.audio.replace(/'/g,"\\'")}')">🔊 点我再听一次</span>`:''}</div>
+    ${body}
+    <div class="py-opts">${opts}</div>
+    <div class="py-fb" id="pyFb">选一个你听到 / 想到的答案吧～</div>
+  `;
+}
+function renderPyLearn(){
+  const p=pyS();
+  if(p.stage===1){
+    const hello=PY_HELLO.map((x,i)=>`
+      <div class="py-line">
+        <span class="spk" onclick="pySayHello(${i})">🔊</span>
+        <span class="t"><b>${esc(x.t)}</b> ${esc(x.h)}<br><span style="color:var(--muted)">${esc(x.say)}</span></span>
+      </div>`).join('');
+    const tones=PY_TONE.map((x,i)=>`
+      <div class="py-line">
+        <span class="spk" onclick="pySayTone(${i})">🔊</span>
+        <span class="t"><b style="font-size:17px">${esc(x.p)}</b>（${esc(x.h)}，${esc(x.w)}）<br><span style="color:var(--muted)">${esc(x.say)}</span></span>
+      </div>`).join('');
+    return `<div class="py-teach">👂 <b>先听爸爸妈妈说：</b>汉字有一个小名，叫拼音。学会拼音，你就能自己读故事书啦。拼音有四顶小帽子，叫做声调。</div>
+      <div style="height:8px"></div>${hello}
+      <div class="py-teach" style="margin-top:4px">🎵 <b>四个声调</b>：一声平、二声扬、三声拐弯、四声降。</div>
+      <div style="height:8px"></div>${tones}
+      <div class="py-tip">👆 用手指在空中画一画四声的路线：→ / ↗ / ˇ / ↘</div>`;
+  }
+  if(p.stage===5){
+    return `<div class="py-teach">📖 <b>拼读口诀</b>：前音轻短后音重，两音相连猛一碰。<br>例：<b>b－à → bà</b>（爸爸的爸）　<b>h－u－ā → huā</b>（花朵的花）</div>
+      <div style="height:8px"></div>
+      ${PY_SPELL_Q.slice(0,4).map((x,i)=>`
+        <div class="py-line">
+          <span class="spk" onclick="pySaySpell(${i})">🔊</span>
+          <span class="t"><b>${esc(x.a)} － ${esc(x.b)} → ${esc(x.ans)}</b>　${esc(x.ok)}<br><span style="color:var(--muted)">${esc(x.why)}</span></span>
+        </div>`).join('')}
+      <div class="py-tip">💡 先读声母（轻轻的、短短的），马上接上韵母（响亮的），两下连在一起就是一个音节。</div>`;
+  }
+  if(p.stage===6){
+    const items=pyLevelItems();
+    return `<div class="py-teach">🎯 <b>整体认读音节</b>：这 16 个音节不用拼，看一眼就直接读出来。</div>
+      <div style="height:8px"></div>
+      <div class="py-review">${items.map(x=>`<div class="py-rev" onclick="pySayByVal('${x.g}')"><div class="g">${esc(x.g)}</div><div class="h">${esc(x.h)}</div></div>`).join('')}</div>
+      <div class="py-tip">👀 先看着读一遍，再闭眼回忆一遍：${items.map(x=>x.h).join('、')}。</div>`;
+  }
+  const items=pyLevelItems();
+  const sz=p.stage===2?3:4;
+  const chip=items.map(x=>`
+    <div class="py-rev" onclick="pySayByVal('${pyVal(x)}')">
+      <div class="g">${esc(pyVal(x))}</div>
+      <div class="h">${esc(x.h||'')}</div>
+    </div>`).join('');
+  const detail=items.map(x=>`
+    <div class="py-line">
+      <span class="spk" onclick="pySayByVal('${pyVal(x)}')">🔊</span>
+      <span class="t"><b style="font-size:15px">${esc(pyVal(x))}</b>（${esc(x.h)}）<br><span style="color:var(--muted)">🎵 ${esc(x.tip)}</span></span>
+    </div>`).join('');
+  const mouth=items[0]&&items[0].mouth?`<div class="py-tip">👄 <b>口型小提示</b>：${items.map(x=>`${esc(pyVal(x))} — ${esc(x.mouth)}`).join('；')}</div>`:'';
+  return `<div class="py-teach">今天学 <b>${items.length} 个</b>：${items.map(x=>esc(pyVal(x))).join('、')}。先点开听一遍，再跟着大声读三遍。</div>
+    <div style="height:9px"></div>
+    <div class="py-review">${chip}</div>
+    <div style="height:10px"></div>
+    ${detail}
+    ${mouth}`;
+}
+function renderPyReview(){
+  const p=pyS();
+  const all=[];
+  Object.keys(p.learned).forEach(k=>{
+    if(k.indexOf('sent:')===0||k.indexOf('hello')===0)return;
+    all.push(k);
+  });
+  if(!all.length){
+    return `<div class="empty">还没有学过的字母，先完成上面的「本关新学」吧～</div>`;
+  }
+  /* 孩子最需要练的排前面：答错过的、还没掌握的 */
+  all.sort((a,b)=>{
+    const sa=(p.bad[a]||0)*3+((p.ok[a]||0)>=2?0:2)+((p.ok[a]||0)===0?3:0);
+    const sb=(p.bad[b]||0)*3+((p.ok[b]||0)>=2?0:2)+((p.ok[b]||0)===0?3:0);
+    return sb-sa;
+  });
+  const html=all.slice(0,18).map(k=>{
+    const m=pyIsMastered(k),weak=(p.bad[k]||0)>0;
+    const nm=(p.learned[k]&&p.learned[k].h)||'';
+    return `<div class="py-rev ${m?'mastered':(weak?'weak':'')}" onclick="pySayByVal('${k}')">
+      <div class="g">${esc(k)}</div><div class="h">${esc(nm)}</div>
+      <div class="st">${m?'★★★':((p.ok[k]||0)===0?'☆':'★★')}</div>
+    </div>`;
+  }).join('');
+  return `<div class="py-review">${html}</div>
+    <div class="py-tip">⭐ 一颗星 = 还没练过；★★ = 答对过 1 次；★★★ = 已掌握。${all.length>18?`共学过 ${all.length} 个，这里只显示最需要练的 18 个。`:''}</div>`;
+}
+function renderPyTips(){
+  const p=pyS();
+  const tips={
+    1:'① 每天 10 分钟就够，先听后读，不要求写。<br>② 读四声时可以用手比划路线：平、上扬、拐弯、下降。<br>③ 找一找家里有哪些字，读一读它们的拼音。',
+    2:'① 单韵母要看清口型：a 张大嘴，o 圆圆嘴，e 扁扁嘴，i 露牙齿，u 噘嘴巴，ü 吹笛子。<br>② 每天读 3 遍，读的时候照镜子看口型更有趣。',
+    3:'① 声母读得又轻又短，不要拖长音。<br>② b 和 d、p 和 q 最容易反，可以记：b 是听广播，d 是左下半圆。<br>③ zh ch sh 是两个字母手拉手，读的时候舌尖要翘起来。',
+    4:'① 复韵母是"滑过去"的音，从第一个字母滑到第二个字母。<br>② an / ang 比一比：一个鼻音短，一个拖长一点。<br>③ er 是特殊韵母，舌尖要卷起来。',
+    5:'① 两拼：声母轻、韵母响，猛一碰。<br>② 三拼：声母 + 介母（i u ü）+ 韵母，一口气滑下来。<br>③ j q x 遇到 ü，要去掉两点（比如 jú、qù、xū）。',
+    6:'① 整体认读音节不用拼，看见就直接读。<br>② 先读词语，再读句子，一句一句慢慢来。<br>③ 会读拼音以后，找一本简单的图画书，自己读出第一句话吧！'
+  };
+  const stageTip=tips[p.stage]||tips[1];
+  const weak=Object.keys(p.bad).filter(k=>p.bad[k]>0&&k.indexOf('sent:')!==0);
+  return `<div style="font-size:12.5px;line-height:1.9;color:var(--text2);font-weight:600">${stageTip}</div>
+    ${weak.length?`<div class="py-tip">🎯 <b>需要多练</b>：${weak.slice(0,6).map(k=>`<span class="py-pill" style="cursor:pointer;margin:2px 3px 0 0" onclick="pySayByVal('${k}')">${esc(k)}</span>`).join('')}</div>`:''}
+    <div class="py-acts"><button class="btn ghost" onclick="pyClearStage()">重置本阶进度</button></div>`;
+}
+function pySpeakAll(){
+  const items=pyLevelItems();
+  if(!items.length)return;
+  speak(items.map(x=>x.say||x.h).join('。'));
+}
+function pySayByVal(v){
+  const p=pyS();
+  const it=(p.learned&&p.learned[v])||null;
+  if(it&&it.say){speak(it.say);return}
+  const all=[...PY_FINAL_S,...PY_INIT,...PY_COMPOUND,...PY_WHOLE];
+  const f=all.find(x=>pyVal(x)===v);
+  if(f){speak(f.say);return}
+  const sp=PY_SPELL_Q.find(x=>x.ans===v);
+  if(sp){speak(sp.ans+'，'+sp.ok);return}
+  speak(v);
+}
+function pySayHello(i){const x=PY_HELLO[i];if(x)speak(x.say)}
+function pySayTone(i){const x=PY_TONE[i];if(x)speak(x.say)}
+function pySaySpell(i){const x=PY_SPELL_Q[i];if(x)speak(x.a+'，'+x.b+'，'+x.ans+'，'+x.ok)}
+function pyNextLevel(){
+  const p=pyS();
+  const cur=p.stage,st=PY_STAGES[cur-1];
+  if(p.lv<st.lv){p.lv++;}
+  else if(cur<PY_STAGES.length){p.stage++;p.lv=1;}
+  else{toast('恭喜！六个阶段全部学完啦 🏆');return}
+  p.rounds[p.stage]=0;
+  /* 把本关字母记入"已学" */
+  pyRegisterLearned();
+  save();renderPinyin();
+  const now=PY_STAGES[p.stage-1];
+  toast(`进入 第${p.stage}阶 第${p.lv}关 · ${now.name}`);
+  speak(`第${p.stage}阶，${now.name}`);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+/* 记录本关新学的内容，供复习区与掌握度使用 */
+function pyRegisterLearned(){
+  const p=pyS();
+  const items=pyLevelItems();
+  items.forEach(x=>{
+    const k=pyVal(x);
+    if(!k)return;
+    if(!p.learned[k])p.learned[k]={h:x.h||'',say:x.say||x.tip||k,at:todayStr()};
+  });
+  if(p.stage===1){p.learned['tone:1']={h:'四声',say:'四个声调：一声平、二声扬、三声拐弯、四声降。'};}
+  if(p.stage===5){PY_SPELL_Q.forEach(x=>{if(!p.learned[x.ans])p.learned[x.ans]={h:x.ok,say:x.a+'，'+x.b+'，'+x.ans+'，'+x.ok};});}
+  if(p.stage===6){PY_SENT.forEach(s=>{const k='sent:'+s.t;if(!p.learned[k])p.learned[k]={h:s.h,say:s.z};});}
+  save();
 }
 
 /* ================= 渲染：数学 ================= */
@@ -2206,13 +2911,23 @@ function primeVoices(){
 if('speechSynthesis' in window){
   try{ speechSynthesis.onvoiceschanged=()=>{try{speechSynthesis.getVoices()}catch(e){}}; }catch(e){}
 }
+/* 拼音字母 → 中文谐音，避免用英文发音去读拼音 */
+const PY_TTS={
+  a:'啊',o:'喔',e:'鹅',i:'衣',u:'乌','ü':'鱼',ai:'哀',ei:'诶',ui:'威',ao:'袄',ou:'欧',iu:'优',
+  ie:'耶','üe':'约',er:'耳',an:'安',en:'恩',in:'音',un:'温','ün':'云',ang:'昂',eng:'鞥',ing:'英',ong:'翁',
+  b:'玻',p:'坡',m:'摸',f:'佛',d:'得',t:'特',n:'讷',l:'勒',g:'哥',k:'科',h:'喝',
+  j:'鸡',q:'欺',x:'希',zh:'知',ch:'吃',sh:'诗',r:'日',z:'资',c:'次',s:'思',y:'衣',w:'乌'
+};
 function speak(text){
   if(!('speechSynthesis' in window)){toast('设备不支持朗读哦');return}
   if(!text)return;
   try{
     speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(String(text));
-    u.lang=/[a-zA-Z]/.test(text)?'en-US':'zh-CN';
+    let t=String(text);
+    /* 只有一个字母/韵母（拼音标签）时，用中文谐音读，避免英文腔 */
+    if(PY_TTS[t])t=PY_TTS[t];
+    const u=new SpeechSynthesisUtterance(t);
+    u.lang=/[a-zA-Z]/.test(t)?'en-US':'zh-CN';
     u.rate=0.85;u.pitch=1.1;
     // iOS 有时首次调用会被吞，延迟一点点再读更稳
     setTimeout(()=>{ try{ speechSynthesis.speak(u); }catch(e){} },30);
@@ -2463,7 +3178,7 @@ function go(name){
   document.getElementById('pageTitle').textContent=TITLES[name]||'小葵花学堂';
   if(name==='home')renderHome();
   if(name==='chinese')renderChinese();
-  if(name==='pinyin')renderPinyin();
+  if(name==='pinyin'){pyRegisterLearned();renderPinyin();}
   if(name==='math')renderMath();
   if(name==='english')renderEnglish();
   if(name==='game')newGame();
