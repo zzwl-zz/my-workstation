@@ -1629,6 +1629,7 @@ function renderChinese(){
     <div class="lesson-item tap" onclick="speakHanzi(${i})">
       <div class="big">${h.z}</div><div class="pinyin">${h.p}</div>
       <div class="word-line" onclick="event.stopPropagation();speakHanziWord(${i})">${h.w}</div>
+      <div onclick="event.stopPropagation();speakHanziSpell(${i})" style="margin-top:4px;display:inline-flex;align-items:center;gap:3px;background:#fdf6e8;border:1.5px solid #e8b84a;border-radius:99px;padding:2px 9px;font-size:10px;font-weight:800;color:#a67c1b;cursor:pointer">🔊 拼一拼</div>
     </div>`).join('');
   // 国学短句 3 句（句子 + 解释都可点读）
   const gs=pick(GUOXUE_POOL,3,seed);
@@ -1651,6 +1652,36 @@ function renderChinese(){
   const lvName={1:'⭐ 基础',2:'⭐⭐ 进阶',3:'⭐⭐⭐ 挑战'}[lvl];
   document.getElementById('picEmoji').textContent=p.e;
   document.getElementById('picTip').innerHTML=`<span style="display:inline-block;background:var(--chinese);color:#fff;border-radius:99px;padding:1px 9px;font-size:10.5px;font-weight:800;margin-bottom:5px">难度 ${lvName} · 累计阳光 ${S.totalSun}</span><br>💬 ${esc(p.tip)}`;
+}
+/* 拼音拼读：声母/韵母用中文谐音，最后读字和组词（如 péng → 坡——鞥——朋！朋友） */
+const PY_SM={b:'玻',p:'坡',m:'摸',f:'佛',d:'得',t:'特',n:'讷',l:'勒',g:'哥',k:'科',h:'喝',j:'鸡',q:'欺',x:'希',zh:'知',ch:'吃',sh:'诗',r:'日',z:'资',c:'次',s:'思',y:'衣',w:'乌'};
+const PY_YM={a:'啊',o:'喔',e:'鹅',i:'衣',u:'乌','ü':'鱼',ai:'哀',ei:'诶',ui:'威',ao:'袄',ou:'欧',iu:'优',ie:'耶','üe':'约',er:'耳',an:'安',en:'恩',in:'音',un:'温','ün':'云',ang:'昂',eng:'鞥',ing:'英',ong:'翁',ia:'呀',ua:'蛙',uo:'窝',uai:'歪',uan:'弯',ian:'烟',iao:'腰',iang:'央',uang:'汪','üan':'冤',iong:'雍',ueng:'翁'};
+function splitPinyin(p){
+  /* ǚ→ü 先于去调（避免被当成 u），yu 拼写还原为 y+ü */
+  let s=p.replace(/[ǖǘǚǜ]/g,'ü').replace(/[āáǎà]/g,'a').replace(/[ōóǒò]/g,'o').replace(/[ēéěè]/g,'e').replace(/[īíǐì]/g,'i').replace(/[ūúǔù]/g,'u');
+  if(s.startsWith('yu'))s='yü'+s.slice(2);
+  if(/^[jqx]u/.test(s))s=s[0]+'ü'+s.slice(2); /* j/q/x 后的 u 实为 ü */
+  /* 剥离韵母（最长匹配优先） */
+  const yms=Object.keys(PY_YM).filter(k=>k!=='ao2').sort((a,b)=>b.length-a.length);
+  for(const y of yms){
+    if(s.endsWith(y)){
+      const sm=s.slice(0,s.length-y.length);
+      return {sm, ym:y};
+    }
+  }
+  return {sm:'', ym:s};
+}
+function spellText(p,z,w){
+  const {sm,ym}=splitPinyin(p);
+  const smZ=sm?(PY_SM[sm]||sm):'';
+  const ymZ=PY_YM[ym]||ym;
+  const core=(smZ?smZ+'——'+ymZ+'——':ymZ+'——')+z;
+  return '拼一拼：'+core+'！'+w;
+}
+function speakHanziSpell(i){
+  const hs=window.__hanzi;
+  if(!hs||!hs[i])return;
+  speak(spellText(hs[i].p,hs[i].z,hs[i].w));
 }
 function speakHanzi(i){
   const hs=window.__hanzi;
@@ -1775,42 +1806,98 @@ function renderMath(){
   renderCompare(seed);
   newNumGame();
 }
-/* ===== 10以内数字分解 ===== */
+/* ===== 10以内数字分解（树枝状 · 答案隐藏 · 每天1-2个数） ===== */
+let __dc={nums:[],filled:{},active:null};
 function renderDecompose(seed){
   const box=document.getElementById('decomposeBox');
   if(!box)return;
-  let s=seed;
+  let s=seed+7;
   const rs=()=>{s=(s*9301+49297)%233280;return s/233280};
-  const n=5+Math.floor(rs()*6); // 5~10
-  const parts=[];
-  for(let a=1;a<n;a++)parts.push([a,n-a]);
-  const qi=Math.floor(rs()*parts.length);
-  const q=parts[qi];
-  const rows=parts.map((p,i)=>{
-    const isQ=i===qi;
-    return `<span style="display:inline-flex;align-items:center;gap:3px;background:${isQ?'#fff8e8':'var(--bg2)'};border:1.5px ${isQ?'solid #e8b84a':'solid var(--line)'};border-radius:9px;padding:5px 9px;font-size:14px;font-weight:800;color:var(--math-deep)">${p[0]}${isQ?' <input id="dcInput" type="tel" inputmode="numeric" maxlength="1" placeholder="?" style="width:30px;text-align:center;border:1.5px solid var(--line);border-radius:7px;font-weight:800;font-size:14px;color:var(--math-deep);outline:none"> ':''}和 ${p[1]}</span>`;
-  }).join('');
+  // 一天学 1~2 个数字（4~9）
+  const pool=[4,5,6,7,8,9];
+  const n1=4+Math.floor(rs()*6);
+  let nums=[n1];
+  if(rs()<0.5){let n2;do{n2=4+Math.floor(rs()*6)}while(n2===n1);nums.push(n2);}
+  nums.sort((a,b)=>a-b);
+  __dc={nums:nums,filled:{},active:null};
   box.innerHTML=`
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <b style="font-size:12.5px;color:var(--math-deep)">🔢 数字分解 · ${n} 可以分成几和几</b>
-      <span data-say="数字分解练习。${n}可以分成几和几？比如，${parts[0][0]}和${parts[0][1]}合起来是${n}。想一想，${q[0]}和几合起来是${n}？" style="width:28px;height:28px;border-radius:50%;background:#e3f0f8;border:1.5px solid var(--math);display:inline-flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0">🔊</span>
+      <b style="font-size:12.5px;color:var(--math-deep)">🔢 数字分解树 · 点一点 🌱 填答案</b>
+      <span data-say="数字分解树。每个数都可以分成两个更小的数。小树枝上的小问号藏着一个数字，点一点它，然后在下面选出正确的数字。${nums[0]}可以分成1和${nums[0]-1}，也可以分成2和${nums[0]-2}。所有分法合起来就是这个数的分解。" style="width:28px;height:28px;border-radius:50%;background:#e3f0f8;border:1.5px solid var(--math);display:inline-flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0">🔊</span>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">${rows}</div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <button class="btn" onclick="checkDecompose(${n},${q[0]})" style="flex:1;padding:8px">提交检查</button>
-      <span id="dcRes" style="font-size:12.5px;font-weight:800"></span>
-    </div>
-    <div style="font-size:11px;color:var(--muted);margin-top:7px">💡 分解口诀：合起来是 ${n}，一边多一格，另一边就少一格。</div>`;
+    <div id="dcTrees">${nums.map(n=>dcTreeHtml(n)).join('')}</div>
+    <div id="dcKeypad" style="display:none;margin-top:10px"></div>
+    <div id="dcProgress" style="margin-top:8px;font-size:12px;font-weight:800;color:var(--math-deep);text-align:center"></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px">💡 分解口诀：合起来是 ${nums[0]}，一边多一格，另一边就少一格。</div>`;
+  dcUpdateProgress();
 }
-function checkDecompose(n,a){
-  const inp=document.getElementById('dcInput');
-  const res=document.getElementById('dcRes');
-  if(!inp||!res)return;
-  const v=inp.value.trim();
-  if(v===''){res.textContent='还没有填答案哦';res.style.color='var(--muted)';return}
-  if(Number(v)===n-a){res.textContent='✓ 对啦！'+a+' 和 '+(n-a)+' 合起来是 '+n;res.style.color='var(--good)';toast('分解全对 🌟 +继续加油');}
-  else{res.textContent='✗ 再想想：'+a+' 加 几 等于 '+n+'？';res.style.color='var(--danger)';toast('差一点点，再试试 💪');}
+function dcTreeHtml(n){
+  const rows=n-1, rowH=46, topH=34, H=topH+rows*rowH+16;
+  const cy=(i)=>topH+i*rowH+rowH/2;
+  let lines='';
+  for(let i=0;i<rows;i++){
+    const y=cy(i);
+    lines+=`<line x1="50%" y1="18" x2="26%" y2="${y}" stroke="#c8b48a" stroke-width="2.5" stroke-linecap="round"/>`;
+    lines+=`<line x1="50%" y1="18" x2="74%" y2="${y}" stroke="#c8b48a" stroke-width="2.5" stroke-linecap="round"/>`;
+  }
+  let nodes=`<div style="position:absolute;left:50%;top:18px;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7a5c2e,#a8843f);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;box-shadow:0 2px 6px rgba(122,92,46,.35);border:2.5px solid #fff">${n}</div>`;
+  for(let a=1;a<=rows;a++){
+    const y=cy(a-1);
+    nodes+=`<div style="position:absolute;left:26%;top:${y}px;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:#f3ead6;border:2px solid #c8b48a;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#7a5c2e">${a}</div>`;
+    const filledKey=n+':'+a;
+    const done=__dc.filled[filledKey];
+    nodes+=`<div id="dcn-${n}-${a}" onclick="dcTap(${n},${a},event)" style="position:absolute;left:74%;top:${y}px;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;${done?'background:#e2f5e4;border:2px solid #57b96a;color:#2e8b46':'background:#fff8e8;border:2px dashed #e8b84a;color:#e8b84a'};display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;cursor:pointer;transition:transform .15s">${done||'🌱'}</div>`;
+  }
+  return `<div style="background:linear-gradient(180deg,#faf5e8,#fff);border:1.5px solid #e5d9bd;border-radius:14px;padding:6px 4px 10px;margin-bottom:12px;position:relative;overflow:hidden">
+    <div style="text-align:center;font-size:12px;font-weight:800;color:#a8843f;margin-bottom:2px">${n} 的分解树（共 ${rows} 种分法）</div>
+    <div style="position:relative;width:100%;max-width:320px;margin:0 auto;height:${H}px">
+      <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 100 ${H}" preserveAspectRatio="none">${lines}</svg>
+      ${nodes}
+    </div></div>`;
 }
+function dcTap(n,a,ev){
+  if(__dc.filled[n+':'+a]!==undefined)return;
+  __dc.active={n:n,a:a};
+  document.querySelectorAll('[id^="dcn-"]').forEach(el=>{if(el.textContent==='🌱')el.style.background='#fff8e8'});
+  ev.currentTarget.style.background='#ffe9b8';
+  document.getElementById('dcProgress').textContent='想一想：'+a+' 和 几 合起来是 '+n+'？在下面点一个数字';
+  const kp=document.getElementById('dcKeypad');
+  if(kp){
+    kp.style.display='flex';
+    kp.innerHTML=Array.from({length:9},(_,i)=>i+1).map(v=>`<button onclick="dcPick(${v})" style="flex:1;height:42px;border-radius:11px;border:1.5px solid var(--math);background:#fff;font-size:18px;font-weight:900;color:var(--math-deep);cursor:pointer">${v}</button>`).join('');
+  }
+}
+function dcPick(v){
+  const act=__dc.active;
+  if(!act)return;
+  const el=document.getElementById('dcn-'+act.n+'-'+act.a);
+  if(!el)return;
+  if(v===act.n-act.a){
+    __dc.filled[act.n+':'+act.a]=v;
+    el.textContent=v;
+    el.style.cssText=el.style.cssText.replace(/background:[^;]+;?/,'').replace(/border:[^;]+;?/,'');
+    el.style.cssText+=';background:#e2f5e4;border:2px solid #57b96a;color:#2e8b46;';
+    toast('🌱 对啦！'+act.a+' 和 '+v+' 合起来是 '+act.n);
+    document.getElementById('dcKeypad').style.display='none';
+    __dc.active=null;
+    dcUpdateProgress();
+    dcCelebrate();
+  }else{
+    el.style.transform='translate(-50%,-50%) translateX(4px)';
+    setTimeout(()=>{el.style.transform='translate(-50%,-50%)';},160);
+    toast('再想想：'+act.a+' 加 几 等于 '+act.n+'？');
+  }
+}
+function dcUpdateProgress(){
+  const p=document.getElementById('dcProgress');
+  if(!p)return;
+  const total=__dc.nums.reduce((s,n)=>s+n-1,0);
+  const done=Object.keys(__dc.filled).length;
+  if(!__dc.active)p.textContent=done===total?'🎉 全部分解完成！真棒！':'已完成 '+done+' / '+total+' 个小树枝';
+}
+function dcCelebrate(){
+  const total=__dc.nums.reduce((s,n)=>s+n-1,0);
+  if(Object.keys(__dc.filled).length===total)toast('🎉 数字分解树全部完成！奖励一颗星星 ⭐');}
 /* ===== 20以内比大小 ===== */
 let __cmpAns=[];
 function renderCompare(seed){
