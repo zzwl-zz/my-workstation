@@ -1834,15 +1834,21 @@ function pdTap(i){
   const finish=()=>{
     if(smEl){smEl.classList.add('pd-done')}
     if(ymEl){ymEl.classList.remove('pd-cur');ymEl.classList.add('pd-done')}
-    // 读词（词语上下文保证多音字读对）
-    speak(it.c);
+    // 先读这个字，再读词语（如：t➡a➡塔，宝塔）
+    // 多音字：字+词连读（"长，长短"），让引擎按词语上下文读对单字
+    if(it.p2){ speak(it.h+'，'+it.c) }
+    else{
+      speak(it.h);
+      setTimeout(()=>{ speak(it.c) },2000);
+    }
     S.pd.done[stgKey+'|'+it.h]=1;
     if(card)card.style.borderColor='#a9cf85',card.style.background='#f2f8ea';
     const badge=document.createElement('span');
     badge.textContent='✅';badge.style.cssText='position:absolute;top:3px;right:5px;font-size:11px';
     if(card)card.appendChild(badge);
     // 多音字：补充第二种读法
-    if(it.p2){setTimeout(()=>{speak('它还读'+it.p2+'，'+it.c2)},2600)}
+    const tail=it.p2?5600:4200;
+    if(it.p2){setTimeout(()=>{speak('它还读'+it.p2+'，'+it.c2)},4400)}
     save();
     // 检查本关是否全部读完
     const stg=pdCurStage();
@@ -1854,7 +1860,7 @@ function pdTap(i){
         S.pd.stage++; save();
         renderPinDu(daySeed());
       }
-    },1200);
+    },tail);
   };
   if(smEl){
     smEl.classList.add('pd-cur');
@@ -2117,7 +2123,7 @@ function dcUpdateProgress(){
 function dcCelebrate(){
   const total=__dc.nums.reduce((s,n)=>s+n-1,0);
   if(Object.keys(__dc.filled).length===total)toast('🎉 数字分解树全部完成！奖励一颗星星 ⭐');}
-/* ===== 凑十法训练（每天 2~3 题：先把小数凑成 10，再接着加） ===== */
+/* ===== 凑十法训练（树状图 · 每天 2~3 题：先把小数凑成 10，再接着加） ===== */
 let __mt={probs:[],idx:0,step:0};
 function renderMakeTen(seed){
   const box=document.getElementById('makeTenBox');
@@ -2135,13 +2141,13 @@ function renderMakeTen(seed){
     const key=a+'+'+b;
     if(used.has(key))continue;
     used.add(key);
-    probs.push({a,b,s1:10-a,s2:b-(10-a),fin:10+(b-(10-a)),filled:{}});
+    probs.push({a,b,s1:10-a,s2:b-(10-a),fin:a+b,filled:{}});
   }
   __mt={probs:probs,idx:0,step:0};
   box.innerHTML=`
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
       <b style="font-size:12.5px;color:var(--math-deep)">🧮 凑十法 · 先凑成 10，再接着加</b>
-      <span data-say="凑十法练习。比如9加5，把5拆成1和4，9加1凑成10，10再加4等于14。点方框，在下面点数字作答。" style="width:28px;height:28px;border-radius:50%;background:#e3f0f8;border:1.5px solid var(--math);display:inline-flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0">🔊</span>
+      <span data-say="凑十法练习。看树状图，把后面的加数拆成两个数，让前面的大数先凑成10，再用10加上剩下的数，就得到答案。点问号方框，在下面点数字作答。" style="width:28px;height:28px;border-radius:50%;background:#e3f0f8;border:1.5px solid var(--math);display:inline-flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0">🔊</span>
     </div>
     <div id="mtBody"></div>
     <div id="mtKeypad" style="display:none;margin-top:10px"></div>
@@ -2153,23 +2159,39 @@ function mtRender(){
   if(!body)return;
   const pr=__mt.probs[__mt.idx];
   if(!pr){body.innerHTML='';return}
-  const cell=(id,v,ok)=>`<span id="mtc-${id}" onclick="mtTap('${id}')" style="display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:36px;border-radius:10px;cursor:pointer;font-size:19px;font-weight:900;${ok?'background:#e2f5e4;border:2px solid #57b96a;color:#2e8b46':'background:#fff8e8;border:2px dashed #e8b84a;color:#e8b84a'}">${v??'?'}</span>`;
+  /* 树状图：上排 a + b = ?；b 分叉出两个拆分框；a 和 拆分框1 汇成 10；10 和 拆分框2 汇成答案 */
+  const H=300;
+  const pos={a:[22,34],b:[50,34],fin:[78,34],b1:[34,152],b2:[66,152],ten:[22,262]};
+  let lines='';
+  const L=(x1,y1,x2,y2,w,c)=>`<line x1="${x1}%" y1="${y1}" x2="${x2}%" y2="${y2}" stroke="${c||'#c8b48a'}" stroke-width="${w||2.5}" stroke-linecap="round"/>`;
+  lines+=L(pos.a[0],pos.a[1],pos.ten[0],pos.ten[1]);          // a 竖直向下汇入 10
+  lines+=L(pos.b[0],pos.b[1],pos.b1[0],pos.b1[1]);            // b 分叉 → 拆分框1
+  lines+=L(pos.b[0],pos.b[1],pos.b2[0],pos.b2[1]);            // b 分叉 → 拆分框2
+  lines+=L(pos.b1[0],pos.b1[1],pos.ten[0],pos.ten[1],2.5,'#f5a623'); // 框1 汇入 10（凑十）
+  lines+=`<polyline points="${pos.ten[0]},${pos.ten[1]+20} ${pos.ten[0]},286 86,286 86,${pos.fin[1]}" fill="none" stroke="#f5a623" stroke-width="2.5" stroke-linecap="round"/>`; // 10 → 答案（右侧绕行）
+  lines+=`<line x1="86%" y1="${pos.fin[1]}" x2="${pos.fin[0]+3}%" y2="${pos.fin[1]}" stroke="#f5a623" stroke-width="2.5" stroke-linecap="round"/>`;
+  lines+=L(pos.b2[0],pos.b2[1],pos.fin[0],pos.fin[1]);        // 框2 → 答案
+  const done1=pr.filled.s1ok, done2=pr.filled.s2ok, doneF=pr.filled.finok;
+  const boxNode=(id,x,y,val,ok)=>`<div id="mtc-${id}" onclick="mtTap('${id}',event)" style="position:absolute;left:${x}%;top:${y}px;transform:translate(-50%,-50%);min-width:42px;height:42px;padding:0 6px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;cursor:pointer;${ok?'background:#e2f5e4;border:2.5px solid #57b96a;color:#2e8b46':'background:#fff;border:2.5px dashed #e8b84a;color:#e8b84a'}">${val}</div>`;
+  const numNode=(x,y,val,size)=>`<div style="position:absolute;left:${x}%;top:${y}px;transform:translate(-50%,-50%);width:${size||46}px;height:${size||46}px;border-radius:50%;background:linear-gradient(135deg,#7a5c2e,#a8843f);color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;border:2.5px solid #fff;box-shadow:0 2px 6px rgba(122,92,46,.35)">${val}</div>`;
+  const plusAt=(x,y)=>`<div style="position:absolute;left:${x}%;top:${y}px;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:#fff;border:1.5px solid #c8b48a;color:#a8843f;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center">+</div>`;
+  let nodes='';
+  nodes+=numNode(pos.a[0],pos.a[1],pr.a,44);
+  nodes+=`<div style="position:absolute;left:36%;top:${pos.a[1]}px;transform:translate(-50%,-50%);font-size:20px;font-weight:900;color:var(--math-deep)">+</div>`;
+  nodes+=numNode(pos.b[0],pos.b[1],pr.b,44);
+  nodes+=`<div style="position:absolute;left:64%;top:${pos.a[1]}px;transform:translate(-50%,-50%);font-size:20px;font-weight:900;color:var(--math-deep)">=</div>`;
+  nodes+=boxNode('fin',pos.fin[0],pos.fin[1],pr.filled.fin??'?',doneF);
+  nodes+=boxNode('s1',pos.b1[0],pos.b1[1],pr.filled.s1??'?',done1);
+  nodes+=boxNode('s2',pos.b2[0],pos.b2[1],pr.filled.s2??'?',done2);
+  nodes+=`<div style="position:absolute;left:${pos.ten[0]}%;top:${pos.ten[1]}px;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--sun-deep),var(--sun));color:#5a3d00;display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:900;border:3px solid #fff;box-shadow:0 3px 8px rgba(245,166,35,.4)">${done1?10:'10'}</div>`;
+  nodes+=plusAt(29,205);   /* a + 框1 = 10 */
+  nodes+=plusAt(72,95);    /* 10 + 框2 = 答案 */
   body.innerHTML=`
-    <div style="display:flex;justify-content:center;gap:10px;align-items:center;font-size:24px;font-weight:900;color:var(--math-deep);margin-bottom:10px">
-      <span>${pr.a}</span><span style="color:var(--muted)">+</span><span>${pr.b}</span><span style="color:var(--muted)">=</span><span style="color:var(--muted)">?</span>
+    <div style="position:relative;width:100%;max-width:330px;margin:0 auto;height:${H}px">
+      <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 100 ${H}" preserveAspectRatio="none">${lines}</svg>
+      ${nodes}
     </div>
-    <div style="font-size:12px;font-weight:800;color:var(--math-deep);text-align:center;margin-bottom:6px">第 1 步：把 ${pr.b} 拆成 __ 和 __，让 ${pr.a} 先凑成 10</div>
-    <div style="display:flex;justify-content:center;gap:8px;align-items:center;margin-bottom:8px">
-      ${cell('s1',pr.filled.s1,pr.filled.s1ok)} <span style="color:var(--muted);font-weight:800">和</span> ${cell('s2',pr.filled.s2,pr.filled.s2ok)}
-    </div>
-    <div id="mtStep2" style="display:${pr.filled.s2ok?'block':'none'}">
-      <div style="font-size:12px;font-weight:800;color:var(--math-deep);text-align:center;margin-bottom:6px">第 2 步：10 加上剩下的数</div>
-      <div style="display:flex;justify-content:center;gap:8px;align-items:center">
-        <span style="font-size:20px;font-weight:900;color:var(--math-deep)">10</span><span style="color:var(--muted);font-weight:800">+</span>
-        ${cell('fin',pr.filled.fin,pr.filled.finok)}
-      </div>
-    </div>
-    <div style="text-align:center;font-size:12.5px;font-weight:800;color:var(--good);margin-top:8px">${pr.filled.finok?`✅ ${pr.a} + ${pr.s1} = 10，10 + ${pr.s2} = ${pr.fin}，所以 ${pr.a} + ${pr.b} = ${pr.a+pr.b}`:''}</div>
+    <div style="font-size:12px;font-weight:800;color:var(--math-deep);text-align:center;margin-top:2px">${doneF?`✅ ${pr.b} 拆成 ${pr.s1} 和 ${pr.s2}，${pr.a} + ${pr.s1} = 10，10 + ${pr.s2} = ${pr.fin}，所以 ${pr.a} + ${pr.b} = ${pr.fin}`:(done2?`第 2 步：10 + ? = ${pr.a} + ${pr.b}，点橙色树顶旁的方框填答案`:`第 1 步：把 ${pr.b} 拆成 __ 和 __，让 ${pr.a} 先凑成 10`)}</div>
     <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:4px">第 ${__mt.idx+1} / ${__mt.probs.length} 题</div>`;
 }
 function mtTap(id){
@@ -2178,10 +2200,13 @@ function mtTap(id){
   __mt.step=id;
   const kp=document.getElementById('mtKeypad');
   if(kp){
-    kp.style.display='flex';
-    kp.innerHTML=Array.from({length:9},(_,i)=>i+1).map(v=>`<button onclick="mtPick(${v})" style="flex:1;height:42px;border-radius:11px;border:1.5px solid var(--math);background:#fff;font-size:18px;font-weight:900;color:var(--math-deep);cursor:pointer">${v}</button>`).join('');
+    kp.style.display='block';
+    const r1=Array.from({length:9},(_,i)=>i+1).map(v=>mtBtn(v)).join('');
+    const r2=[10,11,12,13,14,15,16,17,18].map(v=>mtBtn(v)).join('');
+    kp.innerHTML=`<div style="display:flex;gap:5px;margin-bottom:5px">${r1}</div><div style="display:flex;gap:5px">${r2}</div>`;
   }
 }
+function mtBtn(v){return `<button onclick="mtPick(${v})" style="flex:1;height:40px;border-radius:10px;border:1.5px solid var(--math);background:#fff;font-size:17px;font-weight:900;color:var(--math-deep);cursor:pointer">${v}</button>`}
 function mtPick(v){
   const pr=__mt.probs[__mt.idx];
   if(!pr)return;
@@ -2191,23 +2216,24 @@ function mtPick(v){
   if(v===right){
     pr.filled[id]=v;pr.filled[id+'ok']=true;
     document.getElementById('mtKeypad').style.display='none';
-    toast('✅ 对啦！接着往下算');
+    toast('✅ 对啦！'+(id==='s1'?pr.a+' + '+v+' = 10':id==='s2'?'还剩 '+v:'答案是 '+v));
     const doneAll=pr.filled.finok;
     mtRender();
     if(doneAll){
       if(__mt.idx<__mt.probs.length-1){
         __mt.idx++;__mt.step=0;
-        setTimeout(mtRender,700);
+        setTimeout(mtRender,1500);
       }else{
-        setTimeout(()=>toast('🎉 凑十法全部完成！太棒了 ⭐'),700);
+        setTimeout(()=>toast('🎉 凑十法全部完成！太棒了 ⭐'),1500);
       }
     }
   }else{
     if(el){
-      el.style.transform='translateX(4px)';
-      setTimeout(()=>{el.style.transform=''},160);
+      el.style.transform='translate(-50%,-50%) translateX(4px)';
+      setTimeout(()=>{el.style.transform='translate(-50%,-50%)'},160);
     }
-    toast('再想想：'+(id==='s1'?pr.a+' 加几等于 10？':id==='s2'?pr.s1+' 加几等于 '+pr.b+'？':'10 加几等于 '+pr.fin+'？'));
+    const tip=id==='s1'?pr.a+' 加几等于 10？':id==='s2'?pr.s1+' 加几等于 '+pr.b+'？':(pr.a+' + '+pr.b+' 的答案是几？10 + '+pr.s2+' = ?');
+    toast('再想想：'+tip);
   }
 }
 /* ===== 20以内比大小 ===== */
