@@ -353,6 +353,11 @@
     .garden-slots{grid-template-columns:repeat(auto-fill,minmax(52px,1fr))}
     .game-cols{grid-template-columns:1fr 1fr}
   }
+  /* ===== 拼音拼读：字母高亮/完成态 ===== */
+  .pd-l{display:inline-block;min-width:14px;padding:0 2px;border-radius:6px;transition:all .2s}
+  .pd-cur{background:#ffe2c4;color:#c25e42;animation:pdShake .45s ease-in-out infinite;box-shadow:0 0 0 2px rgba(232,144,122,.35)}
+  .pd-done{background:#e4f2d8;color:#4d7a2a}
+  @keyframes pdShake{0%,100%{transform:translateY(0)}25%{transform:translateY(-3px)}50%{transform:translateY(0)}75%{transform:translateY(-2px)}}
 </style>
 </head>
 <body data-page-node-id="3ml8i6y7wCoXwnvzkjeYgl">
@@ -431,7 +436,10 @@
             <div data-page-node-id="iQm9w7CCMqk7Gdopma3Da7" id="guoxueList"></div>
           </div>
 
-          <div data-page-node-id="dTPcM3jHJimbdOGI5djurf" class="section-title"><h3 data-page-node-id="4Qs7bfwMvvoQrv5Mf7QhaJ"><span data-page-node-id="YjyxzqXVpCWyyxUc690GGS" class="dot" style="background:var(--chinese)"></span><!--pnid:TaBajNLINLxZ3OCnFGpdBM-->看图说话小练习</h3><span data-page-node-id="EejdtX7jrAHOHJZf5wktGT" class="hint"><!--pnid:SsiML2OHI8gVub1z8NYC4A-->说一说</span></div>
+          <div class="section-title"><h3><span class="dot" style="background:var(--chinese)"></span>拼音拼读天天练</h3><span class="hint">点卡片，跟着拼一拼</span></div>
+          <div class="card chinese" id="pdBox"></div>
+
+          <div data-page-node-id="dTPcM3jHJimbdOGI5djurf" class="section-title"><h3 data-page-node-id="4Qs7bfwMvvoQrv5Mf7QhaJ"><span data-page-node-id="YjyxzqXVpCWyyxUc690GGS" class="dot" style="background:var(--chinese)"></span><!--pnid:TaBajNLINLxZ3OCnFGpdBM-->看图说话小练习</h3><span data-page-node-id="EejdtX7jrAHOHJZf5wktGT" class="hint"><!--pnid:SsiML2OHI8gVub1z8NYC4A-->点 🔊 听题目</span></div>
           <div data-page-node-id="84nH18B2BiChN27jH7tmpp" class="card chinese">
             <div data-page-node-id="Oz68LUkO3nVgCZSvCcRM0E" id="picEmoji" style="text-align:center; font-size:56px; padding:8px 0"></div>
             <div data-page-node-id="PI7oBZw36disJLoPNzKahV" id="picTip" style="background:var(--bg2); border-radius:11px; padding:11px; font-size:12.5px; color:var(--text2); line-height:1.7"></div>
@@ -451,6 +459,9 @@
             <div data-page-node-id="nQK2rsUNptFbBAfTthC6fi" class="quiz-list" id="quizList"></div>
             <button data-page-node-id="lA6tA8SP6fkrY89pc543eQ" class="btn" onclick="checkQuiz()" style="width:100%; margin-top:6px"><!--pnid:rZt1TXSx5GKfdDDxcQahvn-->提交检查</button>
           </div>
+
+          <div class="section-title"><h3><span class="dot" style="background:var(--math)"></span>凑十法训练 · 3 题</h3><span class="hint">先凑成 10，再接着加</span></div>
+          <div class="card math" id="makeTenBox"></div>
 
           <div data-page-node-id="S1M3tR1luhi4Hvy8a0qfBe" class="section-title"><h3 data-page-node-id="1pFw7pusL8skxGNSHgPd6b"><span data-page-node-id="E8UxRuP7hXMf19PVY8c1uk" class="dot" style="background:var(--math)"></span><!--pnid:zsSNt62Vx4YHGQk3UA4oSD-->生活思维小游戏 3 题</h3><span data-page-node-id="zVRsZhOpVM6IC220zrG8vD" class="hint"><!--pnid:GP6lvyYHl5nmG23AaNCh3q-->动动脑</span></div>
           <div class="card math" id="decomposeBox"></div>
@@ -637,14 +648,20 @@ function migrate(o){
   if(Array.isArray(o.outdoorItems)){}
   if(!s.heinemann||typeof s.heinemann!=='object')s.heinemann={level:'GK',idx:0,read:{}};
   if(!s.heinemann.read)s.heinemann.read={};
+  if(!s.pd||typeof s.pd!=='object')s.pd={stage:1,done:{}};
+  if(!s.pd.done)s.pd.done={};
+  // 老设备补齐新模块任务（按标题去重）
+  const addTask=(cat,t,d)=>{ if(Array.isArray(s.tasks[cat])&&!s.tasks[cat].some(x=>x.t===t)) s.tasks[cat].push({id:uid(),t:t,d:d,base:true}); };
+  addTask('math','凑十法训练 3 题','先凑成10，再接着加，点方框选数字作答');
+  addTask('chinese','拼音拼读天天练','点卡片拼一拼读一读，每天 9 个词');
   if(!s.custom)s.custom=[];
   if(!s.done)s.done={};
   return seedGardenIfNeeded(s);
 }
-/* 兜底：孩子已养成250棵植物的花园，若设备数据丢失则自动补回 */
+/* 兜底：孩子已养成50棵植物的花园，若设备数据丢失则自动补回 */
 function seedGardenIfNeeded(s){
   if(!s.gardenPlants&&!s.totalSun&&!s.bonusSun&&(!s.done||Object.keys(s.done).length===0)&&!s.totalPlants){
-    s.bonusSun=2500;s.totalSun=2500;s.gardenPlants=250;s.totalPlants=250;
+    s.bonusSun=500;s.totalSun=500;s.gardenPlants=50;s.totalPlants=50;
   }
   return s;  /* 清理旧版本误产生的非日期键（曾把任务id/项目id当成日期键写进来） */
   const isDayKey=k=>/^\d{4}-\d{2}-\d{2}$/.test(k);
@@ -671,11 +688,13 @@ function def(){
       chinese:[
         {id:uid(),t:'早起听读小故事 1 个',d:'边听边跟读，培养语感和专注力',base:true},
         {id:uid(),t:'认识汉字 6 个（带组词）',d:'见下方识字卡，点汉字或组词都能听读',base:true},
-        {id:uid(),t:'看图说话小练习 1 次',d:'看着图片，用完整句子描述内容',base:true},
+        {id:uid(),t:'拼音拼读天天练',d:'点卡片拼一拼读一读，每天 9 个词',base:true},
+        {id:uid(),t:'看图说话小练习 1 次',d:'看着图片，用完整句子描述内容，题目可点读',base:true},
         {id:uid(),t:'朗读国学短句 3 句',d:'点句子和解释都能听读，不要求背全篇',base:true},
       ],
       math:[
         {id:uid(),t:'两位数口算 10 题',d:'先做完再点提交检查，每天更新',base:true},
+        {id:uid(),t:'凑十法训练 3 题',d:'先凑成10，再接着加，点方框选数字作答',base:true},
         {id:uid(),t:'生活思维小游戏 3 题',d:'推理题，点题目能听读，提交后统一批改',base:true},
         {id:uid(),t:'数感挑战 8 分钟',d:'两位数比大小、凑十、认钟表，点题目能听读',base:true},
       ],
@@ -704,6 +723,8 @@ function def(){
     outdoorPicks:{},    // { '2026-10-15': {obId:true} }
     // 海尼曼阅读进度
     heinemann:{level:'GK',idx:0,read:{}},
+    // 拼音拼读进度：当前关卡 + 已读词标记
+    pd:{stage:1,done:{}},
     savedAt:''          // 最近一次保存时间
   };
 }
@@ -781,6 +802,7 @@ function packToday(){
       gardenPlants:S.gardenPlants||0, totalPlants:S.totalPlants||0,
       totalEaten:S.totalEaten||0, days:S.days||0,
       outdoorExtra:S.outdoorExtra||[], custom:S.custom||[],
+      pd:S.pd||{stage:1,done:{}},
       legacyClean:1
     })
   };
@@ -1650,8 +1672,204 @@ function renderChinese(){
   const pool = PICS.filter(x=>x.lv===lvl);
   const p = pick(pool,1,seed)[0];
   const lvName={1:'⭐ 基础',2:'⭐⭐ 进阶',3:'⭐⭐⭐ 挑战'}[lvl];
+  window.__pic=p;
   document.getElementById('picEmoji').textContent=p.e;
-  document.getElementById('picTip').innerHTML=`<span style="display:inline-block;background:var(--chinese);color:#fff;border-radius:99px;padding:1px 9px;font-size:10.5px;font-weight:800;margin-bottom:5px">难度 ${lvName} · 累计阳光 ${S.totalSun}</span><br>💬 ${esc(p.tip)}`;
+  document.getElementById('picEmoji').onclick=speakPic;
+  document.getElementById('picTip').innerHTML=`<span style="display:inline-block;background:var(--chinese);color:#fff;border-radius:99px;padding:1px 9px;font-size:10.5px;font-weight:800;margin-bottom:5px">难度 ${lvName} · 累计阳光 ${S.totalSun}</span>
+    <div onclick="speakPic()" style="margin:6px 0;display:inline-flex;align-items:center;gap:5px;background:#fdf1ea;border:1.5px solid var(--chinese);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:800;color:var(--chinese-deep);cursor:pointer">🔊 听题目</div>
+    <div style="margin-top:2px">💬 ${esc(p.tip)}</div>`;
+  // 拼音拼读天天练
+  renderPinDu(seed);
+}
+function speakPic(){
+  const p=window.__pic;
+  if(p)speak(p.tip);
+}
+
+/* ================= 拼音拼读天天练（零基础 · 直接拼读词语） =================
+   分五级进阶：①声母+单韵母 ②复韵母 ③鼻韵母 ④三拼音节/整体认读 ⑤多音字专项
+   每天从当前级别取 9 个词（约 20-30 个音节），点卡片逐字母拼读：
+   声母高亮→韵母高亮→合在一起读词。学完本级自动升级。 */
+const PD_STAGES=[
+ {name:'第 1 关 · 声母和单韵母',sub:'b+à=爸，一个声母拉一个韵母',items:[
+  {h:'妈',p:'mā',c:'妈妈',cp:'mā ma'},{h:'爸',p:'bà',c:'爸爸',cp:'bà ba'},
+  {h:'大',p:'dà',c:'大小',cp:'dà xiǎo'},{h:'米',p:'mǐ',c:'大米',cp:'dà mǐ'},
+  {h:'土',p:'tǔ',c:'泥土',cp:'ní tǔ'},{h:'木',p:'mù',c:'树木',cp:'shù mù'},
+  {h:'波',p:'bō',c:'水波',cp:'shuǐ bō'},{h:'哥',p:'gē',c:'哥哥',cp:'gē ge'},
+  {h:'鹅',p:'é',c:'白鹅',cp:'bái é'},{h:'衣',p:'yī',c:'衣服',cp:'yī fu'},
+  {h:'乌',p:'wū',c:'乌鸦',cp:'wū yā'},{h:'鱼',p:'yú',c:'小鱼',cp:'xiǎo yú'},
+  {h:'蛙',p:'wā',c:'青蛙',cp:'qīng wā'},{h:'泥',p:'ní',c:'泥巴',cp:'ní ba'},
+  {h:'拉',p:'lā',c:'拉手',cp:'lā shǒu'},{h:'塔',p:'tǎ',c:'宝塔',cp:'bǎo tǎ'},
+  {h:'鼓',p:'gǔ',c:'打鼓',cp:'dǎ gǔ'},{h:'兔',p:'tù',c:'兔子',cp:'tù zi'},
+  {h:'虎',p:'hǔ',c:'老虎',cp:'lǎo hǔ'},{h:'佛',p:'fó',c:'大佛',cp:'dà fó'},
+  {h:'坡',p:'pō',c:'山坡',cp:'shān pō'},{h:'刺',p:'cì',c:'刺猬',cp:'cì wei'},
+  {h:'腹',p:'fù',c:'肚子',cp:'dù zi'},{h:'壶',p:'hú',c:'水壶',cp:'shuǐ hú'}
+ ]},
+ {name:'第 2 关 · 复韵母',sub:'ai、ao、ou……两个韵母手拉手',items:[
+  {h:'白',p:'bái',c:'白色',cp:'bái sè'},{h:'海',p:'hǎi',c:'大海',cp:'dà hǎi'},
+  {h:'飞',p:'fēi',c:'飞机',cp:'fēi jī'},{h:'猫',p:'māo',c:'小猫',cp:'xiǎo māo'},
+  {h:'手',p:'shǒu',c:'小手',cp:'xiǎo shǒu'},{h:'牛',p:'niú',c:'小牛',cp:'xiǎo niú'},
+  {h:'菜',p:'cài',c:'青菜',cp:'qīng cài'},{h:'梅',p:'méi',c:'梅花',cp:'méi huā'},
+  {h:'桃',p:'táo',c:'桃子',cp:'táo zi'},{h:'球',p:'qiú',c:'皮球',cp:'pí qiú'},
+  {h:'睡',p:'shuì',c:'睡觉',cp:'shuì jiào'},{h:'鸟',p:'niǎo',c:'小鸟',cp:'xiǎo niǎo'},
+  {h:'狗',p:'gǒu',c:'小狗',cp:'xiǎo gǒu'},{h:'龟',p:'guī',c:'乌龟',cp:'wū guī'},
+  {h:'水',p:'shuǐ',c:'喝水',cp:'hē shuǐ'},{h:'耳',p:'ěr',c:'耳朵',cp:'ěr duo'},
+  {h:'叶',p:'yè',c:'树叶',cp:'shù yè'},{h:'月',p:'yuè',c:'月亮',cp:'yuè liang'},
+  {h:'雪',p:'xuě',c:'下雪',cp:'xià xuě'},{h:'队',p:'duì',c:'排队',cp:'pái duì'},
+  {h:'嘴',p:'zuǐ',c:'嘴巴',cp:'zuǐ ba'},{h:'楼',p:'lóu',c:'高楼',cp:'gāo lóu'},
+  {h:'头',p:'tóu',c:'石头',cp:'shí tou'},{h:'豆',p:'dòu',c:'豆子',cp:'dòu zi'}
+ ]},
+ {name:'第 3 关 · 鼻韵母',sub:'an、ang、ong……鼻子出气的音',items:[
+  {h:'山',p:'shān',c:'高山',cp:'gāo shān'},{h:'门',p:'mén',c:'开门',cp:'kāi mén'},
+  {h:'金',p:'jīn',c:'金色',cp:'jīn sè'},{h:'云',p:'yún',c:'白云',cp:'bái yún'},
+  {h:'糖',p:'táng',c:'糖果',cp:'táng guǒ'},{h:'灯',p:'dēng',c:'台灯',cp:'tái dēng'},
+  {h:'星',p:'xīng',c:'星星',cp:'xīng xing'},{h:'虫',p:'chóng',c:'虫子',cp:'chóng zi'},
+  {h:'琴',p:'qín',c:'弹琴',cp:'tán qín'},{h:'蛋',p:'dàn',c:'鸡蛋',cp:'jī dàn'},
+  {h:'春',p:'chūn',c:'春天',cp:'chūn tiān'},{h:'风',p:'fēng',c:'大风',cp:'dà fēng'},
+  {h:'蓝',p:'lán',c:'蓝色',cp:'lán sè'},{h:'森',p:'sēn',c:'森林',cp:'sēn lín'},
+  {h:'窗',p:'chuāng',c:'窗户',cp:'chuāng hu'},{h:'床',p:'chuáng',c:'小床',cp:'xiǎo chuáng'},
+  {h:'红',p:'hóng',c:'红色',cp:'hóng sè'},{h:'熊',p:'xióng',c:'小熊',cp:'xiǎo xióng'},
+  {h:'圆',p:'yuán',c:'圆形',cp:'yuán xíng'},{h:'群',p:'qún',c:'羊群',cp:'yáng qún'},
+  {h:'棉',p:'mián',c:'棉花',cp:'mián huā'},{h:'天',p:'tiān',c:'天空',cp:'tiān kōng'},
+  {h:'泉',p:'quán',c:'泉水',cp:'quán shuǐ'},{h:'帆',p:'fān',c:'帆船',cp:'fān chuán'}
+ ]},
+ {name:'第 4 关 · 三拼音节和整体认读',sub:'g+u+ā=瓜，声母介母韵母一起拼',items:[
+  {h:'花',p:'huā',c:'花朵',cp:'huā duǒ'},{h:'瓜',p:'guā',c:'西瓜',cp:'xī guā'},
+  {h:'家',p:'jiā',c:'回家',cp:'huí jiā'},{h:'虾',p:'xiā',c:'大虾',cp:'dà xiā'},
+  {h:'果',p:'guǒ',c:'水果',cp:'shuǐ guǒ'},{h:'说',p:'shuō',c:'说话',cp:'shuō huà'},
+  {h:'桥',p:'qiáo',c:'小桥',cp:'xiǎo qiáo'},{h:'纸',p:'zhǐ',c:'白纸',cp:'bái zhǐ'},
+  {h:'吃',p:'chī',c:'吃饭',cp:'chī fàn'},{h:'十',p:'shí',c:'十个',cp:'shí gè'},
+  {h:'日',p:'rì',c:'生日',cp:'shēng rì'},{h:'五',p:'wǔ',c:'五个',cp:'wǔ gè'},
+  {h:'雨',p:'yǔ',c:'下雨',cp:'xià yǔ'},{h:'鹰',p:'yīng',c:'老鹰',cp:'lǎo yīng'},
+  {h:'远',p:'yuǎn',c:'远近',cp:'yuǎn jìn'},{h:'影',p:'yǐng',c:'影子',cp:'yǐng zi'},
+  {h:'画',p:'huà',c:'画画',cp:'huà huà'},{h:'快',p:'kuài',c:'快乐',cp:'kuài lè'},
+  {h:'话',p:'huà',c:'讲话',cp:'jiǎng huà'},{h:'抓',p:'zhuā',c:'抓住',cp:'zhuā zhù'},
+  {h:'蒜',p:'suàn',c:'大蒜',cp:'dà suàn'},{h:'帅',p:'shuài',c:'帅气',cp:'shuài qì'},
+  {h:'脚',p:'jiǎo',c:'小脚',cp:'xiǎo jiǎo'},{h:'跳',p:'tiào',c:'跳高',cp:'tiào gāo'}
+ ]},
+ {name:'第 5 关 · 多音字专项',sub:'一个字两种读法，词语里读哪个要分清',items:[
+  {h:'长',p:'cháng',c:'长短',cp:'cháng duǎn',p2:'zhǎng',c2:'长大',cp2:'zhǎng dà'},
+  {h:'乐',p:'lè',c:'快乐',cp:'kuài lè',p2:'yuè',c2:'音乐',cp2:'yīn yuè'},
+  {h:'行',p:'xíng',c:'行走',cp:'xíng zǒu',p2:'háng',c2:'银行',cp2:'yín háng'},
+  {h:'数',p:'shǔ',c:'数数',cp:'shǔ shù',p2:'shù',c2:'数学',cp2:'shù xué'},
+  {h:'觉',p:'jiào',c:'睡觉',cp:'shuì jiào',p2:'jué',c2:'觉得',cp2:'jué de'},
+  {h:'发',p:'fā',c:'发现',cp:'fā xiàn',p2:'fà',c2:'头发',cp2:'tóu fa'},
+  {h:'教',p:'jiāo',c:'教书',cp:'jiāo shū',p2:'jiào',c2:'教室',cp2:'jiào shì'},
+  {h:'种',p:'zhòng',c:'种树',cp:'zhòng shù',p2:'zhǒng',c2:'种子',cp2:'zhǒng zi'},
+  {h:'还',p:'hái',c:'还有',cp:'hái yǒu',p2:'huán',c2:'还书',cp2:'huán shū'},
+  {h:'只',p:'zhī',c:'一只鸟',cp:'yì zhī niǎo',p2:'zhǐ',c2:'只有',cp2:'zhǐ yǒu'},
+  {h:'地',p:'dì',c:'土地',cp:'tǔ dì',p2:'de',c2:'慢慢地',cp2:'màn man de'},
+  {h:'得',p:'dé',c:'得到',cp:'dé dào',p2:'de',c2:'跑得快',cp2:'pǎo de kuài'},
+  {h:'空',p:'kōng',c:'天空',cp:'tiān kōng',p2:'kòng',c2:'空闲',cp2:'kòng xián'},
+  {h:'藏',p:'cáng',c:'藏起来',cp:'cáng qǐ lái',p2:'zàng',c2:'宝藏',cp2:'bǎo zàng'}
+ ]}
+];
+let __pdPlaying=false;
+function pdCurStage(){return PD_STAGES[Math.min((S.pd&&S.pd.stage||1)-1,PD_STAGES.length-1)]}
+function renderPinDu(seed){
+  const box=document.getElementById('pdBox');
+  if(!box)return;
+  if(!S.pd)S.pd={stage:1,done:{}};
+  // 全部读完则升级
+  let stg=pdCurStage();
+  const stgKey=Math.min(S.pd.stage,PD_STAGES.length);
+  const allDone=stg.items.every(it=>S.pd.done[stgKey+'|'+it.h]);
+  if(allDone&&S.pd.stage<PD_STAGES.length){
+    S.pd.stage++; save();
+    toast('🎉 拼读升级！进入'+pdCurStage().name);
+  }
+  stg=pdCurStage();
+  // 未读过的排前面，再按种子轮换，每天取 9 个（约 20-30 个音节）
+  const un=stg.items.filter(it=>!S.pd.done[stgKey+'|'+it.h]);
+  const rd=stg.items.filter(it=>S.pd.done[stgKey+'|'+it.h]);
+  const day=daySeed()%Math.max(1,stg.items.length);
+  let daily=(un.length?un:stg.items).slice();
+  const start=day%daily.length;
+  daily=daily.slice(start).concat(daily.slice(0,start));
+  daily=daily.slice(0,9);
+  window.__pd=daily;
+  const dn=S.pd.done;
+  const cnt=stg.items.filter(it=>dn[stgKey+'|'+it.h]).length;
+  const isL5=S.pd.stage>=PD_STAGES.length;
+  box.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <b style="font-size:12.5px;color:var(--chinese-deep)">🔤 ${stg.name}</b>
+      <span data-say="拼音拼读练习，${stg.name}。${stg.sub}。点一张卡片，先读声母，再读韵母，然后拼在一起读出词语。" style="width:28px;height:28px;border-radius:50%;background:#fdeee6;border:1.5px solid var(--chinese);display:inline-flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0">🔊</span>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px">${stg.sub} · 今日 ${daily.length} 个词 · 本关进度 ${cnt}/${stg.items.length}</div>
+    <div style="height:7px;background:var(--bg2);border-radius:99px;overflow:hidden;margin-bottom:10px"><div style="height:100%;width:${Math.round(cnt/stg.items.length*100)}%;background:linear-gradient(90deg,var(--chinese),#f0b48f);border-radius:99px"></div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
+      ${daily.map((it,i)=>{
+        const doneKey=stgKey+'|'+it.h;
+        const isDone=!!dn[doneKey];
+        const sp=splitPinyin(it.p);
+        const smS=sp.sm?`<span class="pd-l" id="pdsm-${i}">${sp.sm}</span>`:'';
+        return `<div id="pdcard-${i}" onclick="pdTap(${i})" style="background:${isDone?'#f2f8ea':'#fff'};border:2px ${isDone?'solid #a9cf85':'solid var(--line)'};border-radius:12px;padding:8px 4px 7px;text-align:center;cursor:pointer;position:relative">
+          ${isDone?'<span style="position:absolute;top:3px;right:5px;font-size:11px">✅</span>':''}
+          <div style="font-size:9.5px;color:var(--muted);font-weight:700;height:13px;letter-spacing:.5px">${pinyinTag(it.cp)}</div>
+          <div style="font-size:26px;font-weight:900;color:var(--text);line-height:1.15">${it.h}</div>
+          <div style="font-size:14px;font-weight:800;margin-top:1px">${smS}<span class="pd-l" id="pdym-${i}">${sp.ym}</span></div>
+          <div style="font-size:10px;color:var(--text2);margin-top:1px">${esc(it.c)}</div>
+          ${it.p2?`<div style="font-size:9px;color:var(--chinese-deep);margin-top:3px;background:#fdf1ea;border-radius:7px;padding:1px 3px">也读 ${it.p2} · ${esc(it.c2)}</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>
+    ${isL5&&cnt>=stg.items.length?'<div style="margin-top:9px;font-size:12px;font-weight:800;color:var(--chinese-deep);text-align:center">🎓 拼读全部通关！太厉害了！</div>':''}
+    <div style="font-size:11px;color:var(--muted);margin-top:8px">💡 拼读口诀：前音（声母）轻短后音（韵母）重，两音相连猛一碰。</div>`;
+}
+function pinyinTag(cp){
+  // 词语拼音标注：péng you → péng you（多字词）
+  return esc(cp||'');
+}
+function pdTap(i){
+  const daily=window.__pd;
+  if(!daily||!daily[i]||__pdPlaying)return;
+  const it=daily[i];
+  const stgKey=Math.min(S.pd.stage,PD_STAGES.length);
+  const sp=splitPinyin(it.p);
+  const smEl=document.getElementById('pdsm-'+i);
+  const ymEl=document.getElementById('pdym-'+i);
+  const card=document.getElementById('pdcard-'+i);
+  __pdPlaying=true;
+  const finish=()=>{
+    if(smEl){smEl.classList.add('pd-done')}
+    if(ymEl){ymEl.classList.remove('pd-cur');ymEl.classList.add('pd-done')}
+    // 读词（词语上下文保证多音字读对）
+    speak(it.c);
+    S.pd.done[stgKey+'|'+it.h]=1;
+    if(card)card.style.borderColor='#a9cf85',card.style.background='#f2f8ea';
+    const badge=document.createElement('span');
+    badge.textContent='✅';badge.style.cssText='position:absolute;top:3px;right:5px;font-size:11px';
+    if(card)card.appendChild(badge);
+    // 多音字：补充第二种读法
+    if(it.p2){setTimeout(()=>{speak('它还读'+it.p2+'，'+it.c2)},2600)}
+    save();
+    // 检查本关是否全部读完
+    const stg=pdCurStage();
+    const all=stg.items.every(x=>S.pd.done[stgKey+'|'+x.h]);
+    setTimeout(()=>{
+      __pdPlaying=false;
+      if(all&&S.pd.stage<PD_STAGES.length){
+        celebrate('🎉','拼读升级！',stg.name+' 全部读完啦！明天开始「'+PD_STAGES[Math.min(S.pd.stage,PD_STAGES.length-1)].name+'」，加油！');
+        S.pd.stage++; save();
+        renderPinDu(daySeed());
+      }
+    },1200);
+  };
+  if(smEl){
+    smEl.classList.add('pd-cur');
+    speak(PY_TTS[sp.sm]||sp.sm);
+    setTimeout(()=>{
+      smEl.classList.remove('pd-cur');smEl.classList.add('pd-done');
+      ymEl.classList.add('pd-cur');
+      speak(PY_TTS[sp.ym]||sp.ym);
+      setTimeout(finish,1500);
+    },1500);
+  }else{
+    ymEl.classList.add('pd-cur');
+    speak(PY_TTS[sp.ym]||sp.ym);
+    setTimeout(()=>{ymEl.classList.remove('pd-cur');finish()},1500);
+  }
 }
 /* 拼音拼读：声母/韵母用中文谐音，最后读字和组词（如 péng → 坡——鞥——朋！朋友） */
 const PY_SM={b:'玻',p:'坡',m:'摸',f:'佛',d:'得',t:'特',n:'讷',l:'勒',g:'哥',k:'科',h:'喝',j:'鸡',q:'欺',x:'希',zh:'知',ch:'吃',sh:'诗',r:'日',z:'资',c:'次',s:'思',y:'衣',w:'乌'};
@@ -1717,7 +1935,7 @@ function playWholeStory(){
   try{
     speechSynthesis.cancel();
     st.lines.forEach((ln,i)=>{
-      const u=new SpeechSynthesisUtterance(ln);
+      const u=new SpeechSynthesisUtterance(fixPron(ln));
       u.lang='zh-CN';u.rate=0.85;u.pitch=1.1;
       speechSynthesis.speak(u);
     });
@@ -1801,8 +2019,9 @@ function renderMath(){
         <div style="font-size:12.5px;color:var(--text2);font-weight:600;line-height:1.6">第${i+1}题：${t.a}</div>
       </div>
     </div>`).join('');
-  // 数字分解（10以内）+ 20以内比大小
+  // 数字分解（10以内）+ 凑十法 + 20以内比大小
   renderDecompose(seed);
+  renderMakeTen(seed);
   renderCompare(seed);
   newNumGame();
 }
@@ -1898,6 +2117,99 @@ function dcUpdateProgress(){
 function dcCelebrate(){
   const total=__dc.nums.reduce((s,n)=>s+n-1,0);
   if(Object.keys(__dc.filled).length===total)toast('🎉 数字分解树全部完成！奖励一颗星星 ⭐');}
+/* ===== 凑十法训练（每天 2~3 题：先把小数凑成 10，再接着加） ===== */
+let __mt={probs:[],idx:0,step:0};
+function renderMakeTen(seed){
+  const box=document.getElementById('makeTenBox');
+  if(!box)return;
+  let s=seed+31;
+  const rs=()=>{s=(s*9301+49297)%233280;return s/233280};
+  const ri=(a,b)=>a+Math.floor(rs()*(b-a+1));
+  const cnt=2+(rs()<0.5?1:0); // 每天 2~3 题
+  const probs=[];const used=new Set();
+  let guard=0;
+  while(probs.length<cnt&&guard<200){
+    guard++;
+    const a=ri(6,9); // 6~9，凑十的关键数
+    const b=ri(11-a,17-a); // 保证 b-(10-a)>=1 且 a+b<=17
+    const key=a+'+'+b;
+    if(used.has(key))continue;
+    used.add(key);
+    probs.push({a,b,s1:10-a,s2:b-(10-a),fin:10+(b-(10-a)),filled:{}});
+  }
+  __mt={probs:probs,idx:0,step:0};
+  box.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <b style="font-size:12.5px;color:var(--math-deep)">🧮 凑十法 · 先凑成 10，再接着加</b>
+      <span data-say="凑十法练习。比如9加5，把5拆成1和4，9加1凑成10，10再加4等于14。点方框，在下面点数字作答。" style="width:28px;height:28px;border-radius:50%;background:#e3f0f8;border:1.5px solid var(--math);display:inline-flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0">🔊</span>
+    </div>
+    <div id="mtBody"></div>
+    <div id="mtKeypad" style="display:none;margin-top:10px"></div>
+    <div id="mtHint" style="font-size:11px;color:var(--muted);margin-top:7px">💡 口诀：看大数，拆小数，凑成十，加剩数。</div>`;
+  mtRender();
+}
+function mtRender(){
+  const body=document.getElementById('mtBody');
+  if(!body)return;
+  const pr=__mt.probs[__mt.idx];
+  if(!pr){body.innerHTML='';return}
+  const cell=(id,v,ok)=>`<span id="mtc-${id}" onclick="mtTap('${id}')" style="display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:36px;border-radius:10px;cursor:pointer;font-size:19px;font-weight:900;${ok?'background:#e2f5e4;border:2px solid #57b96a;color:#2e8b46':'background:#fff8e8;border:2px dashed #e8b84a;color:#e8b84a'}">${v??'?'}</span>`;
+  body.innerHTML=`
+    <div style="display:flex;justify-content:center;gap:10px;align-items:center;font-size:24px;font-weight:900;color:var(--math-deep);margin-bottom:10px">
+      <span>${pr.a}</span><span style="color:var(--muted)">+</span><span>${pr.b}</span><span style="color:var(--muted)">=</span><span style="color:var(--muted)">?</span>
+    </div>
+    <div style="font-size:12px;font-weight:800;color:var(--math-deep);text-align:center;margin-bottom:6px">第 1 步：把 ${pr.b} 拆成 __ 和 __，让 ${pr.a} 先凑成 10</div>
+    <div style="display:flex;justify-content:center;gap:8px;align-items:center;margin-bottom:8px">
+      ${cell('s1',pr.filled.s1,pr.filled.s1ok)} <span style="color:var(--muted);font-weight:800">和</span> ${cell('s2',pr.filled.s2,pr.filled.s2ok)}
+    </div>
+    <div id="mtStep2" style="display:${pr.filled.s2ok?'block':'none'}">
+      <div style="font-size:12px;font-weight:800;color:var(--math-deep);text-align:center;margin-bottom:6px">第 2 步：10 加上剩下的数</div>
+      <div style="display:flex;justify-content:center;gap:8px;align-items:center">
+        <span style="font-size:20px;font-weight:900;color:var(--math-deep)">10</span><span style="color:var(--muted);font-weight:800">+</span>
+        ${cell('fin',pr.filled.fin,pr.filled.finok)}
+      </div>
+    </div>
+    <div style="text-align:center;font-size:12.5px;font-weight:800;color:var(--good);margin-top:8px">${pr.filled.finok?`✅ ${pr.a} + ${pr.s1} = 10，10 + ${pr.s2} = ${pr.fin}，所以 ${pr.a} + ${pr.b} = ${pr.a+pr.b}`:''}</div>
+    <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:4px">第 ${__mt.idx+1} / ${__mt.probs.length} 题</div>`;
+}
+function mtTap(id){
+  const pr=__mt.probs[__mt.idx];
+  if(!pr||pr.filled[id+'ok'])return;
+  __mt.step=id;
+  const kp=document.getElementById('mtKeypad');
+  if(kp){
+    kp.style.display='flex';
+    kp.innerHTML=Array.from({length:9},(_,i)=>i+1).map(v=>`<button onclick="mtPick(${v})" style="flex:1;height:42px;border-radius:11px;border:1.5px solid var(--math);background:#fff;font-size:18px;font-weight:900;color:var(--math-deep);cursor:pointer">${v}</button>`).join('');
+  }
+}
+function mtPick(v){
+  const pr=__mt.probs[__mt.idx];
+  if(!pr)return;
+  const id=__mt.step;
+  const el=document.getElementById('mtc-'+id);
+  const right={s1:pr.s1,s2:pr.s2,fin:pr.fin}[id];
+  if(v===right){
+    pr.filled[id]=v;pr.filled[id+'ok']=true;
+    document.getElementById('mtKeypad').style.display='none';
+    toast('✅ 对啦！接着往下算');
+    const doneAll=pr.filled.finok;
+    mtRender();
+    if(doneAll){
+      if(__mt.idx<__mt.probs.length-1){
+        __mt.idx++;__mt.step=0;
+        setTimeout(mtRender,700);
+      }else{
+        setTimeout(()=>toast('🎉 凑十法全部完成！太棒了 ⭐'),700);
+      }
+    }
+  }else{
+    if(el){
+      el.style.transform='translateX(4px)';
+      setTimeout(()=>{el.style.transform=''},160);
+    }
+    toast('再想想：'+(id==='s1'?pr.a+' 加几等于 10？':id==='s2'?pr.s1+' 加几等于 '+pr.b+'？':'10 加几等于 '+pr.fin+'？'));
+  }
+}
 /* ===== 20以内比大小 ===== */
 let __cmpAns=[];
 function renderCompare(seed){
@@ -2231,6 +2543,36 @@ function delOutdoorItem(id){
 }
 
 /* ================= 语音 ================= */
+/* ===== 全局多音字校准 =====
+   TTS 引擎对多音字经常读错（按字面默认音读）。
+   这里把易错的词句替换成「同音字」后再送去朗读，只改发音、不改屏幕文字。
+   每条都是：屏幕文字 → 朗读用的同音写法（保证发音正确）。 */
+const PRON_FIX=[
+  /* 三字经/弟子规专有读法 */
+  ['苟不教','苟不交'],['教之道','交之道'],['首孝悌','首孝替'],['择邻处','择邻楚'],
+  ['晨则省','晨则醒'],['行勿懒','形勿懒'],['教之道贵','交之道贵'],
+  /* 长 zhǎng/cháng */
+  ['长大','涨大'],['长高','涨高'],['长出','涨出'],['生长','身涨'],['长长的','肠肠的'],
+  ['长短','肠短'],['增长','增涨'],['长尾巴','涨尾巴'],
+  /* 教 jiāo/jiào */
+  ['教书','交书'],
+  /* 磨坊/驮 等易错词 */
+  ['磨坊','莫房'],['驮着','驼着'],
+  /* 稀有易错字 */
+  ['衔来','闲来'],['篮子','蓝子'],
+  /* 数/还/只/觉 等（高频出错语境的兜底，替换成同音字确保读对） */
+  ['数一数','鼠一树'],['数数','鼠树'],['无数','无树'],
+  ['还剩','海剩'],['还书','环书'],['还给','环给'],
+  ['一只','一枝'],['两只','两枝'],['三只','三枝'],['几只','几枝'],
+  ['觉得','绝得'],
+  ['种子','肿子'],['种树','重树'],['种了','重了'],['种花','重花'],
+  ['头发','投发']
+];
+function fixPron(t){
+  let out=String(t);
+  PRON_FIX.forEach(([a,b])=>{ if(out.indexOf(a)>=0) out=out.split(a).join(b); });
+  return out;
+}
 let __voicesReady=false;
 function primeVoices(){
   if(__voicesReady||!('speechSynthesis' in window))return;
@@ -2251,7 +2593,7 @@ function speak(text){
   if(!text)return;
   try{
     speechSynthesis.cancel();
-    let t=String(text);
+    let t=fixPron(String(text));
     /* 只有一个字母/韵母（拼音标签）时，用中文谐音读，避免英文腔 */
     if(PY_TTS[t])t=PY_TTS[t];
     const u=new SpeechSynthesisUtterance(t);
